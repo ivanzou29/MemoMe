@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MemoMe</string>
+    <string name="title_todo">To Do</string>
+    <string name="title_community">Community</string>
+    <string name="title_plus">New</string>
+    <string name="title_history">History</string>
+    <string name="title_me">ME</string>
+</resources>

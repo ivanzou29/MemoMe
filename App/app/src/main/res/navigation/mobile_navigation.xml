@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_me">
+
+    <fragment
+        android:id="@+id/navigation_todo"
+        android:name="cs.hku.hk.memome.ui.todo.ToDoFragment"
+        android:label="@string/title_todo"
+        tools:layout="@layout/fragment_todo" />
+
+    <fragment
+        android:id="@+id/navigation_community"
+        android:name="cs.hku.hk.memome.ui.community.CommunityFragment"
+        android:label="@string/title_community"
+        tools:layout="@layout/fragment_community" />
+
+    <fragment
+        android:id="@+id/navigation_plus"
+        android:name="cs.hku.hk.memome.ui.plus.PlusFragment"
+        android:label="@string/title_plus"
+        tools:layout="@layout/fragment_plus" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="cs.hku.hk.memome.ui.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/navigation_me"
+        android:name="cs.hku.hk.memome.ui.me.MeFragment"
+        android:label="@string/title_me"
+        tools:layout="@layout/fragment_me" />
+
+</navigation>

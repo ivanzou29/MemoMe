@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_todo"
+        android:icon="@drawable/ic_todo_black_24dp"
+        android:title="@string/title_todo" />
+
+    <item
+        android:id="@+id/navigation_community"
+        android:icon="@drawable/ic_commnity_black_24dp"
+        android:title="@string/title_community" />
+
+    <item
+        android:id="@+id/navigation_plus"
+        android:icon="@drawable/ic_plus_black_24dp"
+        android:title="@string/title_plus" />
+
+    <item
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/ic_history_black_24dp"
+        android:title="@string/title_history" />
+
+    <item
+        android:id="@+id/navigation_me"
+        android:icon="@drawable/ic_me_black_24dp"
+        android:title="@string/title_me" />
+
+</menu>
