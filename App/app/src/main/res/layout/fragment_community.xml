@@ -22,6 +22,8 @@
             android:id="@+id/tabLayout_community"
             android:layout_width="409dp"
             android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/colorPrimaryShadow"
+            app:tabSelectedTextColor="@color/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -43,6 +45,7 @@
 
         <androidx.viewpager.widget.ViewPager
             android:layout_width="409dp"
+            android:id="@+id/viewpager_community"
             android:layout_height="654dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout_community" />
