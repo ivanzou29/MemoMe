@@ -5,4 +5,8 @@
     <string name="title_plus">New</string>
     <string name="title_history">History</string>
     <string name="title_me">ME</string>
+    <string name="title_activity_diary">Diaries</string>
+    <string name="title_activity_todo">Todo Details</string>
+    <string name="title_activity_gifts">My Gifts</string>
+    <string name="title_activity_profile">My Profile</string>
 </resources>
