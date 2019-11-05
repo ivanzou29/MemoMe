@@ -9,4 +9,7 @@
     <string name="title_activity_todo">Todo Details</string>
     <string name="title_activity_gifts">My Gifts</string>
     <string name="title_activity_profile">My Profile</string>
+    <string name="tab_left">Hot</string>
+    <string name="tab_middle">Newest</string>
+    <string name="tab_right">[?Third?]</string>
 </resources>

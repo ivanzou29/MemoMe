@@ -1,7 +1,10 @@
 package cs.hku.hk.memome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
@@ -17,9 +20,17 @@ public class ProfileActivity extends AppCompatActivity
         setContentView(R.layout.activity_profile);
 
         upperToolBar = findViewById(R.id.toolbar_profile);
-        setSupportActionBar(upperToolBar);
+        upperToolBar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent returnHome = new Intent();
+                setResult(RESULT_OK, returnHome);
+                finish();
+            }
+        });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setSupportActionBar(upperToolBar);
     }
 }
