@@ -21,6 +21,7 @@ public class HistoryViewModel extends ViewModel {
     }
 
     String[] getMyData() {
+
         //TODO get data from server
         return myData;
     }
