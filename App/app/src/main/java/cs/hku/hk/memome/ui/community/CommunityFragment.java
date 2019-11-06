@@ -45,10 +45,13 @@ public class CommunityFragment extends Fragment {
         fglist.add(new fragment_middle());
         fglist.add(new fragment_right());
 
-        vp.setAdapter(new FragAdapter(this.getChildFragmentManager(),fglist));
+        vp.setAdapter(new FragAdapter(this.getChildFragmentManager(),fglist, parent.getContext()));
         vp.setCurrentItem(0);
 
         TabLayout tab = parent.findViewById(R.id.tabLayout_community);
         tab.setupWithViewPager(vp, true);
+        tab.getTabAt(0).setText(getResources().getText(R.string.tab_left));
+        tab.getTabAt(1).setText(getResources().getText(R.string.tab_middle));
+        tab.getTabAt(2).setText(getResources().getText(R.string.tab_right));
     }
 }
