@@ -21,23 +21,27 @@
         </activity>
 
         <activity
-            android:name="ToDoActivity"
-            android:label="@string/title_activity_todo">
+            android:name=".ToDoActivity"
+            android:label="@string/title_activity_todo"
+            android:theme="@style/SubActivityTheme">
         </activity>
 
         <activity
-            android:name="DiaryActivity"
-            android:label="@string/title_activity_diary">
+            android:name=".DiaryActivity"
+            android:label="@string/title_activity_diary"
+            android:theme="@style/SubActivityTheme">
         </activity>
 
         <activity
-            android:name="GiftsActivity"
-            android:label="@string/title_activity_gifts">
+            android:name=".GiftsActivity"
+            android:label="@string/title_activity_gifts"
+            android:theme="@style/SubActivityTheme">
         </activity>
 
         <activity
-            android:name="ProfileActivity"
-            android:label="@string/title_activity_profile">
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/SubActivityTheme">
         </activity>
     </application>
 

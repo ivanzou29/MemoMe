@@ -12,4 +12,5 @@
     <string name="tab_left">Hot</string>
     <string name="tab_middle">Newest</string>
     <string name="tab_right">[?Third?]</string>
+    <string name="return_home">Return Home</string>
 </resources>
