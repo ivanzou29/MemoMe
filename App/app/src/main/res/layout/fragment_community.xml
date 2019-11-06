@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -22,10 +22,12 @@
             android:id="@+id/tabLayout_community"
             android:layout_width="409dp"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/colorPrimaryShadow"
-            app:tabSelectedTextColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="@color/colorPrimaryShadow"
+            app:tabTextColor="@color/colorAccent"
+            app:tabSelectedTextColor="@color/colorPrimaryDark">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -44,9 +46,10 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager
-            android:layout_width="409dp"
             android:id="@+id/viewpager_community"
+            android:layout_width="409dp"
             android:layout_height="654dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout_community" />
 
