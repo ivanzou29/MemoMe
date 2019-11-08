@@ -19,7 +19,6 @@ public class ProfileActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         upperToolBar = findViewById(R.id.toolbar_profile);
         upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
         upperToolBar.setNavigationContentDescription(R.string.return_home);

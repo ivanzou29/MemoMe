@@ -11,9 +11,8 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
-    <TextView
-        android:id="@+id/textView"
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_activity_todo" />
+        android:id="@+id/todo_listview"/>
 </LinearLayout>
