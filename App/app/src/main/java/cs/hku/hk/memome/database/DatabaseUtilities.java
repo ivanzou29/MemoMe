@@ -12,7 +12,7 @@ public class DatabaseUtilities {
                                             String password) {
         Connection conn = null;
         try {
-            Class.forName("org.gjt.mm.mysql.Driver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -27,7 +27,7 @@ public class DatabaseUtilities {
         return conn;
     }
 
-    public static void query(Connection conn, String sql) {
+    public static void query (Connection conn, String sql) {
 
         if (conn == null) {
             return;
