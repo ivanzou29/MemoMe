@@ -13,4 +13,7 @@
     <string name="tab_middle">Newest</string>
     <string name="tab_right">[?Third?]</string>
     <string name="return_home">Return Home</string>
+    <string name="new_post_title_hint">Title</string>
+    <string name="new_post_checkbox_hint">Public</string>
+    <string name="new_post_hashtag_hint">#Add Hashtag</string>
 </resources>
