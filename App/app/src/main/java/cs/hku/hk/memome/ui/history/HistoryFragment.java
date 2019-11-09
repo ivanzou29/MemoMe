@@ -27,9 +27,15 @@ public class HistoryFragment extends Fragment {
         historyViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                //textView.setText(s);
             }
         });
+        TextView diaries = root.findViewById(R.id.text_diaries);
+        String[] data = historyViewModel.getMyData();
+        if (data.length == 0) {
+            diaries.setText("You haven't writen any diary yet");
+        }
         return root;
     }
+
 }

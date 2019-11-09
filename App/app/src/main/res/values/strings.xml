@@ -5,4 +5,15 @@
     <string name="title_plus">New</string>
     <string name="title_history">History</string>
     <string name="title_me">ME</string>
+    <string name="title_activity_diary">Diaries</string>
+    <string name="title_activity_todo">Todo Details</string>
+    <string name="title_activity_gifts">My Gifts</string>
+    <string name="title_activity_profile">My Profile</string>
+    <string name="tab_left">Hot</string>
+    <string name="tab_middle">Newest</string>
+    <string name="tab_right">[?Third?]</string>
+    <string name="return_home">Return Home</string>
+    <string name="new_post_title_hint">Title</string>
+    <string name="new_post_checkbox_hint">Public</string>
+    <string name="new_post_hashtag_hint">#Add Hashtag</string>
 </resources>
