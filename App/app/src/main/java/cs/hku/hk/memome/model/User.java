@@ -8,14 +8,6 @@ public class User {
     private byte[] profilePhoto;
     private String username;
 
-    public User(String email, int coin, String passcode, byte[] profilePhoto, String username) {
-        this.email = email;
-        this.coin = coin;
-        this.passcode = passcode;
-        this.profilePhoto = profilePhoto;
-        this.username = username;
-    }
-
     public String getEmail() {
         return this.email;
     }

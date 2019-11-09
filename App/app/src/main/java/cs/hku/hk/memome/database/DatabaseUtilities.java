@@ -8,12 +8,15 @@ import java.sql.Statement;
 
 public class DatabaseUtilities {
 
-    public static Connection openConnection(String url, String user,
-                                            String password) {
+    private static final String URL = "jdbc:mysql://cdb-rhgud8sn.gz.tencentcdb.com:10029/MemoMe?useSSL=true";
+    private static final String USER = "root";
+    private static final String PASSWORD = "COMP3330@hku";
+
+    public static Connection openConnection() {
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
