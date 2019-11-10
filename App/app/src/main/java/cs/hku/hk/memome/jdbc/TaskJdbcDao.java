@@ -31,7 +31,7 @@ public class TaskJdbcDao implements TaskDao {
             ptmt.close();
             return listNames;
         } catch (SQLException e) {
-            return null;
+            return new ArrayList<String>();
         }
     }
 
@@ -56,7 +56,7 @@ public class TaskJdbcDao implements TaskDao {
             ptmt.close();
             return tasks;
         } catch (SQLException e) {
-            return null;
+            return new ArrayList<Task>();
         }
     }
 

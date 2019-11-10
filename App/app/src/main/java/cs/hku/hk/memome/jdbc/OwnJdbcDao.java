@@ -32,7 +32,7 @@ public class OwnJdbcDao implements OwnDao {
             ptmt.close();
             return owns;
         } catch (SQLException e) {
-            return null;
+            return new ArrayList<Own>();
         }
     }
 
