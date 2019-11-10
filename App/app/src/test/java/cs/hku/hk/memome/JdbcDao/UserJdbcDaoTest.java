@@ -10,9 +10,9 @@ public class UserJdbcDaoTest {
     private UserJdbcDao userJdbcDao;
 
     @Test
-    public void getUserFromEmail_ShouldReturnAUserIfEmailExists() {
+    public void getUserByEmail_ShouldReturnAUserIfEmailExists() {
         userJdbcDao = new UserJdbcDao();
-        User user = userJdbcDao.getUserFromEmail("lerong@hku.hk");
+        User user = userJdbcDao.getUserByEmail("lerong@hku.hk");
         System.out.println(user.getUsername());
     }
 }

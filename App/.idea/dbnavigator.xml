@@ -23,7 +23,11 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="2d1afc66-9f68-459c-a9b0-c6482c7258d6">
+        <schema name="MemoMe" object-types="view, procedure, table, function, column, constraint, index, dataset trigger" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="2d1afc66-9f68-459c-a9b0-c6482c7258d6">
@@ -38,7 +42,9 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="2d1afc66-9f68-459c-a9b0-c6482c7258d6" dataset="MemoMe.Users" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="2d1afc66-9f68-459c-a9b0-c6482c7258d6" dataset="MemoMe.Tasks" active-filter-id="" />
     <filter-actions connection-id="2d1afc66-9f68-459c-a9b0-c6482c7258d6" dataset="MemoMe.Images" active-filter-id="" />
+    <filter-actions connection-id="2d1afc66-9f68-459c-a9b0-c6482c7258d6" dataset="MemoMe.Own" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
