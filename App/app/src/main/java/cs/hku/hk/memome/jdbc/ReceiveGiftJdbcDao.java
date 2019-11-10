@@ -32,7 +32,7 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
             ptmt.close();
             return receiveGifts;
         } catch (SQLException e) {
-            return null;
+            return new ArrayList<ReceiveGift>();
         }
     }
 
