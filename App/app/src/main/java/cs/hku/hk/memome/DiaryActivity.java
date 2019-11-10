@@ -5,22 +5,34 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import cs.hku.hk.memome.ui.history.HistoryViewModel;
+import cs.hku.hk.memome.ui.todo.ToDoViewModel;
+
 public class DiaryActivity extends AppCompatActivity
 {
     private Toolbar upperToolBar;
+    private HistoryViewModel historyViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
 
+        Bundle extras = getIntent().getExtras();
+        String title;
+        title = extras.getString("title");
+
+        historyViewModel = new HistoryViewModel();
+
         upperToolBar = findViewById(R.id.toolbar_diary);
+        upperToolBar.setTitle(title);
         upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
         upperToolBar.setNavigationContentDescription(R.string.return_home);
         setSupportActionBar(upperToolBar);
@@ -35,5 +47,9 @@ public class DiaryActivity extends AppCompatActivity
                 finish();
             }
         });
+
+        TextView diary =findViewById(R.id.diary);
+        String content = historyViewModel.getContents(title);
+        diary.setText(content);
     }
 }

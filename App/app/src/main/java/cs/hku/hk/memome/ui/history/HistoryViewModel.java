@@ -6,23 +6,42 @@ import androidx.lifecycle.ViewModel;
 
 public class HistoryViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
     //TODO don't know what data type we will get from server yet
-    private String[] myData;//the history diaries
+    private Diary[] diaries;//the history diaries
 
     public HistoryViewModel() {
-        mText = new MutableLiveData<>();
-        myData = new String[0];
-        mText.setValue("This is history fragment");
+        diaries = new Diary[3];
+        for (int i = 0; i < 3; i++) {
+            diaries[i] = new Diary();
+        }
+        diaries[0].title = "happy";
+        diaries[0].content = "I am happy!";
+        diaries[1].title = "sad";
+        diaries[1].content = "I am sad";
+        diaries[2].title = "angry";
+        diaries[2].content = "I am angry";
+
     }
 
-    LiveData<String> getText() {
-        return mText;
+    public String[] getTitles(){//get all the titles
+        String[] titles = new String[diaries.length];
+        for (int i = 0; i < diaries.length; i++) {
+            titles[i] = diaries[i].title;
+        }
+        return titles;
     }
 
-    String[] getMyData() {
+    public String getContents(String title) {
+        for (int i = 0; i < diaries.length; i++) {
+            if (title.equals(diaries[i].title)) {
+                return diaries[i].content;
+            }
+        }
+        return "no diary is found";
+    }
 
-        //TODO get data from server
-        return myData;
+    public class Diary {
+        public String title;
+        public String content;
     }
 }

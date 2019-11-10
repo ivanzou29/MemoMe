@@ -1,17 +1,16 @@
 package cs.hku.hk.memome.ui.todo;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class ToDoViewModel extends ViewModel {
 
     private String[] myData = {"Oct.18","Nov.04","Nov.06"};//the list names
-    private todo[] myDataBase = new todo[3];
+    private TodoDetail[] myDataBase;
 
     public ToDoViewModel() {
+        myDataBase = new TodoDetail[3];
         for (int i = 0; i < 3; i++) {
-            myDataBase[i] = new todo();
+            myDataBase[i] = new TodoDetail();
         }
         myDataBase[0].title = "Oct.18";
         myDataBase[1].title = "Nov.04";
@@ -25,7 +24,6 @@ public class ToDoViewModel extends ViewModel {
     }
 
     public String[] getMyData() {
-        //TODO get lists titles from database
         return myData;
     }
 
@@ -38,8 +36,13 @@ public class ToDoViewModel extends ViewModel {
         }
         return details;
     }
+//
+//    public class Todo {
+//        public String title;
+//        public String[] lists;
+//    }
 
-    public class todo {
+    public class TodoDetail {
         public String title;
         public String[] lists;
     }

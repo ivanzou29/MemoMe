@@ -27,7 +27,7 @@ import cs.hku.hk.memome.ToDoActivity;
 public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener{
 
     private ToDoViewModel toDoViewModel;
-    MyRecyclerViewAdapter adapter;
+    MyRecyclerViewAdapter toDoAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,10 +35,6 @@ public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.Item
                 ViewModelProviders.of(this).get(ToDoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton_plus);
-//        TextView listname = root.findViewById(R.id.list_name);
-//        if (data.length == 0) {
-//            listname.setText("no to-do list yet");
-//        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,18 +47,18 @@ public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.Item
         RecyclerView recyclerView = root.findViewById(R.id.rvNumbers);
         int numberOfColumns = 1;
         recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), numberOfColumns));
-        adapter = new MyRecyclerViewAdapter(this.getContext(), data);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+        toDoAdapter = new MyRecyclerViewAdapter(this.getContext(), data);
+        toDoAdapter.setClickListener(this);
+        recyclerView.setAdapter(toDoAdapter);
 
         return root;
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this.getContext(), "You clicked data " + adapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), "You clicked data " + toDoAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
         Intent intent =  new Intent(view.getContext(), ToDoActivity.class);
-        intent.putExtra("title", adapter.getItem(position));
+        intent.putExtra("title", toDoAdapter.getItem(position));
         startActivity(intent);
     }
 }
