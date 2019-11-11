@@ -49,6 +49,7 @@ public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.I
         Toast.makeText(this.getContext(), "You clicked data " + historyAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
         Intent intent =  new Intent(view.getContext(), DiaryActivity.class);
         intent.putExtra("title", historyAdapter.getItem(position));
+        intent.putExtra("content", historyViewModel.getContents(historyAdapter.getItem(position)));
         startActivity(intent);
     }
 }

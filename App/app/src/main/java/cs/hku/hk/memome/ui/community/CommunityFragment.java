@@ -28,8 +28,7 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        communityViewModel =
-                ViewModelProviders.of(this).get(CommunityViewModel.class);
+        communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
         View root = inflater.inflate(R.layout.fragment_community, container, false);
 
         initViewPager(root);

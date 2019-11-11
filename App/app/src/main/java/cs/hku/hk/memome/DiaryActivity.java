@@ -28,6 +28,7 @@ public class DiaryActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         String title;
         title = extras.getString("title");
+        String content = extras.getString("content");
 
         historyViewModel = new HistoryViewModel();
 
@@ -49,7 +50,6 @@ public class DiaryActivity extends AppCompatActivity
         });
 
         TextView diary =findViewById(R.id.diary);
-        String content = historyViewModel.getContents(title);
         diary.setText(content);
     }
 }

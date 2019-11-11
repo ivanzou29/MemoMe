@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ToDoViewModel extends ViewModel
 {
-    final public int MAX_TODO_ITEM_PER_LOAD = 9;
+    final public static int MAX_TODO_ITEM_PER_LOAD = 9;
     private List<String> myDataList; //the list names
     private List<TodoDetail> myDataBaseList;
 
