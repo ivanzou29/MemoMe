@@ -32,7 +32,7 @@ public class fragment_left extends Fragment implements MyRecyclerViewAdapter.Ite
 
         View root = inflater.inflate(R.layout.fagment_community_left, container, false);
 
-        RecyclerView recyclerView = root.findViewById(R.id.rvDiaries);
+        RecyclerView recyclerView = root.findViewById(R.id.rvLeftDiaries);
         recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), NUM_COLUMN));
 
         communityAdapter = new MyRecyclerViewAdapter(this.getContext(), titles);
