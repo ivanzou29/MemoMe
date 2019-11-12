@@ -33,10 +33,7 @@ public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.I
         historyViewModel =
                 ViewModelProviders.of(this).get(HistoryViewModel.class);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
-<<<<<<< HEAD
-=======
 
->>>>>>> c1f8e0752ec1119216bfb801615ed9928d97696c
         String[] titles = historyViewModel.getTitles();
         RecyclerView recyclerView = root.findViewById(R.id.rvDiaries);
         int numberOfColumns = 1;
