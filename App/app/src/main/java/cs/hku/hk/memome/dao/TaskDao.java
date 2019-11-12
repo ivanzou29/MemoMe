@@ -12,6 +12,8 @@ public interface TaskDao {
 
     void insertTask(Task task);
 
+    void finishTask(String email, String listName, String taskName);
+
     void deleteTask(String email, String listName, String taskName);
 
     void deleteList(String email, String listName);

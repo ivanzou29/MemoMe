@@ -77,5 +77,21 @@ public class UserJdbcDao implements UserDao {
         }
     }
 
+    @Override
+    public void updateCoinByEmailAndQuantity(String email, int quantity) {
+        Connection conn = DatabaseUtilities.openConnection();
+        String sql = "UPDATE TABLE Users SET coin = coin + ? WHERE email = ? ";
+        try {
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1, quantity);
+            ptmt.setString(2, email);
+            ptmt.execute();
+            conn.close();
+            ptmt.close();
+        } catch (SQLException e) {
+
+        }
+    }
+
 
 }

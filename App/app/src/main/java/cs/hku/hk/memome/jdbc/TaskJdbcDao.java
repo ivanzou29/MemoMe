@@ -81,6 +81,23 @@ public class TaskJdbcDao implements TaskDao {
     }
 
     @Override
+    public void finishTask(String email, String listName, String taskName) {
+        Connection conn = DatabaseUtilities.openConnection();
+        String sql = "UPDATE TABLE Tasks SET is_finished = 1 WHERE email = ? AND list_name = ? AND task_name = ?";
+        try {
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, email);
+            ptmt.setString(2,listName);
+            ptmt.setString(3, taskName);
+            ptmt.execute();
+            conn.close();
+            ptmt.close();
+        } catch (SQLException e) {
+
+        }
+    }
+
+    @Override
     public void deleteTask(String email, String listName, String taskName) {
         Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Tasks WHERE email = ? AND list_name = ? AND task_name = ? ";
