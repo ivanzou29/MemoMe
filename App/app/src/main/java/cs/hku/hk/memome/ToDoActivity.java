@@ -6,12 +6,16 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +41,7 @@ public class ToDoActivity extends AppCompatActivity
         title = extras.getString("title");
 
         listView = findViewById(R.id.todo_listview);
+        FloatingActionButton addTodo = findViewById(R.id.add_todo);
         String[] details = toDoViewModel.getListDetails(title);
         ArrayList<String> detailsList = new ArrayList<String>();
         detailsList.addAll(Arrays.asList(details) );
@@ -57,6 +62,15 @@ public class ToDoActivity extends AppCompatActivity
                 finish();
             }
         });
+
+        addTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: store a new todo to DB, assign an unique ID
+                Toast.makeText(ToDoActivity.this,"add a todo", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
     }
 }

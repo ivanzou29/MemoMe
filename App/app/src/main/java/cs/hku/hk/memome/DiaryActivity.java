@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -51,5 +53,15 @@ public class DiaryActivity extends AppCompatActivity
         TextView diary =findViewById(R.id.diary);
         String content = historyViewModel.getContents(title);
         diary.setText(content);
+
+        Button delete = findViewById(R.id.delete_post);
+        delete.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                //TODO send post_id to DB to delete
+                Toast.makeText(v.getContext(),"Delete this post?", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

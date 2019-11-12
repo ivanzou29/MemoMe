@@ -36,11 +36,6 @@ public class ToDoViewModel extends ViewModel {
         }
         return details;
     }
-//
-//    public class Todo {
-//        public String title;
-//        public String[] lists;
-//    }
 
     public class TodoDetail {
         public String title;

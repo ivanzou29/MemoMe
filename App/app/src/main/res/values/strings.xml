@@ -16,4 +16,7 @@
     <string name="new_post_title_hint">Title</string>
     <string name="new_post_checkbox_hint">Public</string>
     <string name="new_post_hashtag_hint">#Add Hashtag</string>
+    <string name="new_todo_hint">new todo</string>
+    <string name="confirm_new_post">confirm</string>
+    <string name="delete_post">delete</string>
 </resources>
