@@ -46,7 +46,7 @@ public class HistoryViewModel extends ViewModel {
             //TODO: Change this to be the query results
             diaryList.add(new Diary("This is diary "+j, "This is the content of diary "+j));
         }
-
+        titleList.clear();
         for (Diary each : diaryList)
         {
             titleList.add(each.title);

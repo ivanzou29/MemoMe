@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -21,10 +22,11 @@ import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
-public class fragment_middle extends Fragment implements MyRecyclerViewAdapter.ItemClickListener
+public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener
 {
     private CommunityViewModel communityViewModel;
     private MyRecyclerViewAdapter communityAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
     static final private int NUM_COLUMN = 1;
 
     private List<String> allTitles;
@@ -56,6 +58,17 @@ public class fragment_middle extends Fragment implements MyRecyclerViewAdapter.I
         recyclerView.setAdapter(communityAdapter);
 
         enableScrollingLoad();
+
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_middle);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                reloadEntireContent();
+            }
+        });
         return root;
     }
 
@@ -124,5 +137,20 @@ public class fragment_middle extends Fragment implements MyRecyclerViewAdapter.I
         });
 
 
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        reloadEntireContent();
+    }
+
+
+    private void reloadEntireContent()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDEL_TAB);
+        communityAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
-public class fragment_left extends Fragment implements MyRecyclerViewAdapter.ItemClickListener
+public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener
 {
     private CommunityViewModel communityViewModel;
     private MyRecyclerViewAdapter communityAdapter;
@@ -30,6 +31,7 @@ public class fragment_left extends Fragment implements MyRecyclerViewAdapter.Ite
     private List<String> allTitles;
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private int state;
     private int lastVisibleItemPosition;
@@ -55,6 +57,17 @@ public class fragment_left extends Fragment implements MyRecyclerViewAdapter.Ite
         recyclerView.setAdapter(communityAdapter);
 
         enableScrollingLoad();
+
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_left);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                reloadEntireContent();
+            }
+        });
         return root;
     }
 
@@ -123,5 +136,20 @@ public class fragment_left extends Fragment implements MyRecyclerViewAdapter.Ite
         });
 
 
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        reloadEntireContent();
+    }
+
+
+    private void reloadEntireContent()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        allTitles = communityViewModel.getTitles(CommunityViewModel.LEFT_TAB);
+        communityAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -25,14 +26,15 @@ import cs.hku.hk.memome.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.ToDoActivity;
 
-public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener{
+public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{
 
     private HistoryViewModel historyViewModel;
-    MyRecyclerViewAdapter historyAdapter;
+    private MyRecyclerViewAdapter historyAdapter;
 
     private List<String> allTitles;
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private int state;
     private int lastVisibleItemPosition;
@@ -58,6 +60,18 @@ public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.I
         recyclerView.setAdapter(historyAdapter);
 
         enableScrollingLoad();
+
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_history);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                reloadEntireContent();
+            }
+        });
+
         return root;
     }
 
@@ -124,5 +138,20 @@ public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.I
         });
 
 
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        reloadEntireContent();
+    }
+
+
+    private void reloadEntireContent()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        allTitles = historyViewModel.getTitles();
+        historyAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

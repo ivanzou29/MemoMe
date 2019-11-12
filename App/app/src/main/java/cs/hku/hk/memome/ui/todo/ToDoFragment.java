@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,12 +26,13 @@ import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.ToDoActivity;
 
 
-public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.ItemClickListener{
+public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{
 
     private ToDoViewModel toDoViewModel;
     private MyRecyclerViewAdapter toDoAdapter;
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private int state;
     private int lastVisibleItemPosition;
@@ -65,6 +67,17 @@ public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.Item
         recyclerView.setAdapter(toDoAdapter);
 
         enableScrollingLoad();
+
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_todo);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                reloadEntireContent();
+            }
+        });
 
         return root;
     }
@@ -130,6 +143,20 @@ public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.Item
             }
         });
 
+    }
 
+    @Override
+    public void onRefresh()
+    {
+        reloadEntireContent();
+    }
+
+
+    private void reloadEntireContent()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        allTitles = toDoViewModel.getMyData();
+        toDoAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
