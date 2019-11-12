@@ -10,4 +10,6 @@ public interface UserDao {
 
     void deleteUserByEmail(String email);
 
+    void updateCoinByEmailAndQuantity(String email, int quantity);
+
 }
