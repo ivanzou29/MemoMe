@@ -10,7 +10,7 @@ import java.util.List;
 public class HistoryViewModel extends ViewModel {
 
     //TODO don't know what data type we will get from server yet
-    final public int MAX_DIARIES_PER_QUERY = 9;
+    final public int MAX_DIARIES_PER_QUERY = 11;
     private List<Diary> diaryList;
 
     public HistoryViewModel()
