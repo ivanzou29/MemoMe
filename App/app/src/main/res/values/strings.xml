@@ -19,4 +19,8 @@
     <string name="new_todo_hint">new todo</string>
     <string name="confirm_new_post">confirm</string>
     <string name="delete_post">delete</string>
+    <string name="scroll_view_header">All to-do lists</string>
+    <string name="scroll_history_header">All my posts</string>
+    <string name="name_of_new_todo">Name of the new todo item</string>
+    <string name="loading_new_items">Loading new items</string>
 </resources>
