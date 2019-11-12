@@ -31,6 +31,7 @@ public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.Item
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         toDoViewModel =
                 ViewModelProviders.of(this).get(ToDoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_todo, container, false);

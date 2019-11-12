@@ -29,9 +29,14 @@ public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.I
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         historyViewModel =
                 ViewModelProviders.of(this).get(HistoryViewModel.class);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> c1f8e0752ec1119216bfb801615ed9928d97696c
         String[] titles = historyViewModel.getTitles();
         RecyclerView recyclerView = root.findViewById(R.id.rvDiaries);
         int numberOfColumns = 1;
@@ -47,6 +52,7 @@ public class HistoryFragment extends Fragment implements MyRecyclerViewAdapter.I
         Toast.makeText(this.getContext(), "You clicked data " + historyAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
         Intent intent =  new Intent(view.getContext(), DiaryActivity.class);
         intent.putExtra("title", historyAdapter.getItem(position));
+        intent.putExtra("content", historyViewModel.getContents(historyAdapter.getItem(position)));
         startActivity(intent);
     }
 }

@@ -23,6 +23,7 @@ public class PlusFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         plusViewModel =
                 ViewModelProviders.of(this).get(PlusViewModel.class);
         View root = inflater.inflate(R.layout.fragment_plus, container, false);

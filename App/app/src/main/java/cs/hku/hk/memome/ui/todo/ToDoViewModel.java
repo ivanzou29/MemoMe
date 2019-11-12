@@ -2,44 +2,67 @@ package cs.hku.hk.memome.ui.todo;
 
 import androidx.lifecycle.ViewModel;
 
-public class ToDoViewModel extends ViewModel {
+import java.util.ArrayList;
+import java.util.List;
 
-    private String[] myData = {"Oct.18","Nov.04","Nov.06"};//the list names
-    private TodoDetail[] myDataBase;
+public class ToDoViewModel extends ViewModel
+{
+    final public static int MAX_TODO_ITEM_PER_LOAD = 9;
+    private List<String> myDataList; //the list names
+    private List<TodoDetail> myDataBaseList;
 
-    public ToDoViewModel() {
-        myDataBase = new TodoDetail[3];
-        for (int i = 0; i < 3; i++) {
-            myDataBase[i] = new TodoDetail();
-        }
-        myDataBase[0].title = "Oct.18";
-        myDataBase[1].title = "Nov.04";
-        myDataBase[2].title = "Nov.06";
+    public ToDoViewModel()
+    {
         String[] data0 = {"COMP3278", "MATH2241"};
         String[] data1 = {"COMP3230", "COMP3258", "CUND9003"};
         String[] data2 = {"COMP3330"};
-        myDataBase[0].lists = data0;
-        myDataBase[1].lists = data1;
-        myDataBase[2].lists = data2;
+
+        myDataBaseList = new ArrayList<>();
+        myDataList = new ArrayList<>();
+
+        for(int i=0; i<MAX_TODO_ITEM_PER_LOAD; i++)
+        {
+            myDataList.add("Nov. "+i);
+            if(i%3==0)
+                myDataBaseList.add(new TodoDetail("Nov. "+i, data0));
+            else if(i%3==1)
+                myDataBaseList.add(new TodoDetail("Nov. "+i, data1));
+            else
+                myDataBaseList.add(new TodoDetail("Nov. "+i, data2));
+
+        }
+
     }
 
-    public String[] getMyData() {
-        return myData;
+    public String[] getMyData()
+    {
+        return myDataList.toArray(new String[0]);
     }
 
-    public String[] getListDetails(String title) {
+    public String[] getListDetails(String title)
+    {
         String[] details = {"nothing to do yet"};
-        for (int i = 0; i < myDataBase.length; i++) {
-            if (myDataBase[i].title.equals(title)) {
-                details = myDataBase[i].lists;
-            }
+        for(TodoDetail each:myDataBaseList)
+        {
+            if(each.title.equals(title) && each.lists!=null)
+                details = each.lists;
         }
         return details;
     }
 
     public class TodoDetail {
-        public String title;
-        public String[] lists;
+        String title;
+        String[] lists;
+
+        TodoDetail(String title, String [] lists)
+        {
+            this.title = title;
+            this.lists = lists;
+        }
+        TodoDetail()
+        {
+            this("",null);
+        }
     }
 
 }
