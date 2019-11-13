@@ -10,14 +10,6 @@ public class Task {
     private Date deadline;
     private boolean isFinished;
 
-    public Task(String email, String listName, String taskName, Date deadline, boolean isFinished) {
-        this.email = email;
-        this.listName = listName;
-        this.taskName = taskName;
-        this.deadline = deadline;
-        this.isFinished = isFinished;
-    }
-
     public String getEmail() {
         return this.email;
     }

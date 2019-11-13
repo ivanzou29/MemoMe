@@ -12,7 +12,7 @@ public interface ReceiveGiftDao {
 
     void insertReceiveGift(ReceiveGift receiveGift);
 
-    void updateReceiveGift(ReceiveGift receiveGift);
+    void updateReceiveGift(int quantity, String postId, String giftName);
 
     void deleteReceiveGift(String postId, String giftName);
 

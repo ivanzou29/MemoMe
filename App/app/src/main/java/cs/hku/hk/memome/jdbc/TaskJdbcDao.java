@@ -13,10 +13,10 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.Task;
 
 public class TaskJdbcDao implements TaskDao {
+    private static Connection conn = DatabaseUtilities.openConnection();
 
     @Override
     public Collection<String> getListNamesByEmail(String email) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT DISTINCT list_name FROM Tasks WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -27,7 +27,6 @@ public class TaskJdbcDao implements TaskDao {
                 String listName = rs.getString("list_name");
                 listNames.add(listName);
             }
-            conn.close();
             ptmt.close();
             return listNames;
         } catch (SQLException e) {
@@ -37,7 +36,6 @@ public class TaskJdbcDao implements TaskDao {
 
     @Override
     public Collection<Task> getTasksByEmailAndListName(String email, String listName) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM Tasks WHERE email = ? AND list_name = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -49,10 +47,14 @@ public class TaskJdbcDao implements TaskDao {
                 String taskName = rs.getString("task_name");
                 Date deadline = rs.getDate("deadline");
                 Boolean isFinished = rs.getBoolean("is_finished");
-                Task task = new Task(email, listName, taskName, deadline, isFinished);
+                Task task = new Task();
+                task.setEmail(email);
+                task.setListName(listName);
+                task.setTaskName(taskName);
+                task.setDeadline(deadline);
+                task.setFinished(isFinished);
                 tasks.add(task);
             }
-            conn.close();
             ptmt.close();
             return tasks;
         } catch (SQLException e) {
@@ -61,8 +63,35 @@ public class TaskJdbcDao implements TaskDao {
     }
 
     @Override
+    public Task getTaskByEmailAndListNameAndTaskName(String email, String listName, String taskName) {
+        String sql = "SELECT * FROM Tasks WHERE email = ? AND list_name = ? AND task_name = ?";
+        try {
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, email);
+            ptmt.setString(2, listName);
+            ptmt.setString(3, taskName);
+            ResultSet rs = ptmt.executeQuery();
+            if (rs.next()) {
+                Date deadline = rs.getDate("deadline");
+                Boolean isFinished = rs.getBoolean("is_finished");
+                Task task = new Task();
+                task.setEmail(email);
+                task.setListName(listName);
+                task.setTaskName(taskName);
+                task.setDeadline(deadline);
+                task.setFinished(isFinished);
+                ptmt.close();
+                return task;
+            }
+            ptmt.close();
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    @Override
     public void insertTask(Task task) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO Tasks (email, list_name, task_name, deadline, is_finished) " +
                 "VALUES (?,?,?,?,?)";
         try {
@@ -73,7 +102,6 @@ public class TaskJdbcDao implements TaskDao {
             ptmt.setDate(4, task.getDeadline());
             ptmt.setBoolean(5, task.getFinished());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -82,15 +110,13 @@ public class TaskJdbcDao implements TaskDao {
 
     @Override
     public void finishTask(String email, String listName, String taskName) {
-        Connection conn = DatabaseUtilities.openConnection();
-        String sql = "UPDATE TABLE Tasks SET is_finished = 1 WHERE email = ? AND list_name = ? AND task_name = ?";
+        String sql = "UPDATE Tasks SET is_finished = 1 WHERE email = ? AND list_name = ? AND task_name = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2,listName);
             ptmt.setString(3, taskName);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -99,7 +125,6 @@ public class TaskJdbcDao implements TaskDao {
 
     @Override
     public void deleteTask(String email, String listName, String taskName) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Tasks WHERE email = ? AND list_name = ? AND task_name = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -107,7 +132,6 @@ public class TaskJdbcDao implements TaskDao {
             ptmt.setString(2, listName);
             ptmt.setString(3, taskName);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -116,14 +140,12 @@ public class TaskJdbcDao implements TaskDao {
 
     @Override
     public void deleteList(String email, String listName) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Tasks WHERE email = ? AND list_name = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2, listName);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
