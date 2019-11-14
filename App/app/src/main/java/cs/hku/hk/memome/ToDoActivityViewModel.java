@@ -37,7 +37,7 @@ class ToDoActivityViewModel extends ViewModel
 
     void updateCompletion(int position, boolean mStatus)
     {
-        if(position >= allSubTasks.size() || remained >= allSubTasks.size())
+        if(position >= allSubTasks.size() || remained > allSubTasks.size())
             return;
         if(allSubTasks.get(position).complete != mStatus)
             remained += mStatus?-1:1; //if true <=> uncompleted -> completed, -1

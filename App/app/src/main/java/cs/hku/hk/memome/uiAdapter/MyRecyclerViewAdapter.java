@@ -1,4 +1,4 @@
-package cs.hku.hk.memome.adapter;
+package cs.hku.hk.memome.uiAdapter;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;

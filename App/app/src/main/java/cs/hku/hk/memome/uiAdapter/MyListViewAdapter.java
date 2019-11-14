@@ -1,4 +1,4 @@
-package cs.hku.hk.memome.adapter;
+package cs.hku.hk.memome.uiAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.widget.AppCompatCheckBox;
 
 import java.util.ArrayList;
 import java.util.List;

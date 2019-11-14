@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import cs.hku.hk.memome.adapter.MyListViewAdapter;
+import cs.hku.hk.memome.uiAdapter.MyListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
 public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter.ItemClickListener
@@ -86,13 +86,13 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
 
         listAdapter.getItem(position).setChecked(newValue);
         listAdapter.notifyDataSetChanged();
-        if(newValue)
-            Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
         //TODO: send to server for this clicking
 
         viewModel.updateCompletion(position, newValue);
-        if(0==viewModel.getRemained())
+        if(0==viewModel.getRemained() && newValue)
             Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
-        //TODO: notify the server for gifts
+            //TODO: notify the server for gifts
+        else if(newValue)
+            Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
     }
 }
