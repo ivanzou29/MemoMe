@@ -51,7 +51,6 @@ public class ToDoFragment extends Fragment implements MyRecyclerViewAdapter.Item
         toDoAdapter = new MyRecyclerViewAdapter(this.getContext(), data);
         toDoAdapter.setClickListener(this);
         recyclerView.setAdapter(toDoAdapter);
-
         return root;
     }
 

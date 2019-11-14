@@ -18,21 +18,21 @@ public class ProfileActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        upperToolBar = findViewById(R.id.toolbar_profile);
-        upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
-        upperToolBar.setNavigationContentDescription(R.string.return_home);
-        setSupportActionBar(upperToolBar);
-        upperToolBar.setNavigationOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Log.d("ActivityDebug","Navigation on click event");
-                Intent returnHome = new Intent();
-                setResult(RESULT_OK, returnHome);
-                finish();
-            }
-        });
+        setContentView(R.layout.fragment_me);
+//        upperToolBar = findViewById(R.id.toolbar_profile);
+//        upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
+//        upperToolBar.setNavigationContentDescription(R.string.return_home);
+//        setSupportActionBar(upperToolBar);
+//        upperToolBar.setNavigationOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                Log.d("ActivityDebug","Navigation on click event");
+//                Intent returnHome = new Intent();
+//                setResult(RESULT_OK, returnHome);
+//                finish();
+//            }
+//        });
     }
 }

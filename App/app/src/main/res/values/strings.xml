@@ -19,4 +19,11 @@
     <string name="new_todo_hint">new todo</string>
     <string name="confirm_new_post">confirm</string>
     <string name="delete_post">delete</string>
+    <string name="enter_email">Please enter your email</string>
+    <string name="enter_email_again">Please enter your email again</string>
+    <string name="enter_password">Please enter your password</string>
+    <string name="enter_password_again">Please enter your password again</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign up</string>
+
 </resources>
