@@ -12,30 +12,46 @@ public class HistoryViewModel extends ViewModel {
     //TODO don't know what data type we will get from server yet
     final public int MAX_DIARIES_PER_QUERY = 11;
     private List<Diary> diaryList;
+    private List<String> titleList;
 
     public HistoryViewModel()
     {
 
         diaryList = new ArrayList<>();
+        titleList = new ArrayList<>();
 
+    }
 
+    public List<String> getTitles() //get all the titles
+    {
+        diaryList.clear();
+        titleList.clear();
+
+        //TODO: Change this to be the query results
         for(int i = 0; i<MAX_DIARIES_PER_QUERY; i++)
         {
             diaryList.add(new Diary("This is diary "+i, "This is the content of diary "+i));
         }
-
-    }
-
-    public String[] getTitles() //get all the titles
-    {
-        String[] titles;
-        List<String> titleList = new ArrayList<>();
         for (Diary each : diaryList)
         {
             titleList.add(each.title);
         }
-        titles = titleList.toArray(new String[0]);
-        return  titles;
+        return titleList;
+    }
+
+    public List<String> getNewData()
+    {
+        for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
+        {
+            //TODO: Change this to be the query results
+            diaryList.add(new Diary("This is diary "+j, "This is the content of diary "+j));
+        }
+        titleList.clear();
+        for (Diary each : diaryList)
+        {
+            titleList.add(each.title);
+        }
+        return titleList;
     }
 
     public String getContents(String title)

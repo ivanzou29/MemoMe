@@ -14,31 +14,48 @@ public class CommunityViewModel extends ViewModel {
     final public static int RIGHT_TAB = 2;
     private List<Diary> [] diaryList;
 
+    private List<String> [] titleList;
+
     @SuppressWarnings("unchecked")
     public CommunityViewModel()
     {
         diaryList = new ArrayList [3];
+        titleList = new ArrayList [3];
         for(int i=0; i<3; i++)
         {
             diaryList[i] = new ArrayList<>();
-            for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
-            {
-                diaryList[i].add(new Diary("This is diary "+j+"in tab"+i, "This is the content of diary "+(i*3+j)));
-            }
+            titleList[i] = new ArrayList<>();
         }
-
     }
 
-    public String[] getTitles(int i) //get all the titles
+    public List<String> getTitles(int i) //get all the titles
     {
-        String[] titles;
-        List<String> titleList = new ArrayList<>();
+        titleList[i].clear();
+        diaryList[i].clear();
+        //TODO: change below into queries
+        for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
+        {
+            diaryList[i].add(new Diary("This is diary "+j+"in tab"+i, "This is the content of diary "+(i*3+j)));
+        }
         for (Diary each : diaryList[i])
         {
-            titleList.add(each.title);
+            titleList[i].add(each.title);
         }
-        titles = titleList.toArray(new String[0]);
-        return  titles;
+        return titleList[i];
+    }
+
+    public List<String> getNewData(int i)
+    {
+        //TODO: change below into queries
+        for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
+        {
+            diaryList[i].add(new Diary("This is diary "+j+"in tab"+i, "This is the content of diary "+(i*3+j)));
+        }
+        for (Diary each : diaryList[i])
+        {
+            titleList[i].add(each.title);
+        }
+        return titleList[i];
     }
 
     public String getContents(int i, String title)
