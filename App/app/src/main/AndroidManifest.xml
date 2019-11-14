@@ -44,6 +44,16 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/SubActivityTheme">
         </activity>
+
+        <activity
+            android:name=".MainPage"
+            android:label="Main Page">
+        </activity>
+
+        <activity
+            android:name=".SignUpActivity"
+            android:label="Sign up activity">
+        </activity>
     </application>
 
 </manifest>

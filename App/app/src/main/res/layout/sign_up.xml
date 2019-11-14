@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/enter_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_email"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/email_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:id="@+id/enter_email_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_email_again"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/email_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:id="@+id/enter_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_password"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/password_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberPassword"
+        android:layout_margin="8dp"/>
+
+    <TextView
+        android:id="@+id/enter_password_agian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_password_again"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/password_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberPassword"
+        android:layout_margin="8dp"/>
+
+    <Button
+        android:id="@+id/confirm_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/confirm_new_post" />
+
+</LinearLayout>

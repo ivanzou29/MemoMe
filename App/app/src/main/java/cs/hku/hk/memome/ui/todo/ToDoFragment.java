@@ -78,7 +78,6 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 reloadEntireContent();
             }
         });
-
         return root;
     }
 

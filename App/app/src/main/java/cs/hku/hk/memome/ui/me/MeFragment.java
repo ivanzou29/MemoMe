@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import cs.hku.hk.memome.GiftsActivity;
+import cs.hku.hk.memome.MainActivity;
 import cs.hku.hk.memome.ProfileActivity;
 import cs.hku.hk.memome.R;
 
@@ -30,24 +31,18 @@ public class MeFragment extends Fragment {
         meViewModel =
                 ViewModelProviders.of(this).get(MeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_me, container, false);
-        //final TextView textView = root.findViewById(R.id.text_me);
-        meViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                //textView.setText(s);
-            }
-        });
         Button gift = root.findViewById(R.id.gifts_button_in_me);
-        ImageButton me = root.findViewById(R.id.profile_icon_button);
+        Button logOut = root.findViewById(R.id.log_out_button_in_me);
         gift.setOnClickListener(new OnClickListener(){
             public void onClick(View view){
                 Intent myIntent = new Intent(view.getContext(), GiftsActivity.class);
                 startActivity(myIntent);
             }
         });
-        me.setOnClickListener(new OnClickListener(){
+        logOut.setOnClickListener(new OnClickListener(){
             public void onClick(View view){
-                Intent myIntent = new Intent(view.getContext(), ProfileActivity.class);
+                //Todo: delete stored email and password
+                Intent myIntent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(myIntent);
             }
         });

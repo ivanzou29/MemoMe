@@ -18,33 +18,52 @@
 
         <ImageButton
             android:id="@+id/profile_icon_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ffffff"
             android:src="@drawable/ic_launcher_foreground"
             tools:src="@mipmap/ic_launcher_round"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"/>
 
         <Button
             android:id="@+id/coin_button_in_me"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            android:text="My coins" />
+            android:text="My coins"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"/>
 
         <Button
             android:id="@+id/gifts_button_in_me"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:text="Gifts" />
 
         <Button
             android:id="@+id/help_button_in_me"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ffffff"
             android:text="Help"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/log_out_button_in_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ff4d4d"
+            android:text="log out"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
