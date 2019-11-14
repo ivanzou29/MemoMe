@@ -1,4 +1,4 @@
-package cs.hku.hk.memome.ui;
+package cs.hku.hk.memome.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -35,6 +35,7 @@ public class MyListViewAdapter extends BaseAdapter
         {
             return checked;
         }
+        public void setChecked(boolean status) {checked = status;}
     }
 
     static class ViewHolder

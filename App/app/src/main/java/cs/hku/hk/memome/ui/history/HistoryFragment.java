@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
-import cs.hku.hk.memome.MyRecyclerViewAdapter;
+import cs.hku.hk.memome.adapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
 public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{

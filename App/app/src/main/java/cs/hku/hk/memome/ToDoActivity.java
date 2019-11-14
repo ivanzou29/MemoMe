@@ -2,25 +2,18 @@ package cs.hku.hk.memome;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import cs.hku.hk.memome.ui.MyListViewAdapter;
+import cs.hku.hk.memome.adapter.MyListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
 public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter.ItemClickListener
@@ -29,7 +22,7 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
     private ToDoViewModel toDoViewModel;
     private ListView listView;
     private MyListViewAdapter listAdapter;
-    boolean [] loadedResult;
+    private ToDoActivityViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -44,9 +37,11 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
 
         listView = findViewById(R.id.todo_listview);
         FloatingActionButton addTodo = findViewById(R.id.add_todo);
-        String[] details = toDoViewModel.getListDetails(title);
 
-        loadedResult = toDoViewModel.loadTaskResuls(title);
+        String[] details = toDoViewModel.getListDetails(title);
+        boolean [] loadedResult = toDoViewModel.loadTaskResuls(title);
+
+        viewModel = new ToDoActivityViewModel(title, details, loadedResult);
 
         listAdapter = new MyListViewAdapter(this, details, loadedResult);
         listAdapter.setClickListener(this);
@@ -85,7 +80,19 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
     @Override
     public void onItemClick(View view, int position)
     {
-        //TODO: What should happend after being checked (or not?)
-        Toast.makeText(view.getContext(), "Clicked at "+position, Toast.LENGTH_SHORT).show();
+        if(position >= listAdapter.getCount() || viewModel==null)
+            return;
+        boolean newValue = !listAdapter.getItem(position).isChecked();
+
+        listAdapter.getItem(position).setChecked(newValue);
+        listAdapter.notifyDataSetChanged();
+        if(newValue)
+            Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
+        //TODO: send to server for this clicking
+
+        viewModel.updateCompletion(position, newValue);
+        if(0==viewModel.getRemained())
+            Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
+        //TODO: notify the server for gifts
     }
 }

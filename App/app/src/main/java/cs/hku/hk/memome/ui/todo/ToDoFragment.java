@@ -21,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-import cs.hku.hk.memome.MyRecyclerViewAdapter;
+import cs.hku.hk.memome.adapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.ToDoActivity;
 
