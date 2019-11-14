@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -37,7 +39,8 @@ public class MyListViewAdapter extends BaseAdapter
 
     static class ViewHolder
     {
-        AppCompatCheckBox checkBox;
+        CheckBox checkBox;
+        TextView textView;
     }
 
     public MyListViewAdapter(Context c, String [] allDetails, boolean [] loadedResult)
@@ -69,6 +72,7 @@ public class MyListViewAdapter extends BaseAdapter
         return position;
     }
 
+
     @Override
     public View getView(final int position, View conterView, ViewGroup parent)
     {
@@ -76,8 +80,10 @@ public class MyListViewAdapter extends BaseAdapter
         if(conterView == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            conterView = inflater.inflate(R.layout.list_details, parent);
-            viewHolder.checkBox = conterView.findViewById(R.id.rowTextView);
+            conterView = inflater.inflate(R.layout.list_details, null);
+            viewHolder.checkBox = conterView.findViewById(R.id.todo_checkbox);
+            viewHolder.textView = conterView.findViewById(R.id.checkbox_text);
+            conterView.setTag(viewHolder);
         }
         else
         {
@@ -85,10 +91,23 @@ public class MyListViewAdapter extends BaseAdapter
         }
 
         viewHolder.checkBox.setTag(position);
-        viewHolder.checkBox.setText(items.get(position).text);
         viewHolder.checkBox.setChecked(items.get(position).checked);
 
+        viewHolder.textView.setText(items.get(position).text);
+        viewHolder.textView.setTag(position);
+
         viewHolder.checkBox.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(itemClickListener!=null)
+                    itemClickListener.onItemClick(v, position);
+                else
+                    Toast.makeText(context, "An item has been clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewHolder.textView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)

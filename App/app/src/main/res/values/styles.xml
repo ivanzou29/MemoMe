@@ -15,4 +15,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="checkBoxStyle">
+        <item name="android:button">@drawable/checkbox_style</item>
+    </style>
 </resources>

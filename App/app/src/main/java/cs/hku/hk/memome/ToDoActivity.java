@@ -86,5 +86,6 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
     public void onItemClick(View view, int position)
     {
         //TODO: What should happend after being checked (or not?)
+        Toast.makeText(view.getContext(), "Clicked at "+position, Toast.LENGTH_SHORT).show();
     }
 }
