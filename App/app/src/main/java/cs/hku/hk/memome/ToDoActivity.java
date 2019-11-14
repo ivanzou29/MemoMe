@@ -20,14 +20,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import cs.hku.hk.memome.ui.MyListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
-public class ToDoActivity extends AppCompatActivity
+public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter.ItemClickListener
 {
     private Toolbar upperToolBar;
     private ToDoViewModel toDoViewModel;
     private ListView listView;
-    private ArrayAdapter<String> listAdapter ;
+    private MyListViewAdapter listAdapter;
+    boolean [] loadedResult;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -43,9 +45,12 @@ public class ToDoActivity extends AppCompatActivity
         listView = findViewById(R.id.todo_listview);
         FloatingActionButton addTodo = findViewById(R.id.add_todo);
         String[] details = toDoViewModel.getListDetails(title);
-        ArrayList<String> detailsList = new ArrayList<String>();
-        detailsList.addAll(Arrays.asList(details) );
-        listAdapter = new ArrayAdapter<String>(this, R.layout.list_details, detailsList);
+
+        loadedResult = toDoViewModel.loadTaskResuls(title);
+
+        listAdapter = new MyListViewAdapter(this, details, loadedResult);
+        listAdapter.setClickListener(this);
+
         listView.setAdapter(listAdapter);
 
         upperToolBar = findViewById(R.id.toolbar_todo);
@@ -53,9 +58,11 @@ public class ToDoActivity extends AppCompatActivity
         upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
         upperToolBar.setNavigationContentDescription(R.string.return_home);
         setSupportActionBar(upperToolBar);
-        upperToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+        upperToolBar.setNavigationOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Log.d("ActivityDebug", "Navigation on click event");
                 Intent returnHome = new Intent();
                 setResult(RESULT_OK, returnHome);
@@ -63,14 +70,21 @@ public class ToDoActivity extends AppCompatActivity
             }
         });
 
-        addTodo.setOnClickListener(new View.OnClickListener() {
+        addTodo.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 //TODO: store a new todo to DB, assign an unique ID
                 Toast.makeText(ToDoActivity.this,"add a todo", Toast.LENGTH_LONG).show();
             }
         });
 
+    }
 
+    @Override
+    public void onItemClick(View view, int position)
+    {
+        //TODO: What should happend after being checked (or not?)
     }
 }

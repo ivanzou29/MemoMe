@@ -1,7 +1,5 @@
 package cs.hku.hk.memome.ui.history;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.List;
 public class HistoryViewModel extends ViewModel {
 
     //TODO don't know what data type we will get from server yet
-    final public int MAX_DIARIES_PER_QUERY = 11;
+    final private int MAX_DIARIES_PER_QUERY = 11;
     private List<Diary> diaryList;
     private List<String> titleList;
 
@@ -22,7 +20,7 @@ public class HistoryViewModel extends ViewModel {
 
     }
 
-    public List<String> getTitles() //get all the titles
+    List<String> getTitles() //get all the titles
     {
         diaryList.clear();
         titleList.clear();
@@ -39,7 +37,7 @@ public class HistoryViewModel extends ViewModel {
         return titleList;
     }
 
-    public List<String> getNewData()
+    List<String> getNewData()
     {
         for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
         {
@@ -54,7 +52,7 @@ public class HistoryViewModel extends ViewModel {
         return titleList;
     }
 
-    public String getContents(String title)
+    String getContents(String title)
     {
         for (Diary each: diaryList)
         {

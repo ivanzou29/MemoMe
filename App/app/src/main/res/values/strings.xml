@@ -23,4 +23,5 @@
     <string name="scroll_history_header">All my posts</string>
     <string name="name_of_new_todo">Name of the new todo item</string>
     <string name="loading_new_items">Loading new items</string>
+    <string name="hint_for_scrolling_update">Scroll down to update</string>
 </resources>
