@@ -12,10 +12,9 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.Own;
 
 public class OwnJdbcDao implements OwnDao {
-
+    private static Connection conn = DatabaseUtilities.openConnection();
     @Override
     public Collection<Own> getOwnsByEmail(String email) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM Own WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -28,7 +27,6 @@ public class OwnJdbcDao implements OwnDao {
                 Own own = new Own(email, giftName, quantity);
                 owns.add(own);
             }
-            conn.close();
             ptmt.close();
             return owns;
         } catch (SQLException e) {
@@ -38,7 +36,6 @@ public class OwnJdbcDao implements OwnDao {
 
     @Override
     public void insertGiftOwnership(Own own) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO Own (email, gift_name, quantity) " +
                 "VALUES (?,?,?)";
         try {
@@ -47,7 +44,6 @@ public class OwnJdbcDao implements OwnDao {
             ptmt.setString(2, own.getGiftName());
             ptmt.setInt(3, own.getQuantity());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -56,7 +52,6 @@ public class OwnJdbcDao implements OwnDao {
 
     @Override
     public void updateGiftOwnership(Own own) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "UPDATE TABLE Own SET gift_name = ?, quantity = ? WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -64,7 +59,6 @@ public class OwnJdbcDao implements OwnDao {
             ptmt.setInt(2, own.getQuantity());
             ptmt.setString(3, own.getEmail());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -73,14 +67,12 @@ public class OwnJdbcDao implements OwnDao {
 
     @Override
     public void deleteGiftOwnership(String email, String giftName) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Own WHERE email = ? AND gift_name = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2, giftName);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 

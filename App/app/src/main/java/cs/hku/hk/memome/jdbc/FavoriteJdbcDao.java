@@ -12,10 +12,10 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.Favorite;
 
 public class FavoriteJdbcDao implements FavoriteDao {
-    
+    private static Connection conn = DatabaseUtilities.openConnection();
+
     @Override
     public Collection<String> getPostIdsByEmail(String email) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM Favorite WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -25,7 +25,6 @@ public class FavoriteJdbcDao implements FavoriteDao {
             while (rs.next()) {
                 postIds.add(rs.getString("post_id"));
             }
-            conn.close();
             ptmt.close();
             return postIds;
         } catch (SQLException e) {
@@ -35,7 +34,6 @@ public class FavoriteJdbcDao implements FavoriteDao {
 
     @Override
     public void insertFavorite(Favorite favorite) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO Favorite (email, post_id) " +
                 "VALUES (?,?)";
         try {
@@ -43,7 +41,6 @@ public class FavoriteJdbcDao implements FavoriteDao {
             ptmt.setString(1, favorite.getEmail());
             ptmt.setString(2, favorite.getPostId());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -52,14 +49,12 @@ public class FavoriteJdbcDao implements FavoriteDao {
 
     @Override
     public void deleteFavorite(Favorite favorite) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Favorite WHERE email = ? AND postId = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, favorite.getEmail());
             ptmt.setString(2, favorite.getPostId());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 

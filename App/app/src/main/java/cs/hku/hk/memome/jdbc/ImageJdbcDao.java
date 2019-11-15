@@ -13,10 +13,9 @@ import cs.hku.hk.memome.model.Image;
 import cs.hku.hk.memome.model.Own;
 
 public class ImageJdbcDao implements ImageDao {
-
+    private static Connection conn = DatabaseUtilities.openConnection();
     @Override
     public Collection<byte[]> getImagesByPostId(String postId) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM Images WHERE postId = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -27,7 +26,6 @@ public class ImageJdbcDao implements ImageDao {
                 byte[] image = rs.getBytes("image_bytearray");
                 images.add(image);
             }
-            conn.close();
             ptmt.close();
             return images;
         } catch (SQLException e) {
@@ -37,7 +35,6 @@ public class ImageJdbcDao implements ImageDao {
 
     @Override
     public void insertImage(Image image) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO Images (image_bytearray, image_id, post_id) " +
                 "VALUES (?,?,?)";
         try {
@@ -46,7 +43,6 @@ public class ImageJdbcDao implements ImageDao {
             ptmt.setInt(2, image.getImageId());
             ptmt.setString(3, image.getPostId());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -55,13 +51,11 @@ public class ImageJdbcDao implements ImageDao {
 
     @Override
     public void deleteImagesByPostId(String postId) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Images WHERE post_id = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 

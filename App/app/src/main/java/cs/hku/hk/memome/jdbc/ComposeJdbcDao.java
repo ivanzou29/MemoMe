@@ -13,10 +13,10 @@ import cs.hku.hk.memome.model.Compose;
 import cs.hku.hk.memome.model.Own;
 
 public class ComposeJdbcDao implements ComposeDao {
+    private static Connection conn = DatabaseUtilities.openConnection();
 
     @Override
     public Collection<String> getPostIdsByEmail(String email) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM Compose WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -26,7 +26,6 @@ public class ComposeJdbcDao implements ComposeDao {
             while (rs.next()) {
                 postIds.add(rs.getString("post_id"));
             }
-            conn.close();
             ptmt.close();
             return postIds;
         } catch (SQLException e) {
@@ -36,7 +35,6 @@ public class ComposeJdbcDao implements ComposeDao {
 
     @Override
     public void insertCompose(Compose compose) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO Compose (email, post_id) " +
                 "VALUES (?,?)";
         try {
@@ -44,7 +42,6 @@ public class ComposeJdbcDao implements ComposeDao {
             ptmt.setString(1, compose.getEmail());
             ptmt.setString(2, compose.getPostId());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -53,13 +50,11 @@ public class ComposeJdbcDao implements ComposeDao {
 
     @Override
     public void deleteCompose(String postId) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM Compose WHERE postId = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
