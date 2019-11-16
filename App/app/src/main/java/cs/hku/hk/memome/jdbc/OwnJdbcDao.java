@@ -52,7 +52,7 @@ public class OwnJdbcDao implements OwnDao {
 
     @Override
     public void updateGiftOwnership(Own own) {
-        String sql = "UPDATE TABLE Own SET gift_name = ?, quantity = ? WHERE email = ?";
+        String sql = "UPDATE Own SET gift_name = ?, quantity = ? WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, own.getGiftName());
