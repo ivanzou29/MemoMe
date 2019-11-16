@@ -1,8 +1,17 @@
 package cs.hku.hk.memome.ui.community;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +49,9 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
     private int moveY;
     private int oldY;
 
+    private SensorManager sensorManager;
+    private Vibrator vibrator;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -71,6 +83,10 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
                 reloadEntireContent();
             }
         });
+
+        sensorManager = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
+        vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
+
         return root;
     }
 
@@ -142,9 +158,48 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(sensorManager != null)
+        {
+            sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(sensorManager != null)
+        {
+            sensorManager.unregisterListener(sensorEventListener);
+        }
+    }
+
+    @Override
     public void onRefresh()
     {
-        reloadEntireContent();
+        AlertDialog.Builder bb = new AlertDialog.Builder(getContext());
+        bb.setPositiveButton(getString(R.string.bb_positive), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                reloadEntireContent();
+            }
+        });
+        bb.setNegativeButton(getString(R.string.bb_negative), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
+        bb.setMessage(getString(R.string.load_community));
+        bb.show();
     }
 
 
@@ -155,4 +210,31 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
         communityAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
+
+    private SensorEventListener sensorEventListener = new SensorEventListener()
+    {
+        @Override
+        public void onSensorChanged(SensorEvent event)
+        {
+            float [] values = event.values;
+            float x = values[0];
+            float y = values[1];
+            float z = values[2];
+
+            int medumValue = 19;
+            if(Math.abs(x) > medumValue || Math.abs(y)>medumValue || Math.abs(z)>medumValue)
+            {
+                long [] pattern = {200,600,800,1000};
+                vibrator.vibrate(VibrationEffect.createWaveform(pattern,-1));
+                Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
+
+                int originalSize = allTitles.size();
+                allTitles = communityViewModel.getNewData(CommunityViewModel.LEFT_TAB);
+                communityAdapter.notifyItemInserted(originalSize);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    };
 }
