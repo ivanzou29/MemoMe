@@ -223,7 +223,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
             int medumValue = 19;
             if(Math.abs(x) > medumValue || Math.abs(y)>medumValue || Math.abs(z)>medumValue)
             {
-                long [] pattern = {200,600,800,1000};
+                long [] pattern = {100,100};
                 vibrator.vibrate(VibrationEffect.createWaveform(pattern,-1));
                 Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
 
