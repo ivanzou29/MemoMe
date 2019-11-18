@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
+import cs.hku.hk.memome.PostActivity;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
@@ -76,7 +77,7 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
     {
         Toast.makeText(this.getContext(), "You clicked data " + communityAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
 
-        Intent intent =  new Intent(view.getContext(), DiaryActivity.class);
+        Intent intent =  new Intent(view.getContext(), PostActivity.class);
         intent.putExtra("title", communityAdapter.getItem(position));
         intent.putExtra("content",communityViewModel.getContents(CommunityViewModel.LEFT_TAB,communityAdapter.getItem(position)));
         startActivity(intent);
