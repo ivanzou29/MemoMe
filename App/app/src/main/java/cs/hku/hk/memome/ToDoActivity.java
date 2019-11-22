@@ -19,6 +19,11 @@ import cs.hku.hk.memome.model.Task;
 import cs.hku.hk.memome.uiAdapter.MyListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
+/**
+ * This is the activity for the details of each To Do item. The To Do item is indexing by its title
+ * (i.e. the date) and retrieved from the instance of ToDoViewModel. The status are manipulated by
+ * one instance of ToDoActivityViewModel.
+ */
 public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter.ItemClickListener
 {
     private Toolbar upperToolBar;

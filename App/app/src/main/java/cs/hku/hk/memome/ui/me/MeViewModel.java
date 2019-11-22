@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The view model for the ME fragment. Especially for the gift. Loading & expose the types / amount
+ * of the gifts and coins for the ME fragment.
+ */
 public class MeViewModel extends ViewModel
 {
 
@@ -21,10 +25,17 @@ public class MeViewModel extends ViewModel
         giftsNumber = new ArrayList<>();
     }
 
+    /**
+     * Expose the fragment title
+     * @return The fragment title
+     */
     public LiveData<String> getText() {
         return mText;
     }
 
+    /**
+     * Load details from servers and update the stored gift info
+     */
     void upDateGiftsInfo()
     {
         giftTypes.clear();
@@ -38,11 +49,20 @@ public class MeViewModel extends ViewModel
         }
     }
 
+    /**
+     * Retrieve all the types of gifts owned by the user.
+     * @return An arrayList of all the types.
+     */
     ArrayList<String> getGiftTypes()
     {
         return giftTypes;
     }
 
+    /**
+     * Retrieve the numbers of the gifts of every type owned by the user
+     * @return An arrayList containing number of gifts, in the same sequence as the returned value
+     *         of .getGiftTypes()
+     */
     ArrayList<Integer> getGiftsNumber()
     {
         return giftsNumber;

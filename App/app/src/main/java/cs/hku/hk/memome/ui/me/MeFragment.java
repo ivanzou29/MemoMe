@@ -25,6 +25,9 @@ import cs.hku.hk.memome.MainActivity;
 import cs.hku.hk.memome.ProfileActivity;
 import cs.hku.hk.memome.R;
 
+/**
+ * Fragment for the ME tab.
+ */
 public class MeFragment extends Fragment {
 
     private MeViewModel meViewModel;

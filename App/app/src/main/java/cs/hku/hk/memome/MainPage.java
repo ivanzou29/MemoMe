@@ -12,6 +12,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * The main activity which contains 5 fragments. Among the five, bottom navigation are used to conduct
+ * the switching. Sliding is forbidden.
+ */
 public class MainPage extends AppCompatActivity {
 
     @Override

@@ -25,11 +25,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
-import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.PostActivity;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
+/**
+ * Fragment for the left tab inside the Community Fragment. Implementing infinite scrolling, shaking
+ * to read more and scrolling down to refresh.
+ */
 public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener
 {
     private CommunityViewModel communityViewModel;

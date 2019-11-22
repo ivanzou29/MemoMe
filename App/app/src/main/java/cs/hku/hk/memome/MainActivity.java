@@ -18,6 +18,9 @@ import androidx.navigation.ui.NavigationUI;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.model.User;
 
+/**
+ * The activity for login / register / logout functionality.
+ */
 public class MainActivity extends AppCompatActivity{
 
     TextView email;

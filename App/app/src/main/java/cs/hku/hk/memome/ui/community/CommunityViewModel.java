@@ -5,13 +5,17 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The view model for the community fragment and its sub fragments (pages). It holds the internal states
+ * and communicate with the backend.
+ */
 public class CommunityViewModel extends ViewModel {
 
     //TODO don't know what data type we will get from server yet
-    final public static int MAX_DIARIES_PER_QUERY = 9;
-    final public static int LEFT_TAB = 0;
-    final public static int MIDDEL_TAB = 1;
-    final public static int RIGHT_TAB = 2;
+    final private static int MAX_DIARIES_PER_QUERY = 9;
+    final static int LEFT_TAB = 0;
+    final static int MIDDLE_TAB = 1;
+    final static int RIGHT_TAB = 2;
     private List<Diary> [] diaryList;
 
     private List<String> [] titleList;
@@ -28,6 +32,11 @@ public class CommunityViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Retrieve all the title of diary in the given page
+     * @param i The index of the page, one of LEFT_TAB, MIDDLE_TAB and RIGHT_TAB
+     * @return The list of all the titles in that page
+     */
     public List<String> getTitles(int i) //get all the titles
     {
         titleList[i].clear();
@@ -44,6 +53,11 @@ public class CommunityViewModel extends ViewModel {
         return titleList[i];
     }
 
+    /**
+     * Load more diaries from the server.
+     * @param i The index of the page, one of LEFT_TAB, MIDDLE_TAB and RIGHT_TAB
+     * @return The list of all the titles in that page
+     */
     public List<String> getNewData(int i)
     {
         //TODO: change below into queries
@@ -58,6 +72,12 @@ public class CommunityViewModel extends ViewModel {
         return titleList[i];
     }
 
+    /**
+     * Retrieve the content of a given diary
+     * @param i The list of all the titles in that page
+     * @param title The title of the diary
+     * @return A string for the content.
+     */
     public String getContents(int i, String title)
     {
         for (Diary each: diaryList[i])
@@ -68,6 +88,9 @@ public class CommunityViewModel extends ViewModel {
         return "no diary is found";
     }
 
+    /**
+     * Abstraction for the diary (each post)
+     */
     public class Diary {
         String title;
         String content;

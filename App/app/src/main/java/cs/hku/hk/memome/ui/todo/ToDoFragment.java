@@ -25,7 +25,9 @@ import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.ToDoActivity;
 
-
+/**
+ * Fragment for the to do list. Implementing infinite scrolling, and scrolling down to refresh.
+ */
 public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{
 
     private ToDoViewModel toDoViewModel;

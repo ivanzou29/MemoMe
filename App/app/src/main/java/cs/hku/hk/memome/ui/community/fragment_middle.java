@@ -27,11 +27,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
-import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.PostActivity;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
+/**
+ * Fragment for the middle tab inside the Community Fragment. Implementing infinite scrolling, shaking
+ * to read more and scrolling down to refresh.
+ */
 public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener
 {
     private CommunityViewModel communityViewModel;
@@ -59,7 +62,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
     {
         super.onCreate(savedInstanceState);
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
-        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDEL_TAB);
+        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB);
 
         View root = inflater.inflate(R.layout.fagment_community_middle, container, false);
 
@@ -97,7 +100,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
 
         Intent intent =  new Intent(view.getContext(), PostActivity.class);
         intent.putExtra("title", communityAdapter.getItem(position));
-        intent.putExtra("content",communityViewModel.getContents(CommunityViewModel.MIDDEL_TAB,communityAdapter.getItem(position)));
+        intent.putExtra("content",communityViewModel.getContents(CommunityViewModel.MIDDLE_TAB,communityAdapter.getItem(position)));
         startActivity(intent);
     }
 
@@ -142,7 +145,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
                             {
                                 Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
                                 int originalSize = allTitles.size();
-                                allTitles = communityViewModel.getNewData(CommunityViewModel.MIDDEL_TAB);
+                                allTitles = communityViewModel.getNewData(CommunityViewModel.MIDDLE_TAB);
                                 communityAdapter.notifyItemInserted(originalSize);
                             }
                         }
@@ -206,7 +209,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDEL_TAB);
+        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB);
         communityAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }

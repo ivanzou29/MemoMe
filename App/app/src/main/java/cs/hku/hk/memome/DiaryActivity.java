@@ -19,6 +19,9 @@ import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
+/**
+ * The activity for the Diary details
+ */
 public class DiaryActivity extends AppCompatActivity
 {
     private Toolbar upperToolBar;

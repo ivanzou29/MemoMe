@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.model.User;
 
+/**
+ * This is the activity for sign up. Being created when some one click the "register" button in the
+ * main activity (login page).
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     Button confirm;

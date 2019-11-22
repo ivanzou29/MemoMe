@@ -11,6 +11,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
 
+/**
+ * Adapter solely for the sub pages of the CommunityFragment
+ */
 public class FragAdapter extends FragmentPagerAdapter
 {
 

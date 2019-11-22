@@ -11,6 +11,9 @@ import java.util.List;
 
 import cs.hku.hk.memome.R;
 
+/**
+ * The adapter for the posts lists. Being initialized and utilized in History and Community fragments.
+ */
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     private List<String> mData;
@@ -45,7 +48,9 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
 
-    // stores and recycles views as they are scrolled off screen
+    /**
+     * Stores and recycles views as they are scrolled off screen
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView myTextView;
 
@@ -61,18 +66,34 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
     }
 
-    // convenience method for getting data at click position
+    /**
+     * Convenience method for getting data at click position
+     * @param id the index of the item
+     * @return the data on the position indexed by the id
+     */
     public String getItem(int id) {
         return mData.get(id);
     }
-
-    // allows clicks events to be caught
+    /**
+     * Allow the caller class to set on click listener for all the items altogether via implementing
+     * an ItemClickListener interface.
+     * @param itemClickListener the object where the ItemClickListener is implemented and the onItem-
+     *                          Click function is set.
+     */
     public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
     // parent activity will implement this method to respond to click events
+    /**
+     * The interface via which an on click listener can be implemented for the item in the list.
+     */
     public interface ItemClickListener {
+        /**
+         * A holder for the function to override the super.onItemClick() for each item.
+         * @param view The clicked view object
+         * @param position The position of the clicked object within the list
+         */
         void onItemClick(View view, int position);
     }
 }

@@ -21,6 +21,10 @@ import java.util.List;
 
 import cs.hku.hk.memome.R;
 
+/**
+ * This is the fragment for community, which contains three individual sub fragments. Among the three,
+ * sliding is enabled.
+ */
 public class CommunityFragment extends Fragment {
 
     private CommunityViewModel communityViewModel;
@@ -36,6 +40,7 @@ public class CommunityFragment extends Fragment {
         return root;
     }
 
+    // creating tabs & link the tabs with pages (sub fragments)
     private void initViewPager(View parent)
     {
         ViewPager vp = parent.findViewById(R.id.viewpager_community);
