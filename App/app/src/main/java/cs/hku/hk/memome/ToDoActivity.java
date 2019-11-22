@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import cs.hku.hk.memome.jdbc.TaskJdbcDao;
+import cs.hku.hk.memome.model.Task;
 import cs.hku.hk.memome.uiAdapter.MyListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
@@ -31,8 +34,8 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
 
         toDoViewModel = new ToDoViewModel();
 
-        Bundle extras = getIntent().getExtras();
-        String title;
+        final Bundle extras = getIntent().getExtras();
+        final String title;
         title = extras.getString("title");
 
         listView = findViewById(R.id.todo_listview);
@@ -71,6 +74,16 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
             public void onClick(View v)
             {
                 //TODO: store a new todo to DB, assign an unique ID
+                EditText newtodo = findViewById(R.id.newTodo);
+                String taskContent = newtodo.getText().toString();
+                String email = extras.getString("email");
+                Task task = new Task();
+                task.setTaskName(taskContent);
+                task.setListName(title);
+                task.setEmail(email);
+
+                TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+                taskJdbcDao.insertTask(task);
                 Toast.makeText(ToDoActivity.this,"add a todo", Toast.LENGTH_LONG).show();
             }
         });
@@ -87,11 +100,18 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
         listAdapter.getItem(position).setChecked(newValue);
         listAdapter.notifyDataSetChanged();
         //TODO: send to server for this clicking
+        TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+        Bundle extras = getIntent().getExtras();
+        String email = extras.getString("email");
+        String taskname = extras.getString("title");
+
+        //taskJdbcDao.finishTask(email,);
 
         viewModel.updateCompletion(position, newValue);
         if(0==viewModel.getRemained() && newValue)
             Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
             //TODO: notify the server for gifts
+
         else if(newValue)
             Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
     }

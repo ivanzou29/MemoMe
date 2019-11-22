@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
@@ -28,7 +30,7 @@ public class DiaryActivity extends AppCompatActivity
         setContentView(R.layout.activity_diary);
 
         Bundle extras = getIntent().getExtras();
-        String title;
+        final String title;
         title = extras.getString("title");
         String content = extras.getString("content");
 
@@ -61,6 +63,17 @@ public class DiaryActivity extends AppCompatActivity
             public void onClick(View v) {
                 //TODO send post_id to DB to delete
                 Toast.makeText(v.getContext(),"Delete this post?", Toast.LENGTH_SHORT).show();
+                PostJdbcDao postJdbcDao = new PostJdbcDao();
+                Post post = postJdbcDao.getPostByPostTitle(title);
+                if(post != null){
+                    postJdbcDao.deletePost(post.getPostId());
+                }
+
+                Log.d("ActivityDebug","delete posts");
+                Intent returnHome = new Intent();
+                setResult(RESULT_OK, returnHome);
+                finish();
+
             }
         });
     }

@@ -15,6 +15,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.User;
+
 public class MainActivity extends AppCompatActivity{
 
     TextView email;
@@ -38,6 +41,16 @@ public class MainActivity extends AppCompatActivity{
                 Boolean exist = Boolean.TRUE;
                 Boolean correct = Boolean.TRUE;
                 //TODO:check whether email exists and whether the password is correct
+                UserJdbcDao userJdbcDao = new UserJdbcDao();
+                User user = userJdbcDao.getUserByEmail(eStr);
+                if(user == null){
+                    exist = Boolean.FALSE;
+                }else{
+                    if(!user.getPasscode().equals(pStr)){
+                        correct = Boolean.FALSE;
+                    }
+                }
+
                 if (!exist) {
                     Toast.makeText(MainActivity.this,"unidentified email, please log in first.", Toast.LENGTH_LONG).show();
                     //Todo: send an intent to sign up

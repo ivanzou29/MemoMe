@@ -67,4 +67,30 @@ public class PostJdbcDao implements PostDao {
         }
     }
 
+    @Override
+    public Post getPostByPostTitle(String title){
+        String sql = "SELECT * FROM Posts WHERE title = ?";
+        try {
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, title);
+            ResultSet rs = ptmt.executeQuery();
+
+            if (rs.next()) {
+                Boolean isPublic = rs.getBoolean("is_public");
+                String text = rs.getString("text");
+                String postId = rs.getString("post_id");
+                Post post = new Post(postId, isPublic, text, title);
+                ptmt.close();
+                return post;
+            } else {
+                conn.close();
+                ptmt.close();
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
