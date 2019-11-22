@@ -1,24 +1,35 @@
 package cs.hku.hk.memome;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GiftsActivity extends AppCompatActivity
-{
-    private Toolbar upperToolBar;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+public class GiftsActivity extends AppCompatActivity {
+
+    ArrayList<Map<String, Object>> list = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gifts);
+
+        Toolbar upperToolBar;
 
         upperToolBar = findViewById(R.id.toolbar_gifts);
         upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
@@ -35,5 +46,27 @@ public class GiftsActivity extends AppCompatActivity
                 finish();
             }
         });
+
+
+        Bundle extras = getIntent().getExtras();
+        ArrayList<String> gName = extras != null ? extras.getStringArrayList("Name") : null;
+        ArrayList<Integer> gNum = extras != null ? extras.getIntegerArrayList("Number") : null;
+
+        if(gName!=null && gNum!=null)
+        {
+            for (int i = 0; i < gName.size(); i++) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("Name", gName.get(i));
+                map.put("Number", gNum.get(i));
+                list.add(map);
+            }
+        }
+
+        SimpleAdapter adapter = new SimpleAdapter(	this, list, R.layout.gift_item,
+                new String[]{"Name","Number"},
+                new int[]{R.id.gift_name, R.id.gift_num});
+
+        ListView giftListView = findViewById(R.id.gift_list);
+        giftListView.setAdapter(adapter);
     }
 }

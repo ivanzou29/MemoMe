@@ -7,7 +7,7 @@
     <string name="title_me">ME</string>
     <string name="title_activity_diary">Diaries</string>
     <string name="title_activity_todo">Todo Details</string>
-    <string name="title_activity_gifts">My Gifts</string>
+    <string name="title_activity_gifts">All the types of my gifts</string>
     <string name="title_activity_profile">My Profile</string>
     <string name="tab_left">Hot</string>
     <string name="tab_middle">Newest</string>
@@ -25,6 +25,8 @@
     <string name="enter_password_again">Please enter your password again</string>
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign up</string>
+    <string name="favorite">Favorite</string>
+    <string name="report">Report</string>
     <string name="scroll_view_header">All to-do lists</string>
     <string name="scroll_history_header">All my posts</string>
     <string name="name_of_new_todo">Name of the new todo item</string>

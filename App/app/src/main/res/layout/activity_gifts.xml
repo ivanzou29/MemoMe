@@ -15,5 +15,12 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorSelfDefinedHint"
         android:text="@string/title_activity_gifts" />
+
+    <ListView
+        android:id="@+id/gift_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

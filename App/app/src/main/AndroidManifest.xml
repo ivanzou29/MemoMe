@@ -55,6 +55,12 @@
             android:name=".SignUpActivity"
             android:label="Sign up activity">
         </activity>
+
+        <activity
+            android:name=".PostActivity"
+            android:label="posts in community"
+            android:theme="@style/SubActivityTheme">
+        </activity>
     </application>
 
 </manifest>

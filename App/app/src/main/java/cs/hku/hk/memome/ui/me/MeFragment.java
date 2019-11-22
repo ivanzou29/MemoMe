@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import cs.hku.hk.memome.GiftsActivity;
 import cs.hku.hk.memome.MainActivity;
 import cs.hku.hk.memome.ProfileActivity;
@@ -33,9 +36,14 @@ public class MeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_me, container, false);
         Button gift = root.findViewById(R.id.gifts_button_in_me);
         Button logOut = root.findViewById(R.id.log_out_button_in_me);
+
         gift.setOnClickListener(new OnClickListener(){
             public void onClick(View view){
+                meViewModel.upDateGiftsInfo();
+
                 Intent myIntent = new Intent(view.getContext(), GiftsActivity.class);
+                myIntent.putStringArrayListExtra("Name", meViewModel.getGiftTypes());
+                myIntent.putIntegerArrayListExtra("Number", meViewModel.getGiftsNumber());
                 startActivity(myIntent);
             }
         });
