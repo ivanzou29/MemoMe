@@ -199,6 +199,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
             public void onClick(DialogInterface dialog, int which)
             {
                 dialog.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         bb.setMessage(getString(R.string.load_community));
