@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.model.User;
 
@@ -33,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("font/cute.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//        );
         setContentView(R.layout.log_in);
         boolean loggingOut = false;
         try {
