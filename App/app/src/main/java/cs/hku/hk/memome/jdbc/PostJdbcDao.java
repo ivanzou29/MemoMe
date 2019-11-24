@@ -41,7 +41,7 @@ public class PostJdbcDao implements PostDao {
     @Override
     public void insertPost(Post post) {
         String sql = "INSERT INTO Posts (post_id, is_pblic, text, title, like) " +
-                "VALUES (?,?,?,?)";
+                "VALUES (?,?,?,?,?)";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, post.getPostId());
@@ -126,7 +126,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public ArrayList<Post> getAllHotPost(){
-        String sql = "SELECT * FROM Posts WHERE is_public = 1";
+        String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY like ASC";
         ArrayList<Post> posts = new ArrayList<>();
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);

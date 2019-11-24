@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.model.Post;
+
 /**
  * The view model for the community fragment and its sub fragments (pages). It holds the internal states
  * and communicate with the backend.
@@ -16,7 +19,7 @@ public class CommunityViewModel extends ViewModel {
     final static int LEFT_TAB = 0;
     final static int MIDDLE_TAB = 1;
     final static int RIGHT_TAB = 2;
-    private List<Diary> [] diaryList;
+    private List<Post> [] diaryList;
 
     private List<String> [] titleList;
 
@@ -42,13 +45,19 @@ public class CommunityViewModel extends ViewModel {
         titleList[i].clear();
         diaryList[i].clear();
         //TODO: change below into queries
-        for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
-        {
-            diaryList[i].add(new Diary("This is diary "+j+"in tab"+i, "This is the content of diary "+(i*3+j)));
+        PostJdbcDao postJdbcDao = new PostJdbcDao();
+        diaryList[0] = postJdbcDao.getAllNewPost();
+        diaryList[1] = postJdbcDao.getAllHotPost();
+        diaryList[2] = postJdbcDao.getAllNewPost();
+        for(int k = 0; k < 3; k++){
+            if(diaryList[k].size() > MAX_DIARIES_PER_QUERY){
+                diaryList[k] = diaryList[k].subList(k, MAX_DIARIES_PER_QUERY);
+            }
         }
-        for (Diary each : diaryList[i])
+
+        for (Post each : diaryList[i])
         {
-            titleList[i].add(each.title);
+            titleList[i].add(each.getTitle());
         }
         return titleList[i];
     }
@@ -60,14 +69,19 @@ public class CommunityViewModel extends ViewModel {
      */
     public List<String> getNewData(int i)
     {
-        //TODO: change below into queries
-        for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
-        {
-            diaryList[i].add(new Diary("This is diary "+j+"in tab"+i, "This is the content of diary "+(i*3+j)));
+        PostJdbcDao postJdbcDao = new PostJdbcDao();
+        diaryList[0] = postJdbcDao.getAllNewPost();
+        diaryList[1] = postJdbcDao.getAllHotPost();
+        diaryList[2] = postJdbcDao.getAllNewPost();
+        for(int k = 0; k < 3; k++){
+            if(diaryList[k].size() > MAX_DIARIES_PER_QUERY){
+                diaryList[k] = diaryList[k].subList(k, MAX_DIARIES_PER_QUERY);
+            }
         }
-        for (Diary each : diaryList[i])
+
+        for (Post each : diaryList[i])
         {
-            titleList[i].add(each.title);
+            titleList[i].add(each.getTitle());
         }
         return titleList[i];
     }
@@ -80,29 +94,13 @@ public class CommunityViewModel extends ViewModel {
      */
     public String getContents(int i, String title)
     {
-        for (Diary each: diaryList[i])
+        for (Post each: diaryList[i])
         {
-            if(title.equals(each.title))
-                return each.content;
+            if(title.equals(each.getTitle()))
+                return each.getText();
         }
         return "no diary is found";
     }
 
-    /**
-     * Abstraction for the diary (each post)
-     */
-    public class Diary {
-        String title;
-        String content;
 
-        Diary(String  _title, String _content)
-        {
-            this.title = _title;
-            this.content = _content;
-        }
-        Diary()
-        {
-            this("", "");
-        }
-    }
 }
