@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 myIntent.putExtra("email", emailSP);
                 startActivity(myIntent);
             } else {
-                Toast.makeText(MainActivity.this, "Credentials incorrect, please re-enter your email and password.", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Please enter your email and password.", Toast.LENGTH_LONG).show();
             }
         }
 
