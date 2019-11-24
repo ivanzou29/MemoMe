@@ -150,4 +150,19 @@ public class PostJdbcDao implements PostDao {
             return null;
         }
     }
+
+    @Override
+    public void updateLikeByTitle(int like, String title){
+        String sql = "UPDATE Posts SET like = like + ? WHERE title = ? ";
+        try {
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setInt(1, like);
+            ptmt.setString(2, title);
+            ptmt.execute();
+            ptmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

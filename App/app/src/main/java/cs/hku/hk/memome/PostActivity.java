@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 
 /**
@@ -57,6 +59,11 @@ public class PostActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 //TODO: increase favo number in DB
+                PostJdbcDao postJdbcDao = new PostJdbcDao();
+                Post post= postJdbcDao.getPostByPostTitle(title);
+                int like = post.getLike() + 1;
+                postJdbcDao.updateLikeByTitle(like, title);
+
                 Toast.makeText(v.getContext(), "thank you for loving " + title, Toast.LENGTH_SHORT).show();
             }
         });
