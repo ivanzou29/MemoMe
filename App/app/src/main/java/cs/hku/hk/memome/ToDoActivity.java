@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import cs.hku.hk.memome.jdbc.TaskJdbcDao;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.model.Task;
 import cs.hku.hk.memome.uiAdapter.MyListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
@@ -107,16 +108,18 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
         //TODO: send to server for this clicking
         TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
         Bundle extras = getIntent().getExtras();
-        String email = extras.getString("email");
+        String email = extras.getString("email");// to fragment 没有保存
         String taskname = extras.getString("title");
 
-        //taskJdbcDao.finishTask(email,);
+        //taskJdbcDao.finishTask(email,,taskname); 不知道在哪看listname
 
         viewModel.updateCompletion(position, newValue);
-        if(0==viewModel.getRemained() && newValue)
-            Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
-            //TODO: notify the server for gifts
+        if(0==viewModel.getRemained() && newValue){
 
+            Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
+            UserJdbcDao userJdbcDao =new UserJdbcDao();
+            userJdbcDao.updateCoinByEmailAndQuantity(email,1);
+        }
         else if(newValue)
             Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
     }

@@ -5,6 +5,11 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.model.Compose;
+import cs.hku.hk.memome.model.Post;
+
 /**
  * This is view model bound for HistoryFragment. Offering data support for the fragment.
  */
@@ -12,8 +17,9 @@ public class HistoryViewModel extends ViewModel {
 
     //TODO don't know what data type we will get from server yet
     final private int MAX_DIARIES_PER_QUERY = 11;
-    private List<Diary> diaryList;
+    private List<Post> diaryList;
     private List<String> titleList;
+
 
     public HistoryViewModel()
     {
@@ -28,19 +34,17 @@ public class HistoryViewModel extends ViewModel {
      */
     List<String> getTitles() //get all the titles
     {
-        diaryList.clear();
         titleList.clear();
+        ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+        titleList = composeJdbcDao.getPostIdsByEmail(email);//user's posts 前端没有存
 
-        //TODO: Change this to be the query results
-        for(int i = 0; i<MAX_DIARIES_PER_QUERY; i++)
-        {
-            diaryList.add(new Diary("This is diary "+i, "This is the content of diary "+i));
+
+        if(titleList.size() > MAX_DIARIES_PER_QUERY){
+            titleList = titleList.subList(0, MAX_DIARIES_PER_QUERY);
         }
-        for (Diary each : diaryList)
-        {
-            titleList.add(each.title);
-        }
+
         return titleList;
+
     }
 
     /**
@@ -49,16 +53,15 @@ public class HistoryViewModel extends ViewModel {
      */
     List<String> getNewData()
     {
-        for(int j = 0; j<MAX_DIARIES_PER_QUERY; j++)
-        {
-            //TODO: Change this to be the query results
-            diaryList.add(new Diary("This is diary "+j, "This is the content of diary "+j));
+
+        ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+        titleList = composeJdbcDao.getPostIdsByEmail(email);//user's posts 前端没有存
+
+
+        if(titleList.size() > MAX_DIARIES_PER_QUERY){
+            titleList = titleList.subList(0, MAX_DIARIES_PER_QUERY);
         }
-        titleList.clear();
-        for (Diary each : diaryList)
-        {
-            titleList.add(each.title);
-        }
+
         return titleList;
     }
 
@@ -69,29 +72,14 @@ public class HistoryViewModel extends ViewModel {
      */
     String getContents(String title)
     {
-        for (Diary each: diaryList)
-        {
-            if(title.equals(each.title))
-                return each.content;
+        PostJdbcDao postJdbcDao = new PostJdbcDao();
+        Post post = postJdbcDao.getPostByPostTitle(title);
+        if(post != null){
+            return post.getText();
         }
+
         return "no diary is found";
     }
 
-    /**
-     * Abstraction for the previous diary by the same writer.
-     */
-    public class Diary {
-        String title;
-        String content;
 
-        Diary(String  _title, String _content)
-        {
-            this.title = _title;
-            this.content = _content;
-        }
-        Diary()
-        {
-            this("", "");
-        }
-    }
 }
