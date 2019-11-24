@@ -12,10 +12,9 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.HaveTag;
 
 public class HaveTagJdbcDao implements HaveTagDao {
-
+    private static Connection conn = DatabaseUtilities.openConnection();
     @Override
     public Collection<String> getTagNamesByPostId(String postId) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT tag_name FROM HaveTag WHERE post_id = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -26,7 +25,6 @@ public class HaveTagJdbcDao implements HaveTagDao {
                 String tagName = rs.getString("tag_name");
                 tagNames.add(tagName);
             }
-            conn.close();
             ptmt.close();
             return tagNames;
         } catch (SQLException e) {
@@ -36,7 +34,6 @@ public class HaveTagJdbcDao implements HaveTagDao {
 
     @Override
     public void insertHaveTag(HaveTag haveTag) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO HaveTag (post_id, tag_name) " +
                 "VALUES (?,?)";
         try {
@@ -44,7 +41,6 @@ public class HaveTagJdbcDao implements HaveTagDao {
             ptmt.setString(1, haveTag.getPostId());
             ptmt.setString(2, haveTag.getTagName());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -53,13 +49,11 @@ public class HaveTagJdbcDao implements HaveTagDao {
 
     @Override
     public void deleteHaveTag(String postId) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM HaveTag WHERE post_id = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 

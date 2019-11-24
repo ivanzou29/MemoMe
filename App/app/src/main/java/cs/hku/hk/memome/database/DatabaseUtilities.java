@@ -1,5 +1,7 @@
 package cs.hku.hk.memome.database;
 
+import android.os.StrictMode;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,12 +10,14 @@ import java.sql.Statement;
 
 public class DatabaseUtilities {
 
-    private static final String URL = "jdbc:mysql://cdb-rhgud8sn.gz.tencentcdb.com:10029/MemoMe?useSSL=true";
+    private static final String URL = "jdbc:mysql://cdb-rhgud8sn.gz.tencentcdb.com:10029/Test?useSSL=true";
     private static final String USER = "root";
     private static final String PASSWORD = "COMP3330@hku";
 
     public static Connection openConnection() {
         Connection conn = null;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             conn = DriverManager.getConnection(URL, USER, PASSWORD);

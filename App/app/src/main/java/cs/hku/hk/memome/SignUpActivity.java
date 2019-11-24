@@ -10,6 +10,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.User;
+
+/**
+ * This is the activity for sign up. Being created when some one click the "register" button in the
+ * main activity (login page).
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     Button confirm;
@@ -43,6 +50,18 @@ public class SignUpActivity extends AppCompatActivity {
                         Toast.makeText(SignUpActivity.this, "input the same password", Toast.LENGTH_LONG).show();
                     } else {
                         //Todo: add email and password to DB
+                        User user = new User();
+                        user.setEmail(efStr);
+                        user.setPasscode(pfStr);
+                        user.setCoin(10);
+                        user.setUsername("me!");
+                        String s = "nothing";
+                        byte[] b = s.getBytes();
+                        user.setProfilePhoto(b);
+
+                        UserJdbcDao userJdbcDao = new UserJdbcDao();
+                        userJdbcDao.insertUser(user);
+
                         Intent myIntent = new Intent(v.getContext(), MainPage.class);
                         myIntent.putExtra("email",efStr);
                         startActivity(myIntent);

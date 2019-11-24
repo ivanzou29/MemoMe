@@ -11,12 +11,11 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.User;
 
 public class UserJdbcDao implements UserDao {
-
+    private static Connection conn = DatabaseUtilities.openConnection();
 
     @Override
     public User getUserByEmail(String email) {
 
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM Users WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -30,10 +29,10 @@ public class UserJdbcDao implements UserDao {
                 user.setPasscode(rs.getString("passcode"));
                 user.setProfilePhoto(rs.getBytes("profile_photo"));
                 user.setUsername(rs.getString("Username"));
-                conn.close();
                 ptmt.close();
                 return user;
             } else {
+                ptmt.close();
                 return null;
             }
         } catch (SQLException e) {
@@ -44,7 +43,7 @@ public class UserJdbcDao implements UserDao {
 
     @Override
     public void insertUser(User user) {
-        Connection conn = DatabaseUtilities.openConnection();
+
         String sql = "INSERT INTO Users (email, coin, passcode, profile_photo, username) " +
                 "VALUES (?,?,?,?,?)";
         try {
@@ -55,7 +54,6 @@ public class UserJdbcDao implements UserDao {
             ptmt.setBytes(4, user.getProfilePhoto());
             ptmt.setString(5, user.getUsername());
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -64,13 +62,12 @@ public class UserJdbcDao implements UserDao {
 
     @Override
     public void deleteUserByEmail(String email) {
-        Connection conn = DatabaseUtilities.openConnection();
+
         String sql = "DELETE FROM Users WHERE email = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -79,17 +76,16 @@ public class UserJdbcDao implements UserDao {
 
     @Override
     public void updateCoinByEmailAndQuantity(String email, int quantity) {
-        Connection conn = DatabaseUtilities.openConnection();
-        String sql = "UPDATE TABLE Users SET coin = coin + ? WHERE email = ? ";
+
+        String sql = "UPDATE Users SET coin = coin + ? WHERE email = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setInt(1, quantity);
             ptmt.setString(2, email);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 

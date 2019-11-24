@@ -32,4 +32,7 @@
     <string name="name_of_new_todo">Name of the new todo item</string>
     <string name="loading_new_items">Loading new items</string>
     <string name="hint_for_scrolling_update">Scroll down to update</string>
+    <string name="bb_positive">Yes</string>
+    <string name="bb_negative">No</string>
+    <string name="load_community">Loading more posts will consume your coins. Are you sure you are going to do it? You can also shake the phone to load more</string>
 </resources>

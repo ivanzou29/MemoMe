@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The activity for the Gift details, illustrating how many types and how many items does the user
+ * own. The details to be shown are retrieved from intent.
+ */
 public class GiftsActivity extends AppCompatActivity {
 
     ArrayList<Map<String, Object>> list = new ArrayList<>();

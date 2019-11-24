@@ -16,16 +16,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import cs.hku.hk.memome.R;
 
+/**
+ * Fragment for the plus. Used to create new diaries (posts)
+ */
 public class PlusFragment extends Fragment {
 
-    private PlusViewModel plusViewModel;
     private TextView title;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        plusViewModel =
-                ViewModelProviders.of(this).get(PlusViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_plus, container, false);
         title = root.findViewById(R.id.plus_title);
         Button confirm = root.findViewById(R.id.confirm_new_post_button);

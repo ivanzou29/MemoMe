@@ -10,6 +10,8 @@ public interface TaskDao {
 
     Collection<Task> getTasksByEmailAndListName(String email, String listName);
 
+    Task getTaskByEmailAndListNameAndTaskName(String email, String listName, String taskName);
+
     void insertTask(Task task);
 
     void finishTask(String email, String listName, String taskName);

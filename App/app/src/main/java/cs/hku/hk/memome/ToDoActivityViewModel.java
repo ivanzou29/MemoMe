@@ -5,6 +5,11 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The ViewModel is bound with the ToDoActivity. Offering data support to the activity.
+ * Different from ToDoViewModel which manipulate To Do item while this one takes care of the entries
+ * inside each item.
+ */
 class ToDoActivityViewModel extends ViewModel
 {
     //interact with the database
@@ -14,6 +19,13 @@ class ToDoActivityViewModel extends ViewModel
     private List<SubTasks> allSubTasks;
     private int remained;
 
+    /**
+     * The constructor is solely called by the ToDoActivity once when it is created.
+     *
+     * @param title A string storing the index of the To Do item (actually, the date)
+     * @param details The content of the To Do item
+     * @param finishStatus Collection of the status for all the entries in its content
+     */
     ToDoActivityViewModel(String title, String [] details, boolean [] finishStatus)
     {
         this.title = title;
@@ -32,9 +44,23 @@ class ToDoActivityViewModel extends ViewModel
         }
     }
 
+    /**
+     * Retrieve the title of the item
+     * @return A string which indexing the To Do item
+     */
     String getTitle(){return title;}
+
+    /**
+     * Return to number of unfinished entries within the current item.
+     * @return An int representing the number of unfinished ones.
+     */
     int getRemained(){return remained;}
 
+    /**
+     * Handle the status change of one entry. Toggling between uncompleted and completed.
+     * @param position The integral index of the entry whose status is to be toggled.
+     * @param mStatus The target status.
+     */
     void updateCompletion(int position, boolean mStatus)
     {
         if(position >= allSubTasks.size() || remained > allSubTasks.size())
@@ -44,6 +70,9 @@ class ToDoActivityViewModel extends ViewModel
         allSubTasks.get(position).complete = mStatus;
     }
 
+    /**
+     * Abstraction for each entry inside the to do item.
+     */
     private class SubTasks
     {
         boolean complete;

@@ -25,6 +25,9 @@ import cs.hku.hk.memome.MainActivity;
 import cs.hku.hk.memome.ProfileActivity;
 import cs.hku.hk.memome.R;
 
+/**
+ * Fragment for the ME tab.
+ */
 public class MeFragment extends Fragment {
 
     private MeViewModel meViewModel;
@@ -51,6 +54,7 @@ public class MeFragment extends Fragment {
             public void onClick(View view){
                 //Todo: delete stored email and password
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                myIntent.putExtra("loggingOut", true);
                 startActivity(myIntent);
             }
         });

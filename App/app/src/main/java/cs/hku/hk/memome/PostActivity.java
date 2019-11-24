@@ -13,6 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 
+/**
+ * The activity for the details of each post. Currently, the content are retrieved via intent. This
+ * works for the small post.
+ */
 public class PostActivity extends AppCompatActivity
 {
     private Toolbar upperToolBar;

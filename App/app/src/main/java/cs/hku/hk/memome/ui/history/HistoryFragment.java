@@ -22,6 +22,9 @@ import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
+/**
+ * Fragment for the history. Implementing infinite scrolling, and scrolling down to refresh.
+ */
 public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{
 
     private HistoryViewModel historyViewModel;

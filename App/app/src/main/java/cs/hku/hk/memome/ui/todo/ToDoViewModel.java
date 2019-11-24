@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The view model for the To Do fragment. Loading & expose item data for the fragment.
+ */
 public class ToDoViewModel extends ViewModel
 {
     final public static int MAX_TODO_ITEM_PER_LOAD = 9;
-    private List<String> myDataList; //the list names
-    private List<TodoDetail> myDataBaseList;
+    private List<String> myDataList; //the list of titles
+    private List<TodoDetail> myDataBaseList; //the list of contents
 
     public ToDoViewModel()
     {
@@ -19,6 +22,10 @@ public class ToDoViewModel extends ViewModel
 
     }
 
+    /**
+     * Load both a list of titles and a list of content from the server
+     * @return The list of title
+     */
     public List<String> getMyData()
     {
         myDataList.clear();
@@ -42,6 +49,11 @@ public class ToDoViewModel extends ViewModel
         return myDataList;
     }
 
+    /**
+     * Searching for the content with a given title
+     * @param title The specified title
+     * @return All the entries within its content.
+     */
     public String[] getListDetails(String title)
     {
         String[] details = {"nothing to do yet"};
@@ -53,6 +65,10 @@ public class ToDoViewModel extends ViewModel
         return details;
     }
 
+    /**
+     * Load more titles and content from the server
+     * @return The list of all title
+     */
     public List<String> getNewData()
     {
         //TODO: Change the below fake data into query results
@@ -74,6 +90,9 @@ public class ToDoViewModel extends ViewModel
         return myDataList;
     }
 
+    /**
+     * Abstraction for each to do item
+     */
     public class TodoDetail {
         String title;
         String[] lists;
@@ -89,6 +108,11 @@ public class ToDoViewModel extends ViewModel
         }
     }
 
+    /**
+     * Load the status of each entry in the given to do item
+     * @param title The item title
+     * @return An array containing all the statuses, in the same sequence as .getListDetails(title)
+     */
     public boolean [] loadTaskResuls(String title)
     {
         //TODO: Load from the database

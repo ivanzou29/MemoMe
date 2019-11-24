@@ -12,10 +12,9 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.ReceiveGift;
 
 public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
-
+    private static Connection conn = DatabaseUtilities.openConnection();
     @Override
     public Collection<ReceiveGift> getReceiveGiftsByPostId(String postId) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT * FROM ReceiveGifts WHERE post_id = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -28,7 +27,6 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
                 ReceiveGift receiveGift = new ReceiveGift(postId, giftName, quantity);
                 receiveGifts.add(receiveGift);
             }
-            conn.close();
             ptmt.close();
             return receiveGifts;
         } catch (SQLException e) {
@@ -38,7 +36,6 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
 
     @Override
     public int getGiftQuantityFromPostIdAndGiftName(String postId, String giftName) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "SELECT quantity FROM ReceiveGifts WHERE post_id = ? AND gift_name = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -47,12 +44,10 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
             ResultSet rs = ptmt.executeQuery();
             if (rs.next()) {
                 int quantity = rs.getInt("quantity");
-                conn.close();
                 ptmt.close();
                 return quantity;
             }
             else {
-                conn.close();
                 ptmt.close();
                 return 0;
             }
@@ -63,7 +58,6 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
 
     @Override
     public void insertReceiveGift(ReceiveGift receiveGift) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "INSERT INTO ReceiveGifts (gift_name, post_id, quantity) " +
                 "VALUES (?,?,?)";
         try {
@@ -71,25 +65,24 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
             ptmt.setString(1, receiveGift.getGiftName());
             ptmt.setString(2, receiveGift.getPostId());
             ptmt.setInt(3, receiveGift.getQuantity());
+            System.out.println(receiveGift.getQuantity());
             ptmt.execute();
-            conn.close();
+            System.out.println("inserted successfully");
             ptmt.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void updateReceiveGift(ReceiveGift receiveGift) {
-        Connection conn = DatabaseUtilities.openConnection();
-        String sql = "UPDATE TABLE ReceiveGifts SET gift_name = ?, post_id = ? WHERE quantity = ?";
+    public void updateReceiveGift(int quantity, String postId, String giftName) {
+        String sql = "UPDATE ReceiveGifts SET quantity = quantity + ? WHERE post_id = ? AND gift_name = ?";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
-            ptmt.setString(1, receiveGift.getGiftName());
-            ptmt.setString(2, receiveGift.getPostId());
-            ptmt.setInt(3, receiveGift.getQuantity());
+            ptmt.setInt(1, quantity);
+            ptmt.setString(2, postId);
+            ptmt.setString(3, giftName);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
@@ -98,14 +91,12 @@ public class ReceiveGiftJdbcDao implements ReceiveGiftDao {
 
     @Override
     public void deleteReceiveGift(String postId, String giftName) {
-        Connection conn = DatabaseUtilities.openConnection();
         String sql = "DELETE FROM ReceiveGifts WHERE gift_name = ? AND post_id = ? ";
         try {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, giftName);
             ptmt.setString(2, postId);
             ptmt.execute();
-            conn.close();
             ptmt.close();
         } catch (SQLException e) {
 
