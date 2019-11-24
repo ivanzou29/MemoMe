@@ -15,6 +15,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 public class MainActivity extends AppCompatActivity{
 
     TextView email;
@@ -25,6 +27,11 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+//                        .setDefaultFontPath("font/cute.ttf")
+//                        .setFontAttrId(R.attr.fontPath)
+//                        .build()
+//        );
         setContentView(R.layout.log_in);
         logIn =findViewById(R.id.log_in_button);
         logIn.setOnClickListener(new View.OnClickListener() {

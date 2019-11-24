@@ -12,6 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="vertical"
+        android:background="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -31,16 +32,18 @@
             android:id="@+id/coin_button_in_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
             android:text="My coins"
             android:layout_gravity="center"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/gifts_button_in_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:text="Gifts" />
@@ -49,7 +52,8 @@
             android:id="@+id/help_button_in_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"
             android:text="Help"
             android:layout_gravity="center"
             android:layout_margin="8dp"
@@ -61,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#ff4d4d"
+            android:textColor="#FFFFFF"
             android:text="log out"
             android:layout_gravity="center"
             android:layout_margin="8dp"
