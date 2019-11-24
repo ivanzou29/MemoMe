@@ -54,6 +54,7 @@ public class MeFragment extends Fragment {
             public void onClick(View view){
                 //Todo: delete stored email and password
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
+                myIntent.putExtra("loggingOut", true);
                 startActivity(myIntent);
             }
         });
