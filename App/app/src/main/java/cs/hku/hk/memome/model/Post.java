@@ -6,12 +6,14 @@ public class Post {
     private boolean isPublic;
     private String text;
     private String title;
+    private int like;
 
-    public Post (String postId, boolean isPublic, String text, String title) {
+    public Post (String postId, boolean isPublic, String text, String title, int like) {
         this.postId = postId;
         this.isPublic = isPublic;
         this.text = text;
         this.title = title;
+        this.like = like;
     }
 
     public String getPostId() {
@@ -45,5 +47,14 @@ public class Post {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public int getLike() {
+        return this.like;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
+    }
+
 
 }
