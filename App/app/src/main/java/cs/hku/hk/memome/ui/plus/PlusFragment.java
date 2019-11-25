@@ -1,6 +1,7 @@
 package cs.hku.hk.memome.ui.plus;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -18,6 +22,7 @@ import androidx.navigation.ActivityNavigator;
 
 import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.dao.HaveTagDao;
+import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
 import cs.hku.hk.memome.jdbc.HaveTagJdbcDao;
 import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.model.Compose;
@@ -35,6 +40,7 @@ public class PlusFragment extends Fragment {
     private TextView content;
     private CheckBox isPublic;
     private TextView hashTag;
+    private String email;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +51,12 @@ public class PlusFragment extends Fragment {
         content = root.findViewById(R.id.plus_passage);
         hashTag = root.findViewById(R.id.plus_hashtag);
         isPublic = root.findViewById(R.id.plus_checkBox);
+        try {
+            email = getArguments().getString("email");
+        } catch (Exception e) {
+            email = "anonymous";
+            Toast.makeText(getContext(), "Login status is not successful.", Toast.LENGTH_LONG).show();
+        }
 
         final Button confirm = root.findViewById(R.id.confirm_new_post_button);
 
@@ -56,27 +68,27 @@ public class PlusFragment extends Fragment {
                 String c = content.getText().toString();
                 Boolean p = isPublic.isChecked();
                 String h = hashTag.getText().toString();
+                String id = t + " " + LocalDateTime.now();
 
-                Post post =new Post(t, p, c, t, 0);//set title to be the id
+                Post post = new Post(id, p, c, t, 0);//set title to be the id
 
-                PostJdbcDao postJdbcDao= new PostJdbcDao();
+                PostJdbcDao postJdbcDao = new PostJdbcDao();
                 postJdbcDao.insertPost(post);
 
-                HaveTag haveTag = new HaveTag(t,h);
+                HaveTag haveTag = new HaveTag(id, h);
                 HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
                 haveTagJdbcDao.insertHaveTag(haveTag);
 
-                Bundle extras = getIntent().getExtras();
-                String e = extras.getString("email");
-                Compose compose = new Compose(e,t);
+                Compose compose = new Compose(email, id);
+                ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                composeJdbcDao.insertCompose(compose);
 
-                Toast.makeText(v.getContext(),"you title is " + t + "\nconfirm your post", Toast.LENGTH_LONG).show();
+                Toast.makeText(v.getContext(), "you title is " + t + "\nconfirm your post", Toast.LENGTH_LONG).show();
 
                 title.setText(null);
                 content.setText(null);
                 isPublic.setChecked(false);
                 hashTag.setText(null);
-
 
 
             }
