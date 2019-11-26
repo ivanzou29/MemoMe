@@ -36,6 +36,8 @@ import static android.content.Intent.getIntent;
  */
 public class PlusFragment extends Fragment {
 
+    private TextView title;
+    private String email;
     
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
