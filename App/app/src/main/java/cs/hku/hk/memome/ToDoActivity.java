@@ -1,6 +1,7 @@
 package cs.hku.hk.memome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,11 +33,15 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
     private ListView listView;
     private MyListViewAdapter listAdapter;
     private ToDoActivityViewModel viewModel;
+    private String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
+        SharedPreferences sp = getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
 
         toDoViewModel = new ToDoViewModel();
 

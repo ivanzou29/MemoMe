@@ -1,5 +1,6 @@
 package cs.hku.hk.memome.ui.community;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +30,13 @@ public class CommunityFragment extends Fragment {
 
     private CommunityViewModel communityViewModel;
 
+    private String email;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
         View root = inflater.inflate(R.layout.fragment_community, container, false);
 

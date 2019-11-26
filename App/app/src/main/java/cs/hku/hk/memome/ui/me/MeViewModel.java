@@ -58,6 +58,7 @@ public class MeViewModel extends ViewModel
         return giftTypes;
     }
 
+
     /**
      * Retrieve the numbers of the gifts of every type owned by the user
      * @return An arrayList containing number of gifts, in the same sequence as the returned value

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -27,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
+import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.PostActivity;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
@@ -56,10 +58,14 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
     private SensorManager sensorManager;
     private Vibrator vibrator;
 
+    private String email;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
         allTitles = communityViewModel.getTitles(CommunityViewModel.RIGHT_TAB);
 

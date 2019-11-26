@@ -1,6 +1,7 @@
 package cs.hku.hk.memome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,11 +24,16 @@ public class PostActivity extends AppCompatActivity
 {
     private Toolbar upperToolBar;
     private String title;
+
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+
+        SharedPreferences sp = getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
 
         Bundle extras = getIntent().getExtras();
         title = extras.getString("title");

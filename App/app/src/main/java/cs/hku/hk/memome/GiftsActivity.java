@@ -2,6 +2,7 @@ package cs.hku.hk.memome;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -27,11 +28,15 @@ public class GiftsActivity extends AppCompatActivity {
 
     ArrayList<Map<String, Object>> list = new ArrayList<>();
 
+    private String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gifts);
+        SharedPreferences sp = getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
 
         Toolbar upperToolBar;
 

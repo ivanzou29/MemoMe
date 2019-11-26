@@ -2,6 +2,7 @@ package cs.hku.hk.memome.ui.todo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,9 +45,13 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private List<String> allTitles;
 
+    private String email;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
         toDoViewModel =
                 ViewModelProviders.of(this).get(ToDoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_todo, container, false);

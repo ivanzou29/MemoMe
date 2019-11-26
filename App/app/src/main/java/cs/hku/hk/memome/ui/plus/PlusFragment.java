@@ -1,5 +1,6 @@
 package cs.hku.hk.memome.ui.plus;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +42,8 @@ public class PlusFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
+        SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
         View root = inflater.inflate(R.layout.fragment_plus, container, false);
         title = root.findViewById(R.id.plus_title);
         content = root.findViewById(R.id.plus_passage);
