@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import cs.hku.hk.memome.jdbc.TaskJdbcDao;
 import cs.hku.hk.memome.model.Task;
-import cs.hku.hk.memome.uiAdapter.MyListViewAdapter;
+import cs.hku.hk.memome.uiAdapter.TodoListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
 /**
@@ -25,12 +25,12 @@ import cs.hku.hk.memome.ui.todo.ToDoViewModel;
  * (i.e. the date) and retrieved from the instance of ToDoViewModel. The status are manipulated by
  * one instance of ToDoActivityViewModel.
  */
-public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter.ItemClickListener
+public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapter.ItemClickListener
 {
     private Toolbar upperToolBar;
     private ToDoViewModel toDoViewModel;
     private ListView listView;
-    private MyListViewAdapter listAdapter;
+    private TodoListViewAdapter listAdapter;
     private ToDoActivityViewModel viewModel;
     private String email;
 
@@ -56,7 +56,7 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
 
         viewModel = new ToDoActivityViewModel(title, details, loadedResult);
 
-        listAdapter = new MyListViewAdapter(this, details, loadedResult);
+        listAdapter = new TodoListViewAdapter(this, details, loadedResult);
         listAdapter.setClickListener(this);
 
         listView.setAdapter(listAdapter);

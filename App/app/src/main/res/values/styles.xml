@@ -21,4 +21,10 @@
         <item name="android:button">@drawable/checkbox_style</item>
         <item name="android:fontFamily">@font/ubuntu</item>
     </style>
+    <style name="Transparent" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowBackground">@color/transparent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
 </resources>
