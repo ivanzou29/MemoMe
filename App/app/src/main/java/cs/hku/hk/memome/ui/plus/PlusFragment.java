@@ -1,5 +1,6 @@
 package cs.hku.hk.memome.ui.plus;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +23,13 @@ import cs.hku.hk.memome.R;
 public class PlusFragment extends Fragment {
 
     private TextView title;
+    private String email;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
+        SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
         View root = inflater.inflate(R.layout.fragment_plus, container, false);
         title = root.findViewById(R.id.plus_title);
         Button confirm = root.findViewById(R.id.confirm_new_post_button);

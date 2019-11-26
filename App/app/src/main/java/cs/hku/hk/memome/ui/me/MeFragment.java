@@ -2,6 +2,7 @@ package cs.hku.hk.memome.ui.me;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +32,11 @@ import cs.hku.hk.memome.R;
 public class MeFragment extends Fragment {
 
     private MeViewModel meViewModel;
-
+    private String email;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
+        email = sp.getString("email", "");
         meViewModel =
                 ViewModelProviders.of(this).get(MeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_me, container, false);
@@ -53,6 +56,10 @@ public class MeFragment extends Fragment {
         logOut.setOnClickListener(new OnClickListener(){
             public void onClick(View view){
                 //Todo: delete stored email and password
+                SharedPreferences sp = MeFragment.this.getActivity().getSharedPreferences("config", 0);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.clear();
+                editor.commit();
                 Intent myIntent = new Intent(view.getContext(), MainActivity.class);
                 myIntent.putExtra("loggingOut", true);
                 startActivity(myIntent);
