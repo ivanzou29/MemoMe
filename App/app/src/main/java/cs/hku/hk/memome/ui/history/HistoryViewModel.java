@@ -3,6 +3,7 @@ package cs.hku.hk.memome.ui.history;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
@@ -20,12 +21,18 @@ public class HistoryViewModel extends ViewModel {
     private List<Post> diaryList;
     private List<String> titleList;
 
+    private String email;
+
 
     public HistoryViewModel()
     {
 
         diaryList = new ArrayList<>();
         titleList = new ArrayList<>();
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
@@ -36,7 +43,7 @@ public class HistoryViewModel extends ViewModel {
     {
         titleList.clear();
         ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-        titleList = composeJdbcDao.getPostIdsByEmail(email);//user's posts 前端没有存
+        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));//user's posts 前端没有存
 
 
         if(titleList.size() > MAX_DIARIES_PER_QUERY){
@@ -55,7 +62,7 @@ public class HistoryViewModel extends ViewModel {
     {
 
         ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-        titleList = composeJdbcDao.getPostIdsByEmail(email);//user's posts 前端没有存
+        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));//user's posts 前端没有存
 
 
         if(titleList.size() > MAX_DIARIES_PER_QUERY){

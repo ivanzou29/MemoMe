@@ -51,6 +51,7 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         email = sp.getString("email", "");
         historyViewModel =
                 ViewModelProviders.of(this).get(HistoryViewModel.class);
+        historyViewModel.setEmail(email);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
         allTitles = historyViewModel.getTitles();
