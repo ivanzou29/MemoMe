@@ -12,12 +12,12 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.Favorite;
 
 public class FavoriteJdbcDao implements FavoriteDao {
-    private static Connection conn = DatabaseUtilities.openConnection();
-
+    private static DatabaseUtilities databaseUtilities = new DatabaseUtilities();
     @Override
     public Collection<String> getPostIdsByEmail(String email) {
         String sql = "SELECT * FROM Favorite WHERE email = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ResultSet rs = ptmt.executeQuery();
@@ -26,6 +26,7 @@ public class FavoriteJdbcDao implements FavoriteDao {
                 postIds.add(rs.getString("post_id"));
             }
             ptmt.close();
+            conn.close();
             return postIds;
         } catch (SQLException e) {
             return new ArrayList<String>();
@@ -37,11 +38,13 @@ public class FavoriteJdbcDao implements FavoriteDao {
         String sql = "INSERT INTO Favorite (email, post_id) " +
                 "VALUES (?,?)";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, favorite.getEmail());
             ptmt.setString(2, favorite.getPostId());
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
@@ -51,11 +54,13 @@ public class FavoriteJdbcDao implements FavoriteDao {
     public void deleteFavorite(Favorite favorite) {
         String sql = "DELETE FROM Favorite WHERE email = ? AND postId = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, favorite.getEmail());
             ptmt.setString(2, favorite.getPostId());
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }

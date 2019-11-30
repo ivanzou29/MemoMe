@@ -13,11 +13,12 @@ import cs.hku.hk.memome.model.Image;
 import cs.hku.hk.memome.model.Own;
 
 public class ImageJdbcDao implements ImageDao {
-    private static Connection conn = DatabaseUtilities.openConnection();
+    private static DatabaseUtilities databaseUtilities = new DatabaseUtilities();
     @Override
     public Collection<byte[]> getImagesByPostId(String postId) {
         String sql = "SELECT * FROM Images WHERE postId = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ResultSet rs = ptmt.executeQuery();
@@ -27,6 +28,7 @@ public class ImageJdbcDao implements ImageDao {
                 images.add(image);
             }
             ptmt.close();
+            conn.close();
             return images;
         } catch (SQLException e) {
             return new ArrayList<byte[]>();
@@ -38,12 +40,14 @@ public class ImageJdbcDao implements ImageDao {
         String sql = "INSERT INTO Images (image_bytearray, image_id, post_id) " +
                 "VALUES (?,?,?)";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setBytes(1, image.getImageBytearray());
             ptmt.setInt(2, image.getImageId());
             ptmt.setString(3, image.getPostId());
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
@@ -53,10 +57,12 @@ public class ImageJdbcDao implements ImageDao {
     public void deleteImagesByPostId(String postId) {
         String sql = "DELETE FROM Images WHERE post_id = ? ";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
