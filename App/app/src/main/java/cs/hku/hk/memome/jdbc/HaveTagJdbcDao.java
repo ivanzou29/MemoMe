@@ -47,7 +47,7 @@ public class HaveTagJdbcDao implements HaveTagDao {
             ptmt.close();
             conn.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 

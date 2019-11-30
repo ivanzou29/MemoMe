@@ -25,7 +25,7 @@ public class PostJdbcDao implements PostDao {
                 Boolean isPublic = rs.getBoolean("is_public");
                 String text = rs.getString("text");
                 String title = rs.getString("title");
-                int like = rs.getInt("like");
+                int like = rs.getInt("likes");
                 Post post = new Post(postId, isPublic, text, title, like);
                 ptmt.close();
                 conn.close();
@@ -43,7 +43,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public void insertPost(Post post) {
-        String sql = "INSERT INTO Posts (post_id, is_pblic, text, title, like) " +
+        String sql = "INSERT INTO Posts (post_id, is_public, text, title, likes) " +
                 "VALUES (?,?,?,?,?)";
         try {
             Connection conn = databaseUtilities.openConnection();
@@ -57,7 +57,7 @@ public class PostJdbcDao implements PostDao {
             ptmt.close();
             conn.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -89,7 +89,7 @@ public class PostJdbcDao implements PostDao {
                 Boolean isPublic = rs.getBoolean("is_public");
                 String text = rs.getString("text");
                 String postId = rs.getString("post_id");
-                int like = rs.getInt("like");
+                int like = rs.getInt("likes");
                 Post post = new Post(postId, isPublic, text, title, like);
                 ptmt.close();
                 conn.close();
@@ -109,7 +109,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public ArrayList<Post> getAllNewPost(){
-        String sql = "SELECT * FROM Posts is_public = 1";
+        String sql = "SELECT * FROM Posts WHERE is_public = 1";
         ArrayList<Post> posts = new ArrayList<>();
         try {
             Connection conn = databaseUtilities.openConnection();
@@ -121,7 +121,7 @@ public class PostJdbcDao implements PostDao {
                 String text = rs.getString("text");
                 String postId = rs.getString("post_id");
                 String title = rs.getString("title");
-                int like = rs.getInt("like");
+                int like = rs.getInt("likes");
                 Post post = new Post(postId, isPublic, text, title, like);
                 posts.add(post);
             }
@@ -132,13 +132,13 @@ public class PostJdbcDao implements PostDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
     @Override
     public ArrayList<Post> getAllHotPost(){
-        String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY like ASC";
+        String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY likes ASC";
         ArrayList<Post> posts = new ArrayList<>();
         try {
             Connection conn = databaseUtilities.openConnection();
@@ -150,7 +150,7 @@ public class PostJdbcDao implements PostDao {
                 String text = rs.getString("text");
                 String postId = rs.getString("post_id");
                 String title = rs.getString("title");
-                int like = rs.getInt("like");
+                int like = rs.getInt("likes");
                 Post post = new Post(postId, isPublic, text, title, like);
                 posts.add(post);
             }
@@ -161,13 +161,13 @@ public class PostJdbcDao implements PostDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 
     @Override
     public void updateLikeByTitle(int like, String title){
-        String sql = "UPDATE Posts SET like = like + ? WHERE title = ? ";
+        String sql = "UPDATE Posts SET likes = likes + ? WHERE title = ? ";
         try {
             Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);

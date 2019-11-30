@@ -47,7 +47,7 @@ public class ComposeJdbcDao implements ComposeDao {
             ptmt.close();
             conn.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 

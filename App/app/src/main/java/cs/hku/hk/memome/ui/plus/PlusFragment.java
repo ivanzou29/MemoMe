@@ -53,12 +53,6 @@ public class PlusFragment extends Fragment {
         content = root.findViewById(R.id.plus_passage);
         hashTag = root.findViewById(R.id.plus_hashtag);
         isPublic = root.findViewById(R.id.plus_checkBox);
-        try {
-            email = getArguments().getString("email");
-        } catch (Exception e) {
-            email = "anonymous";
-            Toast.makeText(getContext(), "Login status is not successful.", Toast.LENGTH_LONG).show();
-        }
 
         final Button confirm = root.findViewById(R.id.confirm_new_post_button);
 

@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class DatabaseUtilities {
 
-    private static final String URL = "jdbc:mysql://cdb-rhgud8sn.gz.tencentcdb.com:10029/Test?useSSL=true";
+    private static final String URL = "jdbc:mysql://cdb-rhgud8sn.gz.tencentcdb.com:10029/MemoMe?useSSL=true";
     private static final String USER = "root";
     private static final String PASSWORD = "COMP3330@hku";
 
