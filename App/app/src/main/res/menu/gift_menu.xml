@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/gift_flower"
+        android:title="@string/gift_flower" />
+
+    <item
+        android:id="@+id/gift_cake"
+        android:title="@string/gift_cake" />
+
+    <item
+        android:id="@+id/gift_teddy"
+        android:title="@string/gift_teddy" />
+
+</menu>
