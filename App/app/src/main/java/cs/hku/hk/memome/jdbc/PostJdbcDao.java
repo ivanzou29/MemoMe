@@ -11,11 +11,12 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.Post;
 
 public class PostJdbcDao implements PostDao {
-    private static Connection conn = DatabaseUtilities.openConnection();
+    private static DatabaseUtilities databaseUtilities = new DatabaseUtilities();
     @Override
     public Post getPostByPostId(String postId) {
         String sql = "SELECT * FROM Posts WHERE post_id = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ResultSet rs = ptmt.executeQuery();
@@ -27,9 +28,11 @@ public class PostJdbcDao implements PostDao {
                 int like = rs.getInt("like");
                 Post post = new Post(postId, isPublic, text, title, like);
                 ptmt.close();
+                conn.close();
                 return post;
             } else {
                 ptmt.close();
+                conn.close();
                 return null;
             }
         } catch (SQLException e) {
@@ -43,6 +46,7 @@ public class PostJdbcDao implements PostDao {
         String sql = "INSERT INTO Posts (post_id, is_pblic, text, title, like) " +
                 "VALUES (?,?,?,?,?)";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, post.getPostId());
             ptmt.setBoolean(2, post.getPublic());
@@ -51,6 +55,7 @@ public class PostJdbcDao implements PostDao {
             ptmt.setInt(5, post.getLike());
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
@@ -60,10 +65,12 @@ public class PostJdbcDao implements PostDao {
     public void deletePost(String postId) {
         String sql = "DELETE FROM Posts WHERE postId = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
@@ -73,6 +80,7 @@ public class PostJdbcDao implements PostDao {
     public Post getPostByPostTitle(String title){
         String sql = "SELECT * FROM Posts WHERE title = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, title);
             ResultSet rs = ptmt.executeQuery();
@@ -84,10 +92,12 @@ public class PostJdbcDao implements PostDao {
                 int like = rs.getInt("like");
                 Post post = new Post(postId, isPublic, text, title, like);
                 ptmt.close();
+                conn.close();
                 return post;
             } else {
 
                 ptmt.close();
+                conn.close();
                 return null;
             }
         } catch (SQLException e) {
@@ -102,6 +112,7 @@ public class PostJdbcDao implements PostDao {
         String sql = "SELECT * FROM Posts is_public = 1";
         ArrayList<Post> posts = new ArrayList<>();
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ResultSet rs = ptmt.executeQuery();
 
@@ -116,6 +127,7 @@ public class PostJdbcDao implements PostDao {
             }
 
             ptmt.close();
+            conn.close();
             return posts;
 
         } catch (SQLException e) {
@@ -129,6 +141,7 @@ public class PostJdbcDao implements PostDao {
         String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY like ASC";
         ArrayList<Post> posts = new ArrayList<>();
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ResultSet rs = ptmt.executeQuery();
 
@@ -143,6 +156,7 @@ public class PostJdbcDao implements PostDao {
             }
 
             ptmt.close();
+            conn.close();
             return posts;
 
         } catch (SQLException e) {
@@ -155,11 +169,13 @@ public class PostJdbcDao implements PostDao {
     public void updateLikeByTitle(int like, String title){
         String sql = "UPDATE Posts SET like = like + ? WHERE title = ? ";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setInt(1, like);
             ptmt.setString(2, title);
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
