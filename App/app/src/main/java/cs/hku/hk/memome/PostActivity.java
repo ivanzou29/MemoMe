@@ -1,17 +1,22 @@
 package cs.hku.hk.memome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 
 /**
@@ -57,13 +62,64 @@ public class PostActivity extends AppCompatActivity
         TextView diary =findViewById(R.id.diary);
         diary.setText(content);
 
-        Button favo = findViewById(R.id.favo_post);
-        favo.setOnClickListener(new View.OnClickListener(){
+        Button gift = findViewById(R.id.favo_post);
+        gift.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                //TODO: increase favo number in DB
-                Toast.makeText(v.getContext(), "thank you for loving " + title, Toast.LENGTH_SHORT).show();
+                PopupMenu popupMenu = new PopupMenu(PostActivity.this,v);
+                popupMenu.inflate(R.menu.gift_menu);
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.gift_flower:
+                                new AlertDialog.Builder( PostActivity.this )
+                                        .setTitle( "Confirmation" )
+                                        .setMessage( "Are you sure you want to send a flower to this post, it will cost your 2 coins" )
+                                        .setNegativeButton( "Cancel",null )
+                                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //TODO: add flower and decrease coins
+                                                Toast.makeText(PostActivity.this,"thank you for your flower",Toast.LENGTH_SHORT).show();
+                                            }
+                                        } )
+                                        .show();
+                                break;
+                            case R.id.gift_cake:
+                                new AlertDialog.Builder( PostActivity.this )
+                                        .setTitle( "Confirmation" )
+                                        .setMessage( "Are you sure you want to send a cake to this post, it will cost your 3 coins" )
+                                        .setNegativeButton( "Cancel",null )
+                                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //TODO: add cake and decrease coins
+                                                Toast.makeText(PostActivity.this,"thank you for your cake",Toast.LENGTH_SHORT).show();
+                                            }
+                                        } )
+                                        .show();
+                                break;
+                            case R.id.gift_teddy:
+                                new AlertDialog.Builder( PostActivity.this )
+                                        .setTitle( "Confirmation" )
+                                        .setMessage( "Are you sure you want to send a Teddy bear to this post, it will cost your 4 coins" )
+                                        .setNegativeButton( "Cancel",null )
+                                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //TODO: add flower and decrease coin
+                                                Toast.makeText(PostActivity.this,"thank you for your Teddy bear",Toast.LENGTH_SHORT).show();
+                                            }
+                                        } )
+                                        .show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
             }
         });
 
@@ -72,8 +128,18 @@ public class PostActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                //TODO: report this post
-                Toast.makeText(v.getContext(), "Are you sure you wanna report " + title + "?", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder( PostActivity.this )
+                        .setTitle( "Confirmation" )
+                        .setMessage( "Are you sure you want to report " + title + "?" )
+                        .setNegativeButton( "Cancel",null )
+                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO: report this post
+                                Toast.makeText(PostActivity.this,"You have report " + title,Toast.LENGTH_SHORT).show();
+                            }
+                        } )
+                        .show();
             }
         });
     }
