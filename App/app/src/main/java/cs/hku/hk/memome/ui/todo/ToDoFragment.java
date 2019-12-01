@@ -90,7 +90,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this.getContext(), "You clicked data " + toDoAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.getContext(), "You clicked data " + toDoAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
         Intent intent =  new Intent(view.getContext(), ToDoActivity.class);
         intent.putExtra("title", toDoAdapter.getItem(position));
         startActivity(intent);
