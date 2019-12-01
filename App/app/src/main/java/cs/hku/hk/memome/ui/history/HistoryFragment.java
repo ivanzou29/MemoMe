@@ -73,7 +73,7 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void run()
             {
-                reloadEntireContent();
+                //reloadEntireContent();
             }
         });
 

@@ -43,7 +43,7 @@ public class HistoryViewModel extends ViewModel {
     {
         titleList.clear();
         ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));//user's posts 前端没有存
+        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));
 
 
         if(titleList.size() > MAX_DIARIES_PER_QUERY){
@@ -62,7 +62,7 @@ public class HistoryViewModel extends ViewModel {
     {
 
         ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));//user's posts 前端没有存
+        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));
 
 
         if(titleList.size() > MAX_DIARIES_PER_QUERY){
@@ -80,7 +80,7 @@ public class HistoryViewModel extends ViewModel {
     String getContents(String title)
     {
         PostJdbcDao postJdbcDao = new PostJdbcDao();
-        Post post = postJdbcDao.getPostByPostTitle(title);
+        Post post = postJdbcDao.getPostByPostId(title);
         if(post != null){
             return post.getText();
         }

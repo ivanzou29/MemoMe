@@ -67,7 +67,7 @@ public class DiaryActivity extends AppCompatActivity
                 //TODO send post_id to DB to delete
                 Toast.makeText(v.getContext(),"Delete this post?", Toast.LENGTH_SHORT).show();
                 PostJdbcDao postJdbcDao = new PostJdbcDao();
-                Post post = postJdbcDao.getPostByPostTitle(title);
+                Post post = postJdbcDao.getPostByPostId(title);
                 if(post != null){
                     postJdbcDao.deletePost(post.getPostId());
                 }
