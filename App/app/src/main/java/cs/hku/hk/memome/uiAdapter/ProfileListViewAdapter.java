@@ -2,22 +2,25 @@ package cs.hku.hk.memome.uiAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import cs.hku.hk.memome.R;
 
 /**
  * The adapter for the To Do item lists. Being initialized and utilized in ToDoFragment.
  */
-public class MyListViewAdapter extends BaseAdapter
+public class ProfileListViewAdapter extends BaseAdapter
 {
     private List<Item> items;
     private Context context;
@@ -28,7 +31,7 @@ public class MyListViewAdapter extends BaseAdapter
      */
     public class Item
     {
-        boolean checked;
+        Drawable icon;
         String text;
 
         /**
@@ -36,26 +39,11 @@ public class MyListViewAdapter extends BaseAdapter
          * @param text The output text
          * @param checked The init status for the checkbox
          */
-        Item(String text, boolean checked)
+        Item(String text, Drawable icon)
         {
             this.text= text;
-            this.checked = checked;
+            this.icon = icon;
         }
-
-        /**
-         * Retrieve the status of the checkbox
-         * @return whether the checkbox of this item is checked or not
-         */
-        public boolean isChecked()
-        {
-            return checked;
-        }
-
-        /**
-         * Set the status for each item
-         * @param status The target status
-         */
-        public void setChecked(boolean status) {checked = status;}
     }
 
     /**
@@ -64,18 +52,17 @@ public class MyListViewAdapter extends BaseAdapter
      */
     static class ViewHolder
     {
-        CheckBox checkBox;
-        TextView textView;
+        ImageButton iconButton;
     }
 
-    public MyListViewAdapter(Context c, String [] allDetails, boolean [] loadedResult)
+    public ProfileListViewAdapter(Context c, String [] allDetails, Drawable [] iconList)
     {
         context = c;
         items = new ArrayList<>();
 
-        for(int i=0; i<allDetails.length && i<loadedResult.length; i++)
+        for(int i=0; i<allDetails.length && i<iconList.length; i++)
         {
-            items.add(new Item(allDetails[i], loadedResult[i]));
+            items.add(new Item(allDetails[i], iconList[i]));
         }
     }
 
@@ -105,9 +92,8 @@ public class MyListViewAdapter extends BaseAdapter
         if(conterView == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            conterView = inflater.inflate(R.layout.list_details, null);
-            viewHolder.checkBox = conterView.findViewById(R.id.todo_checkbox);
-            viewHolder.textView = conterView.findViewById(R.id.checkbox_text);
+            conterView = inflater.inflate(R.layout.profile_item, null);
+            viewHolder.iconButton = conterView.findViewById(R.id.profile_icon);
             conterView.setTag(viewHolder);
         }
         else
@@ -115,13 +101,10 @@ public class MyListViewAdapter extends BaseAdapter
             viewHolder = (ViewHolder)conterView.getTag();
         }
 
-        viewHolder.checkBox.setTag(position);
-        viewHolder.checkBox.setChecked(items.get(position).checked);
+        viewHolder.iconButton.setTag(position);
+        viewHolder.iconButton.setImageDrawable(items.get(position).icon);
 
-        viewHolder.textView.setText(items.get(position).text);
-        viewHolder.textView.setTag(position);
-
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener()
+        viewHolder.iconButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -132,29 +115,7 @@ public class MyListViewAdapter extends BaseAdapter
                     Toast.makeText(context, "An item has been clicked",Toast.LENGTH_SHORT).show();
             }
         });
-        viewHolder.textView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(itemClickListener!=null)
-                    itemClickListener.onItemClick(v, position);
-                else
-                    Toast.makeText(context, "An item has been clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
-        viewHolder.checkBox.setChecked(isChecked(position));
         return conterView;
-    }
-
-    /**
-     * Determined whether the given item is checked or not
-     * @param position the index of the item
-     * @return The status of the item
-     */
-    public boolean isChecked(int position)
-    {
-        return items.get(position).checked;
     }
 
     // allows clicks events to be caught

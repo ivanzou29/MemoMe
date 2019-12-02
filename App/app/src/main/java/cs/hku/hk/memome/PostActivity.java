@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -60,8 +62,8 @@ public class PostActivity extends AppCompatActivity
         TextView diary =findViewById(R.id.diary);
         diary.setText(content);
 
-        Button favo = findViewById(R.id.favo_post);
-        favo.setOnClickListener(new View.OnClickListener(){
+        Button gift = findViewById(R.id.favo_post);
+        gift.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {

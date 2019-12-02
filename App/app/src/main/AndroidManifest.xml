@@ -44,7 +44,7 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/SubActivityTheme">
+            android:theme="@style/Transparent">
         </activity>
 
         <activity
