@@ -116,7 +116,7 @@ public class ToDoActivity extends AppCompatActivity implements MyListViewAdapter
         String email = extras.getString("email");// to fragment 没有保存
         String taskname = extras.getString("title");
 
-        //taskJdbcDao.finishTask(email,,taskname); 不知道在哪看listname
+        //taskJdbcDao.finishTask(email, taskname); 不知道在哪看listname
 
         viewModel.updateCompletion(position, newValue);
         if(0==viewModel.getRemained() && newValue){

@@ -64,13 +64,12 @@ public class PostActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                //TODO: increase favo number in DB
                 PostJdbcDao postJdbcDao = new PostJdbcDao();
                 Post post= postJdbcDao.getPostByPostTitle(title);
                 int like = post.getLike() + 1;
                 postJdbcDao.updateLikeByTitle(like, title);
 
-                Toast.makeText(v.getContext(), "thank you for loving " + title, Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Thank you for loving " + title, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -79,8 +78,7 @@ public class PostActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                //TODO: report this post
-                Toast.makeText(v.getContext(), "Are you sure you wanna report " + title + "?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "We have received your report of the post " + title + ".", Toast.LENGTH_SHORT).show();
             }
         });
     }

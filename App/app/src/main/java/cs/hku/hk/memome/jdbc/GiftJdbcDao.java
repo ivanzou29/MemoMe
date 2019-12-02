@@ -26,9 +26,9 @@ public class GiftJdbcDao implements GiftDao {
             }
             ptmt.close();
             conn.close();
-            return -1;
+            return 0;
         } catch (SQLException e) {
-            return -1;
+            return 0;
         }
     }
 }

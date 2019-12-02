@@ -14,7 +14,6 @@ import cs.hku.hk.memome.model.Post;
  */
 public class CommunityViewModel extends ViewModel {
 
-    //TODO don't know what data type we will get from server yet
     final private static int MAX_DIARIES_PER_QUERY = 9;
     final static int LEFT_TAB = 0;
     final static int MIDDLE_TAB = 1;
@@ -44,7 +43,6 @@ public class CommunityViewModel extends ViewModel {
     {
         titleList[i].clear();
         diaryList[i].clear();
-        //TODO: change below into queries
         PostJdbcDao postJdbcDao = new PostJdbcDao();
         diaryList[0] = postJdbcDao.getAllNewPost();
         diaryList[1] = postJdbcDao.getAllHotPost();

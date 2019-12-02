@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 String pStr = password.getText().toString();
                 Boolean exist = Boolean.TRUE;
                 Boolean correct = Boolean.TRUE;
-                //TODO:check whether email exists and whether the password is correct
                 UserJdbcDao userJdbcDao = new UserJdbcDao();
                 User user = userJdbcDao.getUserByEmail(eStr);
                 if (user == null) {
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!exist) {
                     Toast.makeText(MainActivity.this, "unidentified email, please sign up first.", Toast.LENGTH_LONG).show();
-                    //Todo: send an intent to sign up
                 } else {
                     if (!correct) {
                         Toast.makeText(MainActivity.this, "wrong password", Toast.LENGTH_LONG).show();

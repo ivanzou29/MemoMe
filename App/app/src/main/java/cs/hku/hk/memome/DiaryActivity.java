@@ -66,7 +66,6 @@ public class DiaryActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                //TODO send post_id to DB to delete
                 Toast.makeText(v.getContext(),"Delete this post?", Toast.LENGTH_SHORT).show();
                 PostJdbcDao postJdbcDao = new PostJdbcDao();
                 Post post = postJdbcDao.getPostByPostId(title);

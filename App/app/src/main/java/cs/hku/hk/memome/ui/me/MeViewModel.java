@@ -3,6 +3,8 @@ package cs.hku.hk.memome.ui.me;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import cs.hku.hk.memome.jdbc.OwnJdbcDao;
+import cs.hku.hk.memome.model.Own;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,16 +38,19 @@ public class MeViewModel extends ViewModel
     /**
      * Load details from servers and update the stored gift info
      */
-    void upDateGiftsInfo()
+    void upDateGiftsInfo(String email)
     {
         giftTypes.clear();
-        //TODO use query to update the values in the two arraylists
-        String [] sampleTypes = new String[] { "Flower", "Cake", "Teddy Bear" };
-        for (String eachType : sampleTypes)
-        {
-            giftsNumber.add(giftTypes.size()+1);
-            giftTypes.add(eachType);
+        giftsNumber.clear();
 
+        OwnJdbcDao ownJdbcDao = new OwnJdbcDao();
+        ArrayList<Own> owns = new ArrayList<Own>(ownJdbcDao.getOwnsByEmail(email));
+
+        int i;
+        for (i = 0; i < owns.size(); i++) {
+            Own own = owns.get(i);
+            giftTypes.add(own.getGiftName());
+            giftsNumber.add(own.getQuantity());
         }
     }
 

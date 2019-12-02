@@ -45,7 +45,7 @@ public class MeFragment extends Fragment {
 
         gift.setOnClickListener(new OnClickListener(){
             public void onClick(View view){
-                meViewModel.upDateGiftsInfo();
+                meViewModel.upDateGiftsInfo(email);
 
                 Intent myIntent = new Intent(view.getContext(), GiftsActivity.class);
                 myIntent.putStringArrayListExtra("Name", meViewModel.getGiftTypes());
@@ -55,7 +55,6 @@ public class MeFragment extends Fragment {
         });
         logOut.setOnClickListener(new OnClickListener(){
             public void onClick(View view){
-                //Todo: delete stored email and password
                 SharedPreferences sp = MeFragment.this.getActivity().getSharedPreferences("config", 0);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.clear();

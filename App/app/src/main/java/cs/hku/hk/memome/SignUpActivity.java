@@ -50,7 +50,6 @@ public class SignUpActivity extends AppCompatActivity {
                     if (!pfStr.equals(psStr)) {
                         Toast.makeText(SignUpActivity.this, "input the same password", Toast.LENGTH_LONG).show();
                     } else {
-                        //Todo: add email and password to DB
                         User user = new User();
                         user.setEmail(efStr);
                         user.setPasscode(pfStr);

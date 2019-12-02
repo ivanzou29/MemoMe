@@ -59,7 +59,6 @@ public class PlusFragment extends Fragment {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO send new post to the DB, assign an unique ID
                 String t = title.getText().toString();
                 String c = content.getText().toString();
                 Boolean p = isPublic.isChecked();
