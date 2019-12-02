@@ -53,7 +53,7 @@ public class ComposeJdbcDao implements ComposeDao {
 
     @Override
     public void deleteCompose(String postId) {
-        String sql = "DELETE FROM Compose WHERE postId = ?";
+        String sql = "DELETE FROM Compose WHERE post_id = ?";
         try {
             Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);

@@ -16,7 +16,6 @@ import cs.hku.hk.memome.model.Post;
  */
 public class HistoryViewModel extends ViewModel {
 
-    //TODO don't know what data type we will get from server yet
     final private int MAX_DIARIES_PER_QUERY = 11;
     private List<Post> diaryList;
     private List<String> titleList;
@@ -85,7 +84,7 @@ public class HistoryViewModel extends ViewModel {
             return post.getText();
         }
 
-        return "no diary is found";
+        return "Cannot find the diary any more!";
     }
 
 

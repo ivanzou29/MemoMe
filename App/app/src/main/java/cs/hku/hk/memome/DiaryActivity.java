@@ -14,7 +14,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
 import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.model.Compose;
 import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
@@ -71,6 +73,14 @@ public class DiaryActivity extends AppCompatActivity
                 if(post != null){
                     postJdbcDao.deletePost(post.getPostId());
                 }
+
+                ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                try {
+                    composeJdbcDao.deleteCompose(title);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
                 Log.d("ActivityDebug","delete posts");
                 Intent returnHome = new Intent();
