@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 
