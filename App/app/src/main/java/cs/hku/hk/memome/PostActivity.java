@@ -1,9 +1,11 @@
 package cs.hku.hk.memome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -64,12 +66,59 @@ public class PostActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                PostJdbcDao postJdbcDao = new PostJdbcDao();
-                Post post= postJdbcDao.getPostByPostTitle(title);
-                int like = post.getLike() + 1;
-                postJdbcDao.updateLikeByTitle(like, title);
-
-                Toast.makeText(v.getContext(), "Thank you for loving " + title, Toast.LENGTH_SHORT).show();
+                PopupMenu popupMenu = new PopupMenu(PostActivity.this,v);
+                popupMenu.inflate(R.menu.gift_menu);
+                popupMenu.show();
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.gift_flower:
+                                new AlertDialog.Builder( PostActivity.this )
+                                        .setTitle( "Confirmation" )
+                                        .setMessage( "Are you sure you want to send a flower to this post, it will cost your 2 coins" )
+                                        .setNegativeButton( "Cancel",null )
+                                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //TODO: add flower and decrease coins
+                                                Toast.makeText(PostActivity.this,"thank you for your flower",Toast.LENGTH_SHORT).show();
+                                            }
+                                        } )
+                                        .show();
+                                break;
+                            case R.id.gift_cake:
+                                new AlertDialog.Builder( PostActivity.this )
+                                        .setTitle( "Confirmation" )
+                                        .setMessage( "Are you sure you want to send a cake to this post, it will cost your 3 coins" )
+                                        .setNegativeButton( "Cancel",null )
+                                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //TODO: add cake and decrease coins
+                                                Toast.makeText(PostActivity.this,"thank you for your cake",Toast.LENGTH_SHORT).show();
+                                            }
+                                        } )
+                                        .show();
+                                break;
+                            case R.id.gift_teddy:
+                                new AlertDialog.Builder( PostActivity.this )
+                                        .setTitle( "Confirmation" )
+                                        .setMessage( "Are you sure you want to send a Teddy bear to this post, it will cost your 4 coins" )
+                                        .setNegativeButton( "Cancel",null )
+                                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //TODO: add flower and decrease coin
+                                                Toast.makeText(PostActivity.this,"thank you for your Teddy bear",Toast.LENGTH_SHORT).show();
+                                            }
+                                        } )
+                                        .show();
+                                break;
+                        }
+                        return false;
+                    }
+                });
             }
         });
 
@@ -78,7 +127,18 @@ public class PostActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "We have received your report of the post " + title + ".", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder( PostActivity.this )
+                        .setTitle( "Confirmation" )
+                        .setMessage( "Are you sure you want to report " + title + "?" )
+                        .setNegativeButton( "Cancel",null )
+                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO: report this post
+                                Toast.makeText(PostActivity.this,"You have report " + title,Toast.LENGTH_SHORT).show();
+                            }
+                        } )
+                        .show();
             }
         });
     }
