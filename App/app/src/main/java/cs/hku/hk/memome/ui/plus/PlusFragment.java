@@ -64,6 +64,7 @@ public class PlusFragment extends Fragment {
                 Boolean p = isPublic.isChecked();
                 String h = hashTag.getText().toString();
                 String id = t + " " + LocalDateTime.now();
+                t = id;
 
                 Post post = new Post(id, p, c, t, 0);//set title to be the id
 

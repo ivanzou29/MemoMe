@@ -1,6 +1,8 @@
 package cs.hku.hk.memome.ui.todo;
 
 import androidx.lifecycle.ViewModel;
+import cs.hku.hk.memome.jdbc.TaskJdbcDao;
+import cs.hku.hk.memome.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +13,20 @@ import java.util.List;
 public class ToDoViewModel extends ViewModel
 {
     final public static int MAX_TODO_ITEM_PER_LOAD = 9;
-    private List<String> myDataList; //the list of titles
-    private List<TodoDetail> myDataBaseList; //the list of contents
+    private List<String> myLists; //the list of titles
+    private List<String> myTaskNames; //the list of contents
+    private List<Task> myTasks;
+    private String email;
 
     public ToDoViewModel()
     {
 
-        myDataBaseList = new ArrayList<>();
-        myDataList = new ArrayList<>();
+        myLists = new ArrayList<>();
+        myTaskNames = new ArrayList<>();
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
@@ -28,25 +35,12 @@ public class ToDoViewModel extends ViewModel
      */
     public List<String> getMyData()
     {
-        myDataList.clear();
-        myDataBaseList.clear();
-        //TODO: Change the below fake data into query results
-        String[] data0 = {"COMP3278", "MATH2241"};
-        String[] data1 = {"COMP3230", "COMP3258", "CUND9003"};
-        String[] data2 = {"COMP3330"};
+        myLists.clear();
 
-        for(int i=0; i<MAX_TODO_ITEM_PER_LOAD; i++)
-        {
-            myDataList.add("Nov. "+i);
-            if(i%3==0)
-                myDataBaseList.add(new TodoDetail("Nov. "+i, data0));
-            else if(i%3==1)
-                myDataBaseList.add(new TodoDetail("Nov. "+i, data1));
-            else
-                myDataBaseList.add(new TodoDetail("Nov. "+i, data2));
+        TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+        myLists = new ArrayList<String>(taskJdbcDao.getListNamesByEmail(email));
 
-        }
-        return myDataList;
+        return myLists;
     }
 
     /**
@@ -56,13 +50,16 @@ public class ToDoViewModel extends ViewModel
      */
     public String[] getListDetails(String title)
     {
-        String[] details = {"nothing to do yet"};
-        for(TodoDetail each:myDataBaseList)
-        {
-            if(each.title.equals(title) && each.lists!=null)
-                details = each.lists;
+        myTaskNames.clear();
+
+        TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+        myTasks = new ArrayList<Task>(taskJdbcDao.getTasksByEmailAndListName(email, title));
+
+        for (int i = 0; i < myTasks.size(); i++) {
+            myTaskNames.add(myTasks.get(i).getTaskName());
         }
-        return details;
+
+        return myTaskNames.toArray(new String[0]);
     }
 
     /**
@@ -71,56 +68,23 @@ public class ToDoViewModel extends ViewModel
      */
     public List<String> getNewData()
     {
-        //TODO: Change the below fake data into query results
-        String[] data0 = {"COMP3278", "MATH2241"};
-        String[] data1 = {"COMP3230", "COMP3258", "CUND9003"};
-        String[] data2 = {"COMP3330"};
-
-        for(int i=0; i<MAX_TODO_ITEM_PER_LOAD; i++)
-        {
-            myDataList.add("Nov. "+i);
-            if(i%3==0)
-                myDataBaseList.add(new TodoDetail("Nov. "+i, data0));
-            else if(i%3==1)
-                myDataBaseList.add(new TodoDetail("Nov. "+i, data1));
-            else
-                myDataBaseList.add(new TodoDetail("Nov. "+i, data2));
-        }
-
-        return myDataList;
+        return getMyData();
     }
 
-    /**
-     * Abstraction for each to do item
-     */
-    public class TodoDetail {
-        String title;
-        String[] lists;
-
-        TodoDetail(String title, String [] lists)
-        {
-            this.title = title;
-            this.lists = lists;
-        }
-        TodoDetail()
-        {
-            this("",null);
-        }
-    }
 
     /**
      * Load the status of each entry in the given to do item
      * @param title The item title
      * @return An array containing all the statuses, in the same sequence as .getListDetails(title)
      */
-    public boolean [] loadTaskResuls(String title)
+    public boolean [] loadTaskResults(String title)
     {
-        //TODO: Load from the database
-        boolean [] ret = new boolean[getListDetails(title).length];
-        for (int i=0; i<ret.length; i++)
-        {
-            ret[i]=0==i%2;
+        boolean [] ret = new boolean[myTaskNames.size()];
+
+        for (int i = 0; i < myTasks.size(); i++) {
+            ret[i] = myTasks.get(i).getFinished();
         }
+
         return ret;
     }
 

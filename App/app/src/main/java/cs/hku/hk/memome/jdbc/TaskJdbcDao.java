@@ -67,6 +67,28 @@ public class TaskJdbcDao implements TaskDao {
     }
 
     @Override
+    public Collection<String> getTaskNamesByEmailAndListName(String email, String listName) {
+        String sql = "SELECT task_name FROM Tasks WHERE email = ? AND list_name = ?";
+        try {
+            Connection conn = databaseUtilities.openConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, email);
+            ptmt.setString(2, listName);
+            ResultSet rs = ptmt.executeQuery();
+            Collection<String> taskNames = new ArrayList<String>();
+            while (rs.next()) {
+                String taskName = rs.getString("task_name");
+                taskNames.add(taskName);
+            }
+            ptmt.close();
+            conn.close();
+            return taskNames;
+        } catch (SQLException e) {
+            return new ArrayList<String>();
+        }
+    }
+
+    @Override
     public Task getTaskByEmailAndListNameAndTaskName(String email, String listName, String taskName) {
         String sql = "SELECT * FROM Tasks WHERE email = ? AND list_name = ? AND task_name = ?";
         try {

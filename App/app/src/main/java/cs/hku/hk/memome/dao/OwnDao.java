@@ -10,7 +10,7 @@ public interface OwnDao {
 
     void insertGiftOwnership(Own own);
 
-    void updateGiftOwnership(Own own);
+    void increaseGiftOwnership(Own own);
 
     void deleteGiftOwnership(String email, String giftName);
 

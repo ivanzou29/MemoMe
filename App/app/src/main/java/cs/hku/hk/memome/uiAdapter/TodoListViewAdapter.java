@@ -56,6 +56,8 @@ public class TodoListViewAdapter extends BaseAdapter
          * @param status The target status
          */
         public void setChecked(boolean status) {checked = status;}
+
+        public String getText() {return text;};
     }
 
     /**

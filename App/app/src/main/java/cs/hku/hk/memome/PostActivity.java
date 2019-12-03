@@ -16,6 +16,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
+import cs.hku.hk.memome.jdbc.OwnJdbcDao;
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.Own;
 import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
 
@@ -40,6 +45,7 @@ public class PostActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         title = extras.getString("title");
+
         String content = extras.getString("content");
 
         upperToolBar = findViewById(R.id.toolbar_post);
@@ -82,8 +88,24 @@ public class PostActivity extends AppCompatActivity
                                         .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                //TODO: add flower and decrease coins
-                                                Toast.makeText(PostActivity.this,"thank you for your flower",Toast.LENGTH_SHORT).show();
+                                                UserJdbcDao userJdbcDao = new UserJdbcDao();
+
+                                                int currentCoins = userJdbcDao.getCoinsByEmail(email);
+                                                if (currentCoins < 2) {
+                                                    Toast.makeText(PostActivity.this, "You do not have enough coins!", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    userJdbcDao.updateCoinByEmailAndQuantity(email, -2);
+                                                    PostJdbcDao postJdbcDao = new PostJdbcDao();
+                                                    ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                                                    OwnJdbcDao ownJdbcDao = new OwnJdbcDao();
+                                                    postJdbcDao.increaseLikeByTitle(2, title);
+                                                    String composerEmail = composeJdbcDao.getUserEmailByPostId(title);
+                                                    Own increaseOwn = new Own(composerEmail, "Flower", 1);
+                                                    ownJdbcDao.increaseGiftOwnership(increaseOwn);
+
+
+                                                    Toast.makeText(PostActivity.this, "thank you for your flower", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         } )
                                         .show();
@@ -96,8 +118,24 @@ public class PostActivity extends AppCompatActivity
                                         .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                //TODO: add cake and decrease coins
-                                                Toast.makeText(PostActivity.this,"thank you for your cake",Toast.LENGTH_SHORT).show();
+                                                UserJdbcDao userJdbcDao = new UserJdbcDao();
+
+                                                int currentCoins = userJdbcDao.getCoinsByEmail(email);
+                                                if (currentCoins < 3) {
+                                                    Toast.makeText(PostActivity.this, "You do not have enough coins!", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    userJdbcDao.updateCoinByEmailAndQuantity(email, -3);
+                                                    PostJdbcDao postJdbcDao = new PostJdbcDao();
+                                                    ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                                                    OwnJdbcDao ownJdbcDao = new OwnJdbcDao();
+                                                    postJdbcDao.increaseLikeByTitle(3, title);
+                                                    String composerEmail = composeJdbcDao.getUserEmailByPostId(title);
+                                                    Own increaseOwn = new Own(composerEmail, "Cake", 1);
+                                                    ownJdbcDao.increaseGiftOwnership(increaseOwn);
+
+
+                                                    Toast.makeText(PostActivity.this, "thank you for your cake", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         } )
                                         .show();
@@ -110,8 +148,24 @@ public class PostActivity extends AppCompatActivity
                                         .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                //TODO: add flower and decrease coin
-                                                Toast.makeText(PostActivity.this,"thank you for your Teddy bear",Toast.LENGTH_SHORT).show();
+                                                UserJdbcDao userJdbcDao = new UserJdbcDao();
+
+                                                int currentCoins = userJdbcDao.getCoinsByEmail(email);
+                                                if (currentCoins < 4) {
+                                                    Toast.makeText(PostActivity.this, "You do not have enough coins!", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    userJdbcDao.updateCoinByEmailAndQuantity(email, -4);
+                                                    PostJdbcDao postJdbcDao = new PostJdbcDao();
+                                                    ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                                                    OwnJdbcDao ownJdbcDao = new OwnJdbcDao();
+                                                    postJdbcDao.increaseLikeByTitle(4, title);
+                                                    String composerEmail = composeJdbcDao.getUserEmailByPostId(title);
+                                                    Own increaseOwn = new Own(composerEmail, "Teddy Bear", 1);
+                                                    ownJdbcDao.increaseGiftOwnership(increaseOwn);
+
+
+                                                    Toast.makeText(PostActivity.this, "thank you for your teddy bear", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         } )
                                         .show();
@@ -135,8 +189,7 @@ public class PostActivity extends AppCompatActivity
                         .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO: report this post
-                                Toast.makeText(PostActivity.this,"You have report " + title,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PostActivity.this,"You have reported " + title,Toast.LENGTH_SHORT).show();
                             }
                         } )
                         .show();

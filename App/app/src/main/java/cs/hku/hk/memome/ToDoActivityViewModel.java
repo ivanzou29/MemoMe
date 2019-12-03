@@ -14,7 +14,6 @@ class ToDoActivityViewModel extends ViewModel
 {
     //interact with the database
     //collect the user input from ToDoActivity
-    //TODO: implement the logic
     private String title;
     private List<SubTasks> allSubTasks;
     private int remained;

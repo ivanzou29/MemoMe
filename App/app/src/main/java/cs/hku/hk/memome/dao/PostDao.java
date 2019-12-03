@@ -20,7 +20,7 @@ public interface PostDao {
 
     ArrayList<Post> getAllHotPost();
 
-    void updateLikeByTitle(int like,String title);
+    void increaseLikeByTitle(int like,String title);
 
 
 }

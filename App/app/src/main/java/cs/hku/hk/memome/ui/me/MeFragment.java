@@ -39,12 +39,12 @@ public class MeFragment extends Fragment {
     private MeViewModel meViewModel;
     private ImageButton iconButton;
     private String iconName;
+    private String email;
     static final private int profileActivity = 11;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        String email;
         SharedPreferences sp = Objects.requireNonNull(this.getActivity()).getSharedPreferences("config", 0);
         email = sp.getString("email", "");
 

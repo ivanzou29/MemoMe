@@ -57,12 +57,14 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton_plus);
         fab.setOnClickListener(new View.OnClickListener() {
+            //TODO: need a new editText to add the title of the new to-do list
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "To add a new list", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        toDoViewModel.setEmail(email);
 
         allTitles = toDoViewModel.getMyData();
         recyclerView = root.findViewById(R.id.rvNumbers);

@@ -43,6 +43,31 @@ public class UserJdbcDao implements UserDao {
     }
 
     @Override
+    public int getCoinsByEmail(String email) {
+
+        String sql = "SELECT coin FROM Users WHERE email = ?";
+        try {
+            Connection conn = databaseUtilities.openConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, email);
+            ResultSet rs = ptmt.executeQuery();
+
+            if (rs.next()) {
+                int coin = rs.getInt("coin");
+                ptmt.close();
+                conn.close();
+                return coin;
+            } else {
+                ptmt.close();
+                return 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
     public void insertUser(User user) {
 
         String sql = "INSERT INTO Users (email, coin, passcode, profile_photo, username) " +

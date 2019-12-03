@@ -44,8 +44,7 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
         email = sp.getString("email", "");
 
         toDoViewModel = new ToDoViewModel();
-        toDoViewModel.getMyData();//TODO: overload the getMyData so that will only load one item
-                                  //efficiency concerns
+        toDoViewModel.setEmail(email);
 
         final Bundle extras = getIntent().getExtras();
         final String title;
@@ -55,7 +54,7 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
         FloatingActionButton addTodo = findViewById(R.id.add_todo);
 
         String[] details = toDoViewModel.getListDetails(title);
-        boolean [] loadedResult = toDoViewModel.loadTaskResuls(title);
+        boolean [] loadedResult = toDoViewModel.loadTaskResults(title);
 
         viewModel = new ToDoActivityViewModel(title, details, loadedResult);
 
@@ -86,18 +85,18 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
             @Override
             public void onClick(View v)
             {
-                //TODO: store a new todo to DB, assign an unique ID
                 EditText newtodo = findViewById(R.id.newTodo);
                 String taskContent = newtodo.getText().toString();
-                String email = extras.getString("email");
                 Task task = new Task();
                 task.setTaskName(taskContent);
                 task.setListName(title);
                 task.setEmail(email);
+                task.setFinished(false);
+                task.setDeadline(null);
 
                 TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
                 taskJdbcDao.insertTask(task);
-                Toast.makeText(ToDoActivity.this,"add a todo", Toast.LENGTH_LONG).show();
+                Toast.makeText(ToDoActivity.this,"Added a new task", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -115,17 +114,18 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
         //TODO: send to server for this clicking
         TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
         Bundle extras = getIntent().getExtras();
-        String email = extras.getString("email");// to fragment 没有保存
-        String taskname = extras.getString("title");
 
-        //taskJdbcDao.finishTask(email, taskname); 不知道在哪看listname
+        String listName = extras.getString("title");
+        String taskName = listAdapter.getItem(position).getText();
+
+        taskJdbcDao.finishTask(email, listName, taskName);
 
         viewModel.updateCompletion(position, newValue);
         if(0==viewModel.getRemained() && newValue){
 
-            Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(),"Congratulations! You have finished the to-do list and you get 10 coins!", Toast.LENGTH_SHORT).show();
             UserJdbcDao userJdbcDao =new UserJdbcDao();
-            userJdbcDao.updateCoinByEmailAndQuantity(email,1);
+            userJdbcDao.updateCoinByEmailAndQuantity(email,10);
         }
         else if(newValue)
             Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();

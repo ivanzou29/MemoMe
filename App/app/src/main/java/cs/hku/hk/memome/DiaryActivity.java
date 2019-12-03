@@ -19,7 +19,6 @@ import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.model.Compose;
 import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
-import cs.hku.hk.memome.ui.todo.ToDoViewModel;
 
 /**
  * The activity for the Diary details

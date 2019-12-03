@@ -66,4 +66,28 @@ public class ComposeJdbcDao implements ComposeDao {
         }
     }
 
+    @Override
+    public String getUserEmailByPostId(String postId) {
+        String sql = "SELECT email FROM Compose WHERE post_id = ?";
+        try {
+            Connection conn = databaseUtilities.openConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, postId);
+            ResultSet rs = ptmt.executeQuery();
+            Collection<String> postIds = new ArrayList<String>();
+            if (rs.next()) {
+                String email = rs.getString("email");
+                ptmt.close();
+                conn.close();
+                return email;
+            } else {
+                ptmt.close();
+                conn.close();
+                return null;
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
 }

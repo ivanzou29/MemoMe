@@ -166,8 +166,8 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
-    public void updateLikeByTitle(int like, String title){
-        String sql = "UPDATE Posts SET likes = ? WHERE title = ? ";
+    public void increaseLikeByTitle(int like, String title){
+        String sql = "UPDATE Posts SET likes = likes + ? WHERE title = ? ";
         try {
             Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);

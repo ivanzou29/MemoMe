@@ -6,6 +6,8 @@ public interface UserDao {
 
     User getUserByEmail(String email);
 
+    int getCoinsByEmail(String email);
+
     void insertUser(User user);
 
     void deleteUserByEmail(String email);
