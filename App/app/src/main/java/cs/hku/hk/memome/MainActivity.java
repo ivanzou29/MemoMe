@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .setFontAttrId(R.attr.fontPath)
 //                        .build()
 //        );
+        //TODO: add internet access constraints
         setContentView(R.layout.log_in);
         boolean loggingOut = false;
         try {
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
                 Intent myIntent = new Intent(v.getContext(), SignUpActivity.class);
                 startActivity(myIntent);
             }

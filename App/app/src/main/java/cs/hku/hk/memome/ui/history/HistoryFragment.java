@@ -121,7 +121,7 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         moveY = (int)event.getY() - oldY;
                         oldY = (int)event.getY();
                         break;
-                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_UP://TODO: fix the refreshing error
                         if((1==state || 2==state) && lastVisibleItemPosition == historyAdapter.getItemCount()-1)
                         {
                             if(offset>0 || (0==offset && moveY<0))
