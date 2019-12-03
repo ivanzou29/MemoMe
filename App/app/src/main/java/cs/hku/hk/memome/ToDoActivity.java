@@ -111,7 +111,6 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
 
         listAdapter.getItem(position).setChecked(newValue);
         listAdapter.notifyDataSetChanged();
-        //TODO: send to server for this clicking
         TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
         Bundle extras = getIntent().getExtras();
 
