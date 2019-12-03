@@ -50,6 +50,10 @@
         <activity
             android:name=".MainPage"
             android:label="Main Page">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.APP_EMAIL" />
+            </intent-filter>
         </activity>
 
         <activity
