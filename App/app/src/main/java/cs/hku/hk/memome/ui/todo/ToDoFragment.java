@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int oldY;
 
     private List<String> allTitles;
+    private EditText newList;
 
     private String email;
 
@@ -56,11 +59,14 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 ViewModelProviders.of(this).get(ToDoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
         FloatingActionButton fab = root.findViewById(R.id.floatingActionButton_plus);
+        newList = root.findViewById(R.id.newList);
+
         fab.setOnClickListener(new View.OnClickListener() {
-            //TODO: need a new editText to add the title of the new to-do list
+            //TODO: create a new todo list with the input title.
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "To add a new list", Snackbar.LENGTH_LONG)
+                String title = newList.getText().toString();
+                Snackbar.make(view, "To add a new list " + title, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
