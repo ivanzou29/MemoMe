@@ -43,6 +43,8 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
         email = sp.getString("email", "");
 
         toDoViewModel = new ToDoViewModel();
+        toDoViewModel.getMyData();//TODO: overload the getMyData so that will only load one item
+                                  //efficiency concerns
 
         final Bundle extras = getIntent().getExtras();
         final String title;
