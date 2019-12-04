@@ -42,7 +42,7 @@ public class HistoryViewModel extends ViewModel {
     {
         titleList.clear();
         ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));
+        titleList.addAll(new ArrayList<>(composeJdbcDao.getPostIdsByEmail(email)));
 
 
         if(titleList.size() > MAX_DIARIES_PER_QUERY){

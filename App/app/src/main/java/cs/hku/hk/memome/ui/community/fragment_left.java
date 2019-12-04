@@ -171,7 +171,7 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
                 Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
 
                 int originalSize = allTitles.size();
-                allTitles = communityViewModel.getNewData(CommunityViewModel.LEFT_TAB);
+                allTitles = communityViewModel.getTitles(CommunityViewModel.LEFT_TAB);
                 communityAdapter.notifyItemInserted(originalSize);
             }
         }

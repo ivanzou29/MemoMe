@@ -152,7 +152,7 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
                             {
                                 Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
                                 int originalSize = allTitles.size();
-                                allTitles = communityViewModel.getNewData(CommunityViewModel.RIGHT_TAB);
+                                allTitles = communityViewModel.getTitles(CommunityViewModel.RIGHT_TAB);
                                 communityAdapter.notifyItemInserted(originalSize);
                             }
                         }
@@ -240,7 +240,7 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
                 Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
 
                 int originalSize = allTitles.size();
-                allTitles = communityViewModel.getNewData(CommunityViewModel.LEFT_TAB);
+                allTitles = communityViewModel.getTitles(CommunityViewModel.LEFT_TAB);
                 communityAdapter.notifyItemInserted(originalSize);
             }
         }

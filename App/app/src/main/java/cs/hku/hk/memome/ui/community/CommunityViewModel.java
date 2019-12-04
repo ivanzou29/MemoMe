@@ -44,36 +44,12 @@ public class CommunityViewModel extends ViewModel {
         titleList[i].clear();
         diaryList[i].clear();
         PostJdbcDao postJdbcDao = new PostJdbcDao();
-        diaryList[0] = postJdbcDao.getAllNewPost();
-        diaryList[1] = postJdbcDao.getAllHotPost();
-        diaryList[2] = postJdbcDao.getAllNewPost();
+        diaryList[0].addAll(postJdbcDao.getAllNewPost());
+        diaryList[1].addAll(postJdbcDao.getAllHotPost());
+        diaryList[2].addAll(postJdbcDao.getAllNewPost());
         for(int k = 0; k < 3; k++){
             if(diaryList[k].size() > MAX_DIARIES_PER_QUERY){
                 diaryList[k] = diaryList[k].subList(0, MAX_DIARIES_PER_QUERY);
-            }
-        }
-
-        for (Post each : diaryList[i])
-        {
-            titleList[i].add(each.getTitle());
-        }
-        return titleList[i];
-    }
-
-    /**
-     * Load more diaries from the server.
-     * @param i The index of the page, one of LEFT_TAB, MIDDLE_TAB and RIGHT_TAB
-     * @return The list of all the titles in that page
-     */
-    public List<String> getNewData(int i)
-    {
-        PostJdbcDao postJdbcDao = new PostJdbcDao();
-        diaryList[0] = postJdbcDao.getAllNewPost();
-        diaryList[1] = postJdbcDao.getAllHotPost();
-        diaryList[2] = postJdbcDao.getAllNewPost();
-        for(int k = 0; k < 3; k++){
-            if(diaryList[k].size() > MAX_DIARIES_PER_QUERY){
-                diaryList[k] = diaryList[k].subList(k, MAX_DIARIES_PER_QUERY);
             }
         }
 
