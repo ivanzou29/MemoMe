@@ -28,15 +28,17 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"/>
 
-        <Button
-            android:id="@+id/coin_button_in_me"
+        <TextView
+            android:id="@+id/coin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My coins"
+            android:text="COINS:"
             android:layout_gravity="center"
+            android:textSize="20dp"
             android:layout_margin="8dp"
-            android:textColor="#FFFFFF"
-            android:background="@color/colorPrimary"/>
+            android:textColor="@color/colorText"
+            android:background="@color/colorBackground"/>
+
 
         <Button
             android:id="@+id/gifts_button_in_me"

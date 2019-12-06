@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,12 @@ public class MeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_me, container, false);
         Button gift = root.findViewById(R.id.gifts_button_in_me);
         Button logOut = root.findViewById(R.id.log_out_button_in_me);
+        TextView coin = root.findViewById(R.id.coin);
+
+        //TODO: get coin number
+        int coinNo = 10;
+
+        coin.setText("Coin: " + coinNo);
 
         iconButton = root.findViewById(R.id.profile_icon_button);
         iconButton.setOnClickListener(new OnClickListener()
