@@ -148,6 +148,6 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
             userJdbcDao.updateCoinByEmailAndQuantity(email,10);
         }
         else if(newValue)
-            Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(),"Wow! You have finished the task!", Toast.LENGTH_SHORT).show();
     }
 }
