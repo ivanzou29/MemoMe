@@ -135,7 +135,7 @@ public class TaskJdbcDao implements TaskDao {
             ptmt.close();
             conn.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 

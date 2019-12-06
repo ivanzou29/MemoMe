@@ -15,6 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import net.sourceforge.jtds.jdbc.DateTime;
+
+import java.sql.Date;
+
 import cs.hku.hk.memome.jdbc.TaskJdbcDao;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.model.Task;
@@ -34,6 +38,9 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
     private TodoListViewAdapter listAdapter;
     private ToDoActivityViewModel viewModel;
     private String email;
+    private String[] details;
+    private boolean[] loadedResult;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,14 +54,14 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
         toDoViewModel.setEmail(email);
 
         final Bundle extras = getIntent().getExtras();
-        final String title;
+
         title = extras.getString("title");
 
         listView = findViewById(R.id.todo_listview);
         FloatingActionButton addTodo = findViewById(R.id.add_todo);
 
-        String[] details = toDoViewModel.getListDetails(title);
-        boolean [] loadedResult = toDoViewModel.loadTaskResults(title);
+        details = toDoViewModel.getListDetails(title);
+        loadedResult = toDoViewModel.loadTaskResults(title);
 
         viewModel = new ToDoActivityViewModel(title, details, loadedResult);
 
@@ -92,14 +99,28 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
                 task.setListName(title);
                 task.setEmail(email);
                 task.setFinished(false);
-                task.setDeadline(null);
+                task.setDeadline(new Date(System.currentTimeMillis()));
 
                 TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
                 taskJdbcDao.insertTask(task);
                 Toast.makeText(ToDoActivity.this,"Added a new task", Toast.LENGTH_LONG).show();
+
+                newtodo.getText().clear();
+                reloadTasks();
             }
         });
 
+    }
+
+    private void reloadTasks() {
+        details = toDoViewModel.getListDetails(title);
+        loadedResult = toDoViewModel.loadTaskResults(title);
+
+        listAdapter = new TodoListViewAdapter(this, details, loadedResult);
+        listAdapter.setClickListener(this);
+
+        listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
