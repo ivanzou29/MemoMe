@@ -31,6 +31,8 @@ import cs.hku.hk.memome.GiftsActivity;
 import cs.hku.hk.memome.MainActivity;
 import cs.hku.hk.memome.ProfileActivity;
 import cs.hku.hk.memome.R;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.User;
 
 /**
  * Fragment for the ME tab.
@@ -57,9 +59,9 @@ public class MeFragment extends Fragment {
         TextView coin = root.findViewById(R.id.coin);
 
         //TODO: get coin number
-        int coinNo = 10;
-
-        coin.setText("Coin: " + coinNo);
+        UserJdbcDao userJdbcDao = new UserJdbcDao();
+        int coinNo = userJdbcDao.getCoinsByEmail(email);
+        coin.setText("You currently have " + coinNo + " coins.");
 
         iconButton = root.findViewById(R.id.profile_icon_button);
         iconButton.setOnClickListener(new OnClickListener()
