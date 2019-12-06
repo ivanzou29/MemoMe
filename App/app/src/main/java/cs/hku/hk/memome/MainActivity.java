@@ -1,7 +1,10 @@
 package cs.hku.hk.memome;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -39,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 //                        .setFontAttrId(R.attr.fontPath)
 //                        .build()
 //        );
-        //TODO: add internet access constraints
         setContentView(R.layout.log_in);
         boolean loggingOut = false;
         try {
@@ -50,31 +52,36 @@ public class MainActivity extends AppCompatActivity {
         }
         email = findViewById(R.id.get_email);
         password = findViewById(R.id.get_password);
-        if (!loggingOut) {
-            SharedPreferences sp = getSharedPreferences("config", 0);
-            String emailSP = sp.getString("email", "");
-            String passcodeSP = sp.getString("passcode", "");
-            email.setText(emailSP);
-            password.setText(passcodeSP);
-            Boolean exist = Boolean.TRUE;
-            Boolean correct = Boolean.TRUE;
-            UserJdbcDao userJdbcDao = new UserJdbcDao();
-            User user = userJdbcDao.getUserByEmail(emailSP);
-            if (user == null) {
-                exist = Boolean.FALSE;
-            } else {
-                if (!user.getPasscode().equals(passcodeSP)) {
-                    correct = Boolean.FALSE;
+
+        if (isConnected()) {
+            if (!loggingOut) {
+                SharedPreferences sp = getSharedPreferences("config", 0);
+                String emailSP = sp.getString("email", "");
+                String passcodeSP = sp.getString("passcode", "");
+                email.setText(emailSP);
+                password.setText(passcodeSP);
+                Boolean exist = Boolean.TRUE;
+                Boolean correct = Boolean.TRUE;
+                UserJdbcDao userJdbcDao = new UserJdbcDao();
+                User user = userJdbcDao.getUserByEmail(emailSP);
+                if (user == null) {
+                    exist = Boolean.FALSE;
+                } else {
+                    if (!user.getPasscode().equals(passcodeSP)) {
+                        correct = Boolean.FALSE;
+                    }
+                }
+
+                if (exist && correct) {
+                    Intent myIntent = new Intent(MainActivity.this, MainPage.class);
+                    myIntent.putExtra("email", emailSP);
+                    startActivity(myIntent);
+                } else {
+                    Toast.makeText(MainActivity.this, "Please enter your email and password.", Toast.LENGTH_LONG).show();
                 }
             }
-
-            if (exist && correct) {
-                Intent myIntent = new Intent(MainActivity.this, MainPage.class);
-                myIntent.putExtra("email", emailSP);
-                startActivity(myIntent);
-            } else {
-                Toast.makeText(MainActivity.this, "Please enter your email and password.", Toast.LENGTH_LONG).show();
-            }
+        } else {
+            Toast.makeText(MainActivity.this, "Please ensure your phone is connected to the Internet!", Toast.LENGTH_LONG).show();
         }
 
         logIn = findViewById(R.id.log_in_button);
@@ -82,36 +89,42 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                String eStr = email.getText().toString();
-                String pStr = password.getText().toString();
-                Boolean exist = Boolean.TRUE;
-                Boolean correct = Boolean.TRUE;
-                UserJdbcDao userJdbcDao = new UserJdbcDao();
-                User user = userJdbcDao.getUserByEmail(eStr);
-                if (user == null) {
-                    exist = Boolean.FALSE;
-                } else {
-                    if (!user.getPasscode().equals(pStr)) {
-                        correct = Boolean.FALSE;
-                    }
-                }
 
-                if (!exist) {
-                    Toast.makeText(MainActivity.this, "unidentified email, please sign up first.", Toast.LENGTH_LONG).show();
-                } else {
-                    if (!correct) {
-                        Toast.makeText(MainActivity.this, "wrong password", Toast.LENGTH_LONG).show();
+                if (isConnected()) {
+
+                    String eStr = email.getText().toString();
+                    String pStr = password.getText().toString();
+                    Boolean exist = Boolean.TRUE;
+                    Boolean correct = Boolean.TRUE;
+                    UserJdbcDao userJdbcDao = new UserJdbcDao();
+                    User user = userJdbcDao.getUserByEmail(eStr);
+                    if (user == null) {
+                        exist = Boolean.FALSE;
                     } else {
-                        SharedPreferences sharedPreferences = getSharedPreferences("config", 0);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", eStr);
-                        editor.putString("passcode", pStr);
-                        editor.commit();
-                        Toast.makeText(MainActivity.this, "login status saved", Toast.LENGTH_LONG).show();
-                        Intent myIntent = new Intent(v.getContext(), MainPage.class);
-                        myIntent.putExtra("email", eStr);
-                        startActivity(myIntent);
+                        if (!user.getPasscode().equals(pStr)) {
+                            correct = Boolean.FALSE;
+                        }
                     }
+
+                    if (!exist) {
+                        Toast.makeText(MainActivity.this, "Unidentified email, please sign up first.", Toast.LENGTH_LONG).show();
+                    } else {
+                        if (!correct) {
+                            Toast.makeText(MainActivity.this, "Wrong password!", Toast.LENGTH_LONG).show();
+                        } else {
+                            SharedPreferences sharedPreferences = getSharedPreferences("config", 0);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("email", eStr);
+                            editor.putString("passcode", pStr);
+                            editor.commit();
+                            Toast.makeText(MainActivity.this, "Login status saved!", Toast.LENGTH_LONG).show();
+                            Intent myIntent = new Intent(v.getContext(), MainPage.class);
+                            myIntent.putExtra("email", eStr);
+                            startActivity(myIntent);
+                        }
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Please ensure your phone is connected to the Internet!", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -122,9 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
-                Intent myIntent = new Intent(v.getContext(), SignUpActivity.class);
-                startActivity(myIntent);
+                if (isConnected()) {
+                    Intent myIntent = new Intent(v.getContext(), SignUpActivity.class);
+                    startActivity(myIntent);
+                } else {
+                    Toast.makeText(MainActivity.this, "Please ensure your phone is connected to the Internet!", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -140,5 +156,14 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean isConnected() {
+        try {
+            String command = "ping -c 1 baidu.com";
+            return (Runtime.getRuntime().exec(command).waitFor() == 0);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

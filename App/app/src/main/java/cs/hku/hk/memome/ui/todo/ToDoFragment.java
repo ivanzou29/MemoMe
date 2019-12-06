@@ -62,7 +62,6 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         newList = root.findViewById(R.id.newList);
 
         fab.setOnClickListener(new View.OnClickListener() {
-            //TODO: create a new todo list with the input title.
             @Override
             public void onClick(View view) {
                 String title = newList.getText().toString();
