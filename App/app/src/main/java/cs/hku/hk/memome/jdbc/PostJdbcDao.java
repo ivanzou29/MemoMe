@@ -116,7 +116,7 @@ public class PostJdbcDao implements PostDao {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ResultSet rs = ptmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 Boolean isPublic = rs.getBoolean("is_public");
                 String text = rs.getString("text");
                 String postId = rs.getString("post_id");
@@ -145,7 +145,7 @@ public class PostJdbcDao implements PostDao {
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ResultSet rs = ptmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 Boolean isPublic = rs.getBoolean("is_public");
                 String text = rs.getString("text");
                 String postId = rs.getString("post_id");
