@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("email", eStr);
                             editor.putString("passcode", pStr);
-                            editor.commit();
+                            editor.apply();
                             Toast.makeText(MainActivity.this, "Login status saved!", Toast.LENGTH_LONG).show();
                             Intent myIntent = new Intent(v.getContext(), MainPage.class);
                             myIntent.putExtra("email", eStr);

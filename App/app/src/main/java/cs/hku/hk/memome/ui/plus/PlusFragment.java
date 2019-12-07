@@ -1,5 +1,6 @@
 package cs.hku.hk.memome.ui.plus;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -29,8 +31,7 @@ import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.model.Compose;
 import cs.hku.hk.memome.model.HaveTag;
 import cs.hku.hk.memome.model.Post;
-
-import static android.content.Intent.getIntent;
+import cs.hku.hk.memome.ui.ProcessingDialog;
 
 /**
  * Fragment for the plus. Used to create new diaries (posts)
@@ -42,6 +43,8 @@ public class PlusFragment extends Fragment {
     private CheckBox isPublic;
     private TextView hashTag;
     private String email;
+
+    private ProcessingDialog processing;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,30 +59,41 @@ public class PlusFragment extends Fragment {
 
         final Button confirm = root.findViewById(R.id.confirm_new_post_button);
 
+        processing = new ProcessingDialog(root);
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String t = title.getText().toString();
-                String c = content.getText().toString();
-                Boolean p = isPublic.isChecked();
-                String h = hashTag.getText().toString();
-                String id = t + " " + LocalDateTime.now();
-                t = id;
+                processing.show();
 
-                Post post = new Post(id, p, c, t, 0);//set title to be the id
+                getView().post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        String t = title.getText().toString();
+                        String c = content.getText().toString();
+                        boolean p = isPublic.isChecked();
+                        String id = t + " " + LocalDateTime.now();
+                        String h = hashTag.getText().toString();
+                        t = id;
 
-                PostJdbcDao postJdbcDao = new PostJdbcDao();
-                postJdbcDao.insertPost(post);
+                        Post post = new Post(id, p, c, t, 0);//set title to be the id
 
-                HaveTag haveTag = new HaveTag(id, h);
-                HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
-                haveTagJdbcDao.insertHaveTag(haveTag);
+                        PostJdbcDao postJdbcDao = new PostJdbcDao();
+                        postJdbcDao.insertPost(post);
 
-                Compose compose = new Compose(email, id);
-                ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-                composeJdbcDao.insertCompose(compose);
+                        HaveTag haveTag = new HaveTag(id, h);
+                        HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
+                        haveTagJdbcDao.insertHaveTag(haveTag);
 
-                Toast.makeText(v.getContext(), "you title is " + t + "\nconfirm your post", Toast.LENGTH_LONG).show();
+                        Compose compose = new Compose(email, id);
+                        ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                        composeJdbcDao.insertCompose(compose);
+
+                        processing.dismiss();
+                    }
+                });
 
                 title.setText(null);
                 content.setText(null);

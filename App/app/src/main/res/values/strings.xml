@@ -41,4 +41,5 @@
     <string name="updating">Updating preferences</string>
     <string name="default_promote">default</string>
     <string name="server_connection">Connecting to server…</string>
+    <string name="confirm_for_title">Are you sure to post this?</string>
 </resources>
