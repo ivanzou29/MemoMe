@@ -24,10 +24,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.PostActivity;
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
@@ -51,6 +53,8 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
 
     private String email;
 
+    private ProcessingDialog processing;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -58,7 +62,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
         SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
         email = sp.getString("email", "");
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
-        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB);
+        allTitles = new ArrayList<>();
 
         View root = inflater.inflate(R.layout.fagment_community_middle, container, false);
 
@@ -84,6 +88,9 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
         sensorManager = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
+        processing = new ProcessingDialog(root);
+        processing.show();
+
         return root;
     }
 
@@ -101,11 +108,22 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void onResume()
     {
+
         super.onResume();
         if(sensorManager != null)
         {
             sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
         }
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                allTitles.addAll(communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB));
+                communityAdapter.notifyDataSetChanged();
+                processing.dismiss();
+            }
+        });
     }
 
     @Override
@@ -148,7 +166,8 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB);
+        allTitles.clear();
+        allTitles.addAll(communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB));
         communityAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -170,9 +189,7 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
                 vibrator.vibrate(VibrationEffect.createWaveform(pattern,-1));
                 Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
 
-                int originalSize = allTitles.size();
-                allTitles = communityViewModel.getTitles(CommunityViewModel.MIDDLE_TAB);
-                communityAdapter.notifyItemInserted(originalSize);
+                reloadEntireContent();
             }
         }
 

@@ -40,4 +40,5 @@
     <string name="load_community">Loading more posts will consume your coins. Are you sure you are going to do it? You can also shake the phone to load more</string>
     <string name="updating">Updating preferences</string>
     <string name="default_promote">default</string>
+    <string name="server_connection">Connecting to server…</string>
 </resources>

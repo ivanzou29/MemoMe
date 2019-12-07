@@ -22,8 +22,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.ToDoActivity;
@@ -49,6 +51,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private EditText newList;
 
     private String email;
+    private ProcessingDialog processing;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
         toDoViewModel.setEmail(email);
 
-        allTitles = toDoViewModel.getMyData();
+        allTitles = new ArrayList<>();
         recyclerView = root.findViewById(R.id.rvNumbers);
         int numberOfColumns = 1;
         layoutManager = new GridLayoutManager(this.getContext(), numberOfColumns);
@@ -96,7 +99,27 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 reloadEntireContent();
             }
         });
+
+        processing = new ProcessingDialog(root);
+        processing.show();
+
         return root;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                allTitles.addAll(toDoViewModel.getMyData());
+                toDoAdapter.notifyDataSetChanged();
+                processing.dismiss();
+            }
+        });
     }
 
     @Override

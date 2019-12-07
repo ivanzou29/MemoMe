@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
@@ -44,6 +46,8 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private String email;
 
+    private ProcessingDialog processing;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -54,7 +58,7 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         historyViewModel.setEmail(email);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
-        allTitles = historyViewModel.getTitles();
+        allTitles = new ArrayList<>();
         recyclerView = root.findViewById(R.id.rvDiaries);
         int numberOfColumns = 1;
 
@@ -77,7 +81,26 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
             }
         });
 
+        processing = new ProcessingDialog(root);
+        processing.show();
+
         return root;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                allTitles.addAll(historyViewModel.getTitles());
+                historyAdapter.notifyDataSetChanged();
+                processing.dismiss();
+            }
+        });
     }
 
     @Override
