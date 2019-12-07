@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -39,9 +40,7 @@ public class CommunityFragment extends Fragment {
         email = sp.getString("email", "");
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
         View root = inflater.inflate(R.layout.fragment_community, container, false);
-
         initViewPager(root);
-
         return root;
     }
 
