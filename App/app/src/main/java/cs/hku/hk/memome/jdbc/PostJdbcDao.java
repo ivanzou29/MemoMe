@@ -166,6 +166,35 @@ public class PostJdbcDao implements PostDao {
     }
 
     @Override
+    public ArrayList<Post> getRandomPost(){
+        String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY RAND()";
+        ArrayList<Post> posts = new ArrayList<>();
+        try {
+            Connection conn = databaseUtilities.openConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ResultSet rs = ptmt.executeQuery();
+
+            while (rs.next()) {
+                Boolean isPublic = rs.getBoolean("is_public");
+                String text = rs.getString("text");
+                String postId = rs.getString("post_id");
+                String title = rs.getString("title");
+                int like = rs.getInt("likes");
+                Post post = new Post(postId, isPublic, text, title, like);
+                posts.add(post);
+            }
+
+            ptmt.close();
+            conn.close();
+            return posts;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
     public void increaseLikeByTitle(int like, String title){
         String sql = "UPDATE Posts SET likes = likes + ? WHERE title = ? ";
         try {

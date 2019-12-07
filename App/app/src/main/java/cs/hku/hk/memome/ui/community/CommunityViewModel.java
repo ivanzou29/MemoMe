@@ -46,7 +46,7 @@ public class CommunityViewModel extends ViewModel {
         PostJdbcDao postJdbcDao = new PostJdbcDao();
         diaryList[0].addAll(postJdbcDao.getAllNewPost());
         diaryList[1].addAll(postJdbcDao.getAllHotPost());
-        diaryList[2].addAll(postJdbcDao.getAllNewPost());
+        diaryList[2].addAll(postJdbcDao.getRandomPost());
         for(int k = 0; k < 3; k++){
             if(diaryList[k].size() > MAX_DIARIES_PER_QUERY){
                 List<Post> subList = diaryList[k].subList(0, MAX_DIARIES_PER_QUERY);
