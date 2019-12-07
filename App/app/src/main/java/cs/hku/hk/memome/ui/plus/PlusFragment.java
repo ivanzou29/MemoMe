@@ -92,13 +92,12 @@ public class PlusFragment extends Fragment {
                         composeJdbcDao.insertCompose(compose);
 
                         processing.dismiss();
+                        title.setText(null);
+                        content.setText(null);
+                        isPublic.setChecked(false);
+                        hashTag.setText(null);
                     }
                 });
-
-                title.setText(null);
-                content.setText(null);
-                isPublic.setChecked(false);
-                hashTag.setText(null);
 
 
             }

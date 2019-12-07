@@ -41,7 +41,7 @@ public class DiaryActivity extends AppCompatActivity
         historyViewModel = new HistoryViewModel();
 
         upperToolBar = findViewById(R.id.toolbar_diary);
-        upperToolBar.setTitle(title);
+        upperToolBar.setTitle(title.substring(0, title.length()-24));
         upperToolBar.setNavigationIcon(R.drawable.ic_return_home_24dp);
         upperToolBar.setNavigationContentDescription(R.string.return_home);
         setSupportActionBar(upperToolBar);
