@@ -20,6 +20,8 @@ public interface PostDao {
 
     ArrayList<Post> getAllHotPost();
 
+    ArrayList<Post> getRandomPost();
+
     void increaseLikeByTitle(int like,String title);
 
 
