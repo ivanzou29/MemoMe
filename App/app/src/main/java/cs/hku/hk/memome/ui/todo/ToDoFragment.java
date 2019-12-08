@@ -115,7 +115,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run()
             {
-                allTitles = new ArrayList<>(toDoViewModel.getMyData());
+                allTitles.addAll(toDoViewModel.getNewData());
                 toDoAdapter.notifyDataSetChanged();
                 processing.dismiss();
             }
@@ -171,7 +171,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             {
                                 Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
                                 int originalSize = allTitles.size();
-                                allTitles = new ArrayList<>(toDoViewModel.getMyData());
+                                allTitles.addAll(toDoViewModel.getNewData());
                                 toDoAdapter.notifyItemInserted(originalSize);
                             }
                         }
@@ -195,7 +195,8 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = new ArrayList<>(toDoViewModel.getMyData());
+        allTitles.clear();
+        allTitles.addAll(toDoViewModel.getMyData());
         toDoAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }

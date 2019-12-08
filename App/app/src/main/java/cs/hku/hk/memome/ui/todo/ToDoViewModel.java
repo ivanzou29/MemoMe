@@ -73,12 +73,14 @@ public class ToDoViewModel extends ViewModel
     {
         TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
         ArrayList<String> allLists = new ArrayList<String>(taskJdbcDao.getListNamesByEmail(email));
-
-        for (int i = 0;  i < MAX_TODO_ITEM_PER_LOAD && i < allLists.size(); i++) {
-            myLists.add(allLists.get(i));
+        ArrayList<String> newLists = new ArrayList<String>();
+        for (int i = 0;  i < allLists.size(); i++) {
+            if (myLists.indexOf(allLists.get(i)) == -1 ) {
+                newLists.add(allLists.get(i));
+            }
         }
 
-        return myLists;
+        return newLists;
     }
 
 
