@@ -59,6 +59,7 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
 
         listView = findViewById(R.id.todo_listview);
         FloatingActionButton addTodo = findViewById(R.id.add_todo);
+        FloatingActionButton deleteTodo = findViewById(R.id.delete_todo);
 
         details = toDoViewModel.getListDetails(title);
         loadedResult = toDoViewModel.loadTaskResults(title);
@@ -107,6 +108,15 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
 
                 newtodo.getText().clear();
                 reloadTasks();
+            }
+        });
+
+        deleteTodo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //TODO delete this to-do list
             }
         });
 

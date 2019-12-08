@@ -61,10 +61,10 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         toDoViewModel =
                 ViewModelProviders.of(this).get(ToDoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
-        FloatingActionButton fab = root.findViewById(R.id.floatingActionButton_plus);
+        FloatingActionButton add = root.findViewById(R.id.floatingActionButton_plus);
         newList = root.findViewById(R.id.newList);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = newList.getText().toString();
