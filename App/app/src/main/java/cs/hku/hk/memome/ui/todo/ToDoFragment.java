@@ -78,7 +78,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
         toDoViewModel.setEmail(email);
 
-        allTitles = new ArrayList<>();
+        allTitles = new ArrayList<>(toDoViewModel.getMyData());
         recyclerView = root.findViewById(R.id.rvNumbers);
         int numberOfColumns = 1;
         layoutManager = new GridLayoutManager(this.getContext(), numberOfColumns);
@@ -115,7 +115,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run()
             {
-                allTitles.addAll(toDoViewModel.getMyData());
+                allTitles = new ArrayList<>(toDoViewModel.getMyData());
                 toDoAdapter.notifyDataSetChanged();
                 processing.dismiss();
             }
@@ -171,7 +171,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             {
                                 Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
                                 int originalSize = allTitles.size();
-                                allTitles = toDoViewModel.getNewData();
+                                allTitles = new ArrayList<>(toDoViewModel.getMyData());
                                 toDoAdapter.notifyItemInserted(originalSize);
                             }
                         }
@@ -195,7 +195,7 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = toDoViewModel.getMyData();
+        allTitles = new ArrayList<>(toDoViewModel.getMyData());
         toDoAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
