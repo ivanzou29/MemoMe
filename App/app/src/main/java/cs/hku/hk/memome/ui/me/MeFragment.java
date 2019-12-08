@@ -57,11 +57,14 @@ public class MeFragment extends Fragment {
         Button gift = root.findViewById(R.id.gifts_button_in_me);
         Button logOut = root.findViewById(R.id.log_out_button_in_me);
         TextView coin = root.findViewById(R.id.coin);
+        TextView user = root.findViewById(R.id.user);
 
         //TODO: get coin number
         UserJdbcDao userJdbcDao = new UserJdbcDao();
         int coinNo = userJdbcDao.getCoinsByEmail(email);
         coin.setText("You currently have " + coinNo + " coins.");
+
+        user.setText("User: " + email);
 
         iconButton = root.findViewById(R.id.profile_icon_button);
         iconButton.setOnClickListener(new OnClickListener()
