@@ -29,6 +29,7 @@ import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.PostActivity;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
@@ -146,7 +147,13 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
             public void onClick(DialogInterface dialog, int which)
             {
                 dialog.dismiss();
-                reloadEntireContent();
+                try {
+                    UserJdbcDao userJdbcDao = new UserJdbcDao();
+                    userJdbcDao.updateCoinByEmailAndQuantity(email, -1);
+                    reloadEntireContent();
+                } catch (Exception e) {
+                    Toast.makeText(recyclerView.getContext(), "Internet failure or you do not have enough coins.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         bb.setNegativeButton(getString(R.string.bb_negative), new DialogInterface.OnClickListener()
@@ -187,9 +194,14 @@ public class fragment_middle extends Fragment implements SwipeRefreshLayout.OnRe
             {
                 long [] pattern = {100,100};
                 vibrator.vibrate(VibrationEffect.createWaveform(pattern,-1));
-                Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
-
-                reloadEntireContent();
+                try {
+                    UserJdbcDao userJdbcDao = new UserJdbcDao();
+                    userJdbcDao.updateCoinByEmailAndQuantity(email, -1);
+                    Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
+                    reloadEntireContent();
+                } catch (Exception e) {
+                    Toast.makeText(recyclerView.getContext(), "Internet failure or you do not have enough coins.",Toast.LENGTH_SHORT).show();
+                }
             }
         }
 

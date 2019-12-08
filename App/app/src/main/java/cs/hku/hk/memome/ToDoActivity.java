@@ -1,5 +1,6 @@
 package cs.hku.hk.memome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +21,12 @@ import net.sourceforge.jtds.jdbc.DateTime;
 
 import java.sql.Date;
 
+import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
+import cs.hku.hk.memome.jdbc.OwnJdbcDao;
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.jdbc.TaskJdbcDao;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.Own;
 import cs.hku.hk.memome.model.Task;
 import cs.hku.hk.memome.uiAdapter.TodoListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
@@ -116,7 +122,27 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
             @Override
             public void onClick(View v)
             {
-                //TODO delete this to-do list
+                new AlertDialog.Builder( ToDoActivity.this )
+                        .setTitle( "Confirmation" )
+                        .setMessage( "Are you sure you want to delete this To-do list?" )
+                        .setNegativeButton( "Cancel",null )
+                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+                                    taskJdbcDao.deleteList(email, title);
+                                    Toast.makeText(ToDoActivity.this, "This list is deleted.", Toast.LENGTH_SHORT).show();
+                                    Intent returnHome = new Intent();
+                                    setResult(RESULT_OK, returnHome);
+                                    finish();
+                                } catch (Exception e) {
+                                    Toast.makeText(ToDoActivity.this, "Deletion failed due to server problem.", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        } )
+                        .show();
             }
         });
 

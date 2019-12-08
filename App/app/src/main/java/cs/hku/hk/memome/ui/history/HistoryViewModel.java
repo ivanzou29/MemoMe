@@ -17,7 +17,6 @@ import cs.hku.hk.memome.model.Post;
 public class HistoryViewModel extends ViewModel {
 
     final private int MAX_DIARIES_PER_QUERY = 11;
-    private List<Post> diaryList;
     private List<String> titleList;
 
     private String email;
@@ -26,7 +25,6 @@ public class HistoryViewModel extends ViewModel {
     public HistoryViewModel()
     {
 
-        diaryList = new ArrayList<>();
         titleList = new ArrayList<>();
     }
 
@@ -45,30 +43,8 @@ public class HistoryViewModel extends ViewModel {
         titleList.addAll(new ArrayList<>(composeJdbcDao.getPostIdsByEmail(email)));
 
 
-        if(titleList.size() > MAX_DIARIES_PER_QUERY){
-            titleList = titleList.subList(0, MAX_DIARIES_PER_QUERY);
-        }
-
         return titleList;
 
-    }
-
-    /**
-     * Load more titles from servers
-     * @return A list containing all the titles
-     */
-    List<String> getNewData()
-    {
-
-        ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-        titleList = new ArrayList<String>(composeJdbcDao.getPostIdsByEmail(email));
-
-
-        if(titleList.size() > MAX_DIARIES_PER_QUERY){
-            titleList = titleList.subList(0, MAX_DIARIES_PER_QUERY);
-        }
-
-        return titleList;
     }
 
     /**

@@ -115,7 +115,8 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run()
             {
-                allTitles.addAll(toDoViewModel.getNewData());
+                allTitles.clear();
+                allTitles.addAll(toDoViewModel.getMyData());
                 toDoAdapter.notifyDataSetChanged();
                 processing.dismiss();
             }
@@ -161,20 +162,6 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     case MotionEvent.ACTION_MOVE:
                         moveY = (int)event.getY() - oldY;
                         oldY = (int)event.getY();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        if((1==state || 2==state) && lastVisibleItemPosition == toDoAdapter.getItemCount()-1)
-                        {
-                            if(offset>0 || (0==offset && moveY<0))
-                            //offset > 0 <=> scrolling upwards
-                            //offset == 0 <=> no scrolling, i.e. less than
-                            {
-                                Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
-                                int originalSize = allTitles.size();
-                                allTitles.addAll(toDoViewModel.getNewData());
-                                toDoAdapter.notifyItemInserted(originalSize);
-                            }
-                        }
                         break;
                     default:
                         break;

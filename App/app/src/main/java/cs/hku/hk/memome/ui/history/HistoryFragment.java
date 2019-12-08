@@ -58,7 +58,7 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         historyViewModel.setEmail(email);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
-        allTitles = new ArrayList<>();
+        allTitles = new ArrayList<String>(historyViewModel.getTitles());
         recyclerView = root.findViewById(R.id.rvDiaries);
         int numberOfColumns = 1;
 
@@ -96,6 +96,7 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void run()
             {
+                allTitles.clear();
                 allTitles.addAll(historyViewModel.getTitles());
                 historyAdapter.notifyDataSetChanged();
                 processing.dismiss();
@@ -144,20 +145,6 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         moveY = (int)event.getY() - oldY;
                         oldY = (int)event.getY();
                         break;
-                    case MotionEvent.ACTION_UP:
-                        if((1==state || 2==state) && lastVisibleItemPosition == historyAdapter.getItemCount()-1)
-                        {
-                            if(offset>0 || (0==offset && moveY<0))
-                            //offset > 0 <=> scrolling upwards
-                            //offset == 0 <=> no scrolling, i.e. less than
-                            {
-                                Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
-                                int originalSize = allTitles.size();
-                                allTitles = historyViewModel.getNewData();
-                                historyAdapter.notifyItemInserted(originalSize);
-                            }
-                        }
-                        break;
                     default:
                         break;
                 }
@@ -178,7 +165,8 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = historyViewModel.getTitles();
+        allTitles.clear();
+        allTitles.addAll(historyViewModel.getTitles());
         historyAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
