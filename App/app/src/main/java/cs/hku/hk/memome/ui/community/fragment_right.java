@@ -108,8 +108,6 @@ public class fragment_right extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onItemClick(View view, int position)
     {
-        Toast.makeText(this.getContext(), "You clicked data " + communityAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
-
         Intent intent =  new Intent(view.getContext(), PostActivity.class);
         intent.putExtra("title", communityAdapter.getItem(position));
         intent.putExtra("content",communityViewModel.getContents(CommunityViewModel.RIGHT_TAB,communityAdapter.getItem(position)));
