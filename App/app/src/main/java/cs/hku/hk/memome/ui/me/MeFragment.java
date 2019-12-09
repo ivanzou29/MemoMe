@@ -1,9 +1,8 @@
 package cs.hku.hk.memome.ui.me;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +15,11 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 import cs.hku.hk.memome.GiftsActivity;
@@ -44,6 +39,7 @@ public class MeFragment extends Fragment {
     private String iconName;
     private String email;
     static final private int profileActivity = 11;
+    private static int sIndex = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -55,6 +51,7 @@ public class MeFragment extends Fragment {
                 ViewModelProviders.of(this).get(MeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_me, container, false);
         Button gift = root.findViewById(R.id.gifts_button_in_me);
+        Button help = root.findViewById(R.id.help_button_in_me);
         Button logOut = root.findViewById(R.id.log_out_button_in_me);
         TextView coin = root.findViewById(R.id.coin);
         TextView user = root.findViewById(R.id.user);
@@ -85,6 +82,24 @@ public class MeFragment extends Fragment {
                 myIntent.putStringArrayListExtra("Name", meViewModel.getGiftTypes());
                 myIntent.putIntegerArrayListExtra("Number", meViewModel.getGiftsNumber());
                 startActivity(myIntent);
+            }
+        });
+
+        help.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                new AlertDialog.Builder(v.getContext() )
+//                        .setTitle( "Help" )
+//                        .setMessage( "Please send your problems to memome.app@outlook.com.\nWe will solve it for you as soon as possible.\nSorry for the inconvenience!" )
+//                        .setNegativeButton( "Confirm",null )
+//                        .show();
+                Uri uri = Uri.parse("mailto:memome.app@outlook.com");
+                String[] email = {"memome.app@outlook.com"};
+                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                intent.putExtra(Intent.EXTRA_CC, email);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "email subject");
+                intent.putExtra(Intent.EXTRA_TEXT, "email content");
+                startActivity(Intent.createChooser(intent, "choose a email client from..."));
             }
         });
 
