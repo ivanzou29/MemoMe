@@ -68,6 +68,11 @@ public class PostActivity extends AppCompatActivity
         TextView diary =findViewById(R.id.diary);
         diary.setText(content);
 
+        TextView tag = findViewById(R.id.tag);
+        String tagName = "#Hashtag 1";
+        //Todo: get tag
+        tag.setText(tagName);
+
         Button gift = findViewById(R.id.favo_post);
         gift.setOnClickListener(new View.OnClickListener(){
 
