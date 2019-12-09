@@ -1,6 +1,8 @@
 package cs.hku.hk.memome.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import cs.hku.hk.memome.model.Post;
 
@@ -13,4 +15,14 @@ public interface PostDao {
     void insertPost(Post post);
 
     void deletePost(String postId);
+
+    ArrayList<Post> getAllNewPost();
+
+    ArrayList<Post> getAllHotPost();
+
+    ArrayList<Post> getRandomPost();
+
+    void increaseLikeByTitle(int like,String title);
+
+
 }

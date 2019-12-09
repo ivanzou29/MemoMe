@@ -24,10 +24,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
 import cs.hku.hk.memome.PostActivity;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.User;
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
@@ -51,6 +55,8 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private String email;
 
+    private ProcessingDialog processing;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -58,7 +64,7 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
         SharedPreferences sp = this.getActivity().getSharedPreferences("config", 0);
         email = sp.getString("email", "");
         communityViewModel = ViewModelProviders.of(this).get(CommunityViewModel.class);
-        allTitles = communityViewModel.getTitles(CommunityViewModel.LEFT_TAB);
+        allTitles = new ArrayList<>();
 
         View root = inflater.inflate(R.layout.fagment_community_left, container, false);
 
@@ -84,14 +90,15 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
         sensorManager = (SensorManager)getContext().getSystemService(Context.SENSOR_SERVICE);
         vibrator = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
+        processing = new ProcessingDialog(root);
+        processing.show();
+
         return root;
     }
 
     @Override
     public void onItemClick(View view, int position)
     {
-        Toast.makeText(this.getContext(), "You clicked data " + communityAdapter.getItem(position) + ", which is at cell position " + position, Toast.LENGTH_SHORT).show();
-
         Intent intent =  new Intent(view.getContext(), PostActivity.class);
         intent.putExtra("title", communityAdapter.getItem(position));
         intent.putExtra("content",communityViewModel.getContents(CommunityViewModel.LEFT_TAB,communityAdapter.getItem(position)));
@@ -106,6 +113,16 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
         {
             sensorManager.registerListener(sensorEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),SensorManager.SENSOR_DELAY_NORMAL);
         }
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                allTitles.addAll(communityViewModel.getTitles(CommunityViewModel.RIGHT_TAB));
+                communityAdapter.notifyDataSetChanged();
+                processing.dismiss();
+            }
+        });
     }
 
     @Override
@@ -128,7 +145,13 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onClick(DialogInterface dialog, int which)
             {
                 dialog.dismiss();
-                reloadEntireContent();
+                try {
+                    UserJdbcDao userJdbcDao = new UserJdbcDao();
+                    userJdbcDao.updateCoinByEmailAndQuantity(email, -1);
+                    reloadEntireContent();
+                } catch (Exception e) {
+                    Toast.makeText(recyclerView.getContext(), "Internet failure or you do not have enough coins.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         bb.setNegativeButton(getString(R.string.bb_negative), new DialogInterface.OnClickListener()
@@ -148,7 +171,8 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = communityViewModel.getTitles(CommunityViewModel.LEFT_TAB);
+        allTitles.clear();
+        allTitles.addAll(communityViewModel.getTitles(CommunityViewModel.LEFT_TAB));
         communityAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -168,11 +192,15 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
             {
                 long [] pattern = {100,100};
                 vibrator.vibrate(VibrationEffect.createWaveform(pattern,-1));
-                Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
+                try {
+                    UserJdbcDao userJdbcDao = new UserJdbcDao();
+                    userJdbcDao.updateCoinByEmailAndQuantity(email, -1);
+                    Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
+                    reloadEntireContent();
+                } catch (Exception e) {
+                    Toast.makeText(recyclerView.getContext(), "Internet failure or you do not have enough coins.",Toast.LENGTH_SHORT).show();
+                }
 
-                int originalSize = allTitles.size();
-                allTitles = communityViewModel.getNewData(CommunityViewModel.LEFT_TAB);
-                communityAdapter.notifyItemInserted(originalSize);
             }
         }
 

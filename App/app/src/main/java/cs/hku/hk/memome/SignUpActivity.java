@@ -11,7 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import cs.hku.hk.memome.jdbc.OwnJdbcDao;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.Own;
 import cs.hku.hk.memome.model.User;
 
 /**
@@ -50,7 +52,6 @@ public class SignUpActivity extends AppCompatActivity {
                     if (!pfStr.equals(psStr)) {
                         Toast.makeText(SignUpActivity.this, "input the same password", Toast.LENGTH_LONG).show();
                     } else {
-                        //Todo: add email and password to DB
                         User user = new User();
                         user.setEmail(efStr);
                         user.setPasscode(pfStr);
@@ -62,6 +63,11 @@ public class SignUpActivity extends AppCompatActivity {
 
                         UserJdbcDao userJdbcDao = new UserJdbcDao();
                         userJdbcDao.insertUser(user);
+
+                        OwnJdbcDao ownJdbcDao = new OwnJdbcDao();
+                        ownJdbcDao.insertGiftOwnership(new Own(efStr, "Flower", 0));
+                        ownJdbcDao.insertGiftOwnership(new Own(efStr, "Cake", 0));
+                        ownJdbcDao.insertGiftOwnership(new Own(efStr, "Teddy Bear", 0));
 
                         SharedPreferences sharedPreferences = getSharedPreferences("config", 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();

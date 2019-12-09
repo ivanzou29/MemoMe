@@ -11,6 +11,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,8 @@ import cs.hku.hk.memome.GiftsActivity;
 import cs.hku.hk.memome.MainActivity;
 import cs.hku.hk.memome.ProfileActivity;
 import cs.hku.hk.memome.R;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.User;
 
 /**
  * Fragment for the ME tab.
@@ -33,13 +37,13 @@ public class MeFragment extends Fragment {
     private MeViewModel meViewModel;
     private ImageButton iconButton;
     private String iconName;
+    private String email;
     static final private int profileActivity = 11;
     private static int sIndex = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        String email;
         SharedPreferences sp = Objects.requireNonNull(this.getActivity()).getSharedPreferences("config", 0);
         email = sp.getString("email", "");
 
@@ -49,6 +53,14 @@ public class MeFragment extends Fragment {
         Button gift = root.findViewById(R.id.gifts_button_in_me);
         Button help = root.findViewById(R.id.help_button_in_me);
         Button logOut = root.findViewById(R.id.log_out_button_in_me);
+        TextView coin = root.findViewById(R.id.coin);
+        TextView user = root.findViewById(R.id.user);
+
+        UserJdbcDao userJdbcDao = new UserJdbcDao();
+        int coinNo = userJdbcDao.getCoinsByEmail(email);
+        coin.setText("You currently have " + coinNo + " coins.");
+
+        user.setText("Hi " + email + "!");
 
         iconButton = root.findViewById(R.id.profile_icon_button);
         iconButton.setOnClickListener(new OnClickListener()
@@ -64,7 +76,7 @@ public class MeFragment extends Fragment {
         gift.setOnClickListener(new OnClickListener()
         {
             public void onClick(View view){
-                meViewModel.upDateGiftsInfo();
+                meViewModel.upDateGiftsInfo(email);
 
                 Intent myIntent = new Intent(view.getContext(), GiftsActivity.class);
                 myIntent.putStringArrayListExtra("Name", meViewModel.getGiftTypes());
@@ -94,7 +106,6 @@ public class MeFragment extends Fragment {
         logOut.setOnClickListener(new OnClickListener()
         {
             public void onClick(View view){
-                //Todo: delete stored email and password
                 SharedPreferences sp = MeFragment.this.getActivity().getSharedPreferences("config", 0);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.clear();

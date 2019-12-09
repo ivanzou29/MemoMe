@@ -13,12 +13,13 @@ import cs.hku.hk.memome.database.DatabaseUtilities;
 import cs.hku.hk.memome.model.Task;
 
 public class TaskJdbcDao implements TaskDao {
-    private static Connection conn = DatabaseUtilities.openConnection();
+    private static DatabaseUtilities databaseUtilities = new DatabaseUtilities();
 
     @Override
     public Collection<String> getListNamesByEmail(String email) {
         String sql = "SELECT DISTINCT list_name FROM Tasks WHERE email = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ResultSet rs = ptmt.executeQuery();
@@ -28,6 +29,7 @@ public class TaskJdbcDao implements TaskDao {
                 listNames.add(listName);
             }
             ptmt.close();
+            conn.close();
             return listNames;
         } catch (SQLException e) {
             return new ArrayList<String>();
@@ -38,6 +40,7 @@ public class TaskJdbcDao implements TaskDao {
     public Collection<Task> getTasksByEmailAndListName(String email, String listName) {
         String sql = "SELECT * FROM Tasks WHERE email = ? AND list_name = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2, listName);
@@ -56,6 +59,7 @@ public class TaskJdbcDao implements TaskDao {
                 tasks.add(task);
             }
             ptmt.close();
+            conn.close();
             return tasks;
         } catch (SQLException e) {
             return new ArrayList<Task>();
@@ -63,9 +67,32 @@ public class TaskJdbcDao implements TaskDao {
     }
 
     @Override
+    public Collection<String> getTaskNamesByEmailAndListName(String email, String listName) {
+        String sql = "SELECT task_name FROM Tasks WHERE email = ? AND list_name = ?";
+        try {
+            Connection conn = databaseUtilities.openConnection();
+            PreparedStatement ptmt = conn.prepareStatement(sql);
+            ptmt.setString(1, email);
+            ptmt.setString(2, listName);
+            ResultSet rs = ptmt.executeQuery();
+            Collection<String> taskNames = new ArrayList<String>();
+            while (rs.next()) {
+                String taskName = rs.getString("task_name");
+                taskNames.add(taskName);
+            }
+            ptmt.close();
+            conn.close();
+            return taskNames;
+        } catch (SQLException e) {
+            return new ArrayList<String>();
+        }
+    }
+
+    @Override
     public Task getTaskByEmailAndListNameAndTaskName(String email, String listName, String taskName) {
         String sql = "SELECT * FROM Tasks WHERE email = ? AND list_name = ? AND task_name = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2, listName);
@@ -81,9 +108,11 @@ public class TaskJdbcDao implements TaskDao {
                 task.setDeadline(deadline);
                 task.setFinished(isFinished);
                 ptmt.close();
+                conn.close();
                 return task;
             }
             ptmt.close();
+            conn.close();
             return null;
         } catch (SQLException e) {
             return null;
@@ -95,6 +124,7 @@ public class TaskJdbcDao implements TaskDao {
         String sql = "INSERT INTO Tasks (email, list_name, task_name, deadline, is_finished) " +
                 "VALUES (?,?,?,?,?)";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, task.getEmail());
             ptmt.setString(2, task.getListName());
@@ -103,8 +133,9 @@ public class TaskJdbcDao implements TaskDao {
             ptmt.setBoolean(5, task.getFinished());
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -112,12 +143,14 @@ public class TaskJdbcDao implements TaskDao {
     public void finishTask(String email, String listName, String taskName) {
         String sql = "UPDATE Tasks SET is_finished = 1 WHERE email = ? AND list_name = ? AND task_name = ?";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2,listName);
             ptmt.setString(3, taskName);
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
@@ -127,12 +160,14 @@ public class TaskJdbcDao implements TaskDao {
     public void deleteTask(String email, String listName, String taskName) {
         String sql = "DELETE FROM Tasks WHERE email = ? AND list_name = ? AND task_name = ? ";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2, listName);
             ptmt.setString(3, taskName);
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }
@@ -142,11 +177,13 @@ public class TaskJdbcDao implements TaskDao {
     public void deleteList(String email, String listName) {
         String sql = "DELETE FROM Tasks WHERE email = ? AND list_name = ? ";
         try {
+            Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, email);
             ptmt.setString(2, listName);
             ptmt.execute();
             ptmt.close();
+            conn.close();
         } catch (SQLException e) {
 
         }

@@ -11,7 +11,7 @@
     <string name="title_activity_profile">My Profile</string>
     <string name="tab_left">Hot</string>
     <string name="tab_middle">Newest</string>
-    <string name="tab_right">Interested</string>
+    <string name="tab_right">Surprise</string>
     <string name="return_home">Return Home</string>
     <string name="new_post_title_hint">Title</string>
     <string name="new_post_checkbox_hint">Public</string>
@@ -40,4 +40,7 @@
     <string name="load_community">Loading more posts will consume your coins. Are you sure you are going to do it? You can also shake the phone to load more</string>
     <string name="updating">Updating preferences</string>
     <string name="default_promote">default</string>
+    <string name="server_connection">Loading…</string>
+    <string name="confirm_for_title">Are you sure to post this?</string>
+    <string name="login_waiting">Contacting server for identification…</string>
 </resources>

@@ -27,6 +27,14 @@
         app:srcCompat="@drawable/ic_plus_black_24dp"
         android:layout_gravity="center"/>
 
+    <EditText
+        android:id="@+id/newList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Add a new to-do list"
+        android:textColor="@color/colorText"/>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_todo"
         android:layout_width="match_parent"

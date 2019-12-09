@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs.hku.hk.memome.DiaryActivity;
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 
@@ -29,7 +31,7 @@ import cs.hku.hk.memome.R;
 public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{
 
     private HistoryViewModel historyViewModel;
-    private MyRecyclerViewAdapter historyAdapter;
+        private MyRecyclerViewAdapter historyAdapter;
 
     private List<String> allTitles;
     private RecyclerView recyclerView;
@@ -44,6 +46,8 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private String email;
 
+    private ProcessingDialog processing;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -51,9 +55,10 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         email = sp.getString("email", "");
         historyViewModel =
                 ViewModelProviders.of(this).get(HistoryViewModel.class);
+        historyViewModel.setEmail(email);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
 
-        allTitles = historyViewModel.getTitles();
+        allTitles = new ArrayList<String>(historyViewModel.getTitles());
         recyclerView = root.findViewById(R.id.rvDiaries);
         int numberOfColumns = 1;
 
@@ -72,11 +77,31 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
             @Override
             public void run()
             {
-                reloadEntireContent();
+                //reloadEntireContent();
             }
         });
 
+        processing = new ProcessingDialog(root);
+        processing.show();
+
         return root;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                allTitles.clear();
+                allTitles.addAll(historyViewModel.getTitles());
+                historyAdapter.notifyDataSetChanged();
+                processing.dismiss();
+            }
+        });
     }
 
     @Override
@@ -120,20 +145,6 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         moveY = (int)event.getY() - oldY;
                         oldY = (int)event.getY();
                         break;
-                    case MotionEvent.ACTION_UP:
-                        if((1==state || 2==state) && lastVisibleItemPosition == historyAdapter.getItemCount()-1)
-                        {
-                            if(offset>0 || (0==offset && moveY<0))
-                            //offset > 0 <=> scrolling upwards
-                            //offset == 0 <=> no scrolling, i.e. less than
-                            {
-                                Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
-                                int originalSize = allTitles.size();
-                                allTitles = historyViewModel.getNewData();
-                                historyAdapter.notifyItemInserted(originalSize);
-                            }
-                        }
-                        break;
                     default:
                         break;
                 }
@@ -154,7 +165,8 @@ public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = historyViewModel.getTitles();
+        allTitles.clear();
+        allTitles.addAll(historyViewModel.getTitles());
         historyAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }

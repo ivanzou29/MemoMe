@@ -25,14 +25,16 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Bundle extras = getIntent().getExtras();
         String email = extras.getString("email");
-        Toast.makeText(MainPage.this,"user with email " + email + " successfully log in", Toast.LENGTH_LONG).show();
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_todo, R.id.navigation_community, R.id.navigation_plus, R.id.navigation_history, R.id.navigation_me)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.setGraph(navController.getGraph(), bundle);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }

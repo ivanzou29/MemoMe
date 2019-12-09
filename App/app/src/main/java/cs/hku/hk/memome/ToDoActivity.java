@@ -1,5 +1,6 @@
 package cs.hku.hk.memome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,13 +10,23 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import net.sourceforge.jtds.jdbc.DateTime;
+
+import java.sql.Date;
+
+import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
+import cs.hku.hk.memome.jdbc.OwnJdbcDao;
+import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.jdbc.TaskJdbcDao;
+import cs.hku.hk.memome.jdbc.UserJdbcDao;
+import cs.hku.hk.memome.model.Own;
 import cs.hku.hk.memome.model.Task;
 import cs.hku.hk.memome.uiAdapter.TodoListViewAdapter;
 import cs.hku.hk.memome.ui.todo.ToDoViewModel;
@@ -33,6 +44,9 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
     private TodoListViewAdapter listAdapter;
     private ToDoActivityViewModel viewModel;
     private String email;
+    private String[] details;
+    private boolean[] loadedResult;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,18 +57,18 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
         email = sp.getString("email", "");
 
         toDoViewModel = new ToDoViewModel();
-        toDoViewModel.getMyData();//TODO: overload the getMyData so that will only load one item
-                                  //efficiency concerns
+        toDoViewModel.setEmail(email);
 
         final Bundle extras = getIntent().getExtras();
-        final String title;
+
         title = extras.getString("title");
 
         listView = findViewById(R.id.todo_listview);
         FloatingActionButton addTodo = findViewById(R.id.add_todo);
+        FloatingActionButton deleteTodo = findViewById(R.id.delete_todo);
 
-        String[] details = toDoViewModel.getListDetails(title);
-        boolean [] loadedResult = toDoViewModel.loadTaskResuls(title);
+        details = toDoViewModel.getListDetails(title);
+        loadedResult = toDoViewModel.loadTaskResults(title);
 
         viewModel = new ToDoActivityViewModel(title, details, loadedResult);
 
@@ -85,21 +99,64 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
             @Override
             public void onClick(View v)
             {
-                //TODO: store a new todo to DB, assign an unique ID
                 EditText newtodo = findViewById(R.id.newTodo);
                 String taskContent = newtodo.getText().toString();
-                String email = extras.getString("email");
                 Task task = new Task();
                 task.setTaskName(taskContent);
                 task.setListName(title);
                 task.setEmail(email);
+                task.setFinished(false);
+                task.setDeadline(new Date(System.currentTimeMillis()));
 
                 TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
                 taskJdbcDao.insertTask(task);
-                Toast.makeText(ToDoActivity.this,"add a todo", Toast.LENGTH_LONG).show();
+                Toast.makeText(ToDoActivity.this,"Added a new task", Toast.LENGTH_LONG).show();
+
+                newtodo.getText().clear();
+                reloadTasks();
             }
         });
 
+        deleteTodo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                new AlertDialog.Builder( ToDoActivity.this )
+                        .setTitle( "Confirmation" )
+                        .setMessage( "Are you sure you want to delete this To-do list?" )
+                        .setNegativeButton( "Cancel",null )
+                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+                                    taskJdbcDao.deleteList(email, title);
+                                    Toast.makeText(ToDoActivity.this, "This list is deleted.", Toast.LENGTH_SHORT).show();
+                                    Intent returnHome = new Intent();
+                                    setResult(RESULT_OK, returnHome);
+                                    finish();
+                                } catch (Exception e) {
+                                    Toast.makeText(ToDoActivity.this, "Deletion failed due to server problem.", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        } )
+                        .show();
+            }
+        });
+
+    }
+
+    private void reloadTasks() {
+        details = toDoViewModel.getListDetails(title);
+        loadedResult = toDoViewModel.loadTaskResults(title);
+
+        listAdapter = new TodoListViewAdapter(this, details, loadedResult);
+        listAdapter.setClickListener(this);
+
+        listView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -111,20 +168,22 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
 
         listAdapter.getItem(position).setChecked(newValue);
         listAdapter.notifyDataSetChanged();
-        //TODO: send to server for this clicking
         TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
         Bundle extras = getIntent().getExtras();
-        String email = extras.getString("email");
-        String taskname = extras.getString("title");
 
-        //taskJdbcDao.finishTask(email,);
+        String listName = extras.getString("title");
+        String taskName = listAdapter.getItem(position).getText();
+
+        taskJdbcDao.finishTask(email, listName, taskName);
 
         viewModel.updateCompletion(position, newValue);
-        if(0==viewModel.getRemained() && newValue)
-            Toast.makeText(view.getContext(),"All are done! Congratulations", Toast.LENGTH_SHORT).show();
-            //TODO: notify the server for gifts
+        if(0==viewModel.getRemained() && newValue){
 
+            Toast.makeText(view.getContext(),"Congratulations! You have finished the to-do list and you get 10 coins!", Toast.LENGTH_SHORT).show();
+            UserJdbcDao userJdbcDao =new UserJdbcDao();
+            userJdbcDao.updateCoinByEmailAndQuantity(email,10);
+        }
         else if(newValue)
-            Toast.makeText(view.getContext(),"Wow!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(),"Wow! You have finished the task!", Toast.LENGTH_SHORT).show();
     }
 }

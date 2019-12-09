@@ -12,4 +12,6 @@ public interface ComposeDao {
 
     void deleteCompose(String postId);
 
+    String getUserEmailByPostId(String postId);
+
 }

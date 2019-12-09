@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,8 +22,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import cs.hku.hk.memome.uiAdapter.MyRecyclerViewAdapter;
 import cs.hku.hk.memome.R;
 import cs.hku.hk.memome.ToDoActivity;
@@ -44,8 +48,10 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private int oldY;
 
     private List<String> allTitles;
+    private EditText newList;
 
     private String email;
+    private ProcessingDialog processing;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,16 +61,24 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         toDoViewModel =
                 ViewModelProviders.of(this).get(ToDoViewModel.class);
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
-        FloatingActionButton fab = root.findViewById(R.id.floatingActionButton_plus);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton add = root.findViewById(R.id.floatingActionButton_plus);
+        newList = root.findViewById(R.id.newList);
+
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "To add a new list", Snackbar.LENGTH_LONG)
+                String title = newList.getText().toString();
+                newList.getText().clear();
+                Snackbar.make(view, "To add a new list " + title, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent intent =  new Intent(view.getContext(), ToDoActivity.class);
+                intent.putExtra("title", title);
+                startActivity(intent);
             }
         });
+        toDoViewModel.setEmail(email);
 
-        allTitles = toDoViewModel.getMyData();
+        allTitles = new ArrayList<>(toDoViewModel.getMyData());
         recyclerView = root.findViewById(R.id.rvNumbers);
         int numberOfColumns = 1;
         layoutManager = new GridLayoutManager(this.getContext(), numberOfColumns);
@@ -85,7 +99,28 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 reloadEntireContent();
             }
         });
+
+        processing = new ProcessingDialog(root);
+        processing.show();
+
         return root;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        getView().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                allTitles.clear();
+                allTitles.addAll(toDoViewModel.getMyData());
+                toDoAdapter.notifyDataSetChanged();
+                processing.dismiss();
+            }
+        });
     }
 
     @Override
@@ -128,20 +163,6 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                         moveY = (int)event.getY() - oldY;
                         oldY = (int)event.getY();
                         break;
-                    case MotionEvent.ACTION_UP:
-                        if((1==state || 2==state) && lastVisibleItemPosition == toDoAdapter.getItemCount()-1)
-                        {
-                            if(offset>0 || (0==offset && moveY<0))
-                            //offset > 0 <=> scrolling upwards
-                            //offset == 0 <=> no scrolling, i.e. less than
-                            {
-                                Toast.makeText(v.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
-                                int originalSize = allTitles.size();
-                                allTitles = toDoViewModel.getNewData();
-                                toDoAdapter.notifyItemInserted(originalSize);
-                            }
-                        }
-                        break;
                     default:
                         break;
                 }
@@ -161,7 +182,8 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void reloadEntireContent()
     {
         swipeRefreshLayout.setRefreshing(true);
-        allTitles = toDoViewModel.getMyData();
+        allTitles.clear();
+        allTitles.addAll(toDoViewModel.getMyData());
         toDoAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }

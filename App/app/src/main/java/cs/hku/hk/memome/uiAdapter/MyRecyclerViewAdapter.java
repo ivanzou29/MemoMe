@@ -37,7 +37,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // binds the data to the textview in each cell
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = mData.get(position);
+        String animal;
+        if(mData.get(position).length()>=23)
+        {
+            animal = mData.get(position).substring(0,mData.get(position).length()-23);
+        }
+        else
+        {
+            animal = mData.get(position);
+        }
+
         holder.myTextView.setText(animal);
     }
 
