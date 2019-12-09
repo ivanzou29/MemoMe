@@ -5,6 +5,7 @@ package cs.hku.hk.memome.ui;
 
 import android.app.AlertDialog;
 import android.view.View;
+import android.widget.TextView;
 
 import cs.hku.hk.memome.R;
 
@@ -22,6 +23,22 @@ public class ProcessingDialog
         this.rootView = rootView;
         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
         builder.setView(View.inflate(rootView.getContext(), R.layout.processing_dialog,null));
+        alertDialog = builder.create();
+    }
+
+    /**
+     * Constructor, to build a ProcessingDialog instance with customized title
+     * @param rootView The view a processing dialog should be bound to
+     * @param resId The customized string title
+     */
+    public ProcessingDialog(View rootView, int resId)
+    {
+        this.rootView = rootView;
+        AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
+        View dialogView = View.inflate(rootView.getContext(), R.layout.processing_dialog, null);
+        TextView textView = dialogView.findViewById(R.id.progress_text_prompt);
+        textView.setText(resId);
+        builder.setView(dialogView);
         alertDialog = builder.create();
     }
 

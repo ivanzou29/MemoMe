@@ -42,4 +42,5 @@
     <string name="default_promote">default</string>
     <string name="server_connection">Loading…</string>
     <string name="confirm_for_title">Are you sure to post this?</string>
+    <string name="login_waiting">Contacting server for identification…</string>
 </resources>

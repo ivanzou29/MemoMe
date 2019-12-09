@@ -11,6 +11,7 @@
         android:foregroundTint="@color/colorPrimaryShadow"/>
 
     <TextView
+        android:id="@+id/progress_text_prompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textFontWeight="600"

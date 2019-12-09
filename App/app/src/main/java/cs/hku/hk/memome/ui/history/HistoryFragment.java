@@ -31,7 +31,7 @@ import cs.hku.hk.memome.R;
 public class HistoryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MyRecyclerViewAdapter.ItemClickListener{
 
     private HistoryViewModel historyViewModel;
-    private MyRecyclerViewAdapter historyAdapter;
+        private MyRecyclerViewAdapter historyAdapter;
 
     private List<String> allTitles;
     private RecyclerView recyclerView;

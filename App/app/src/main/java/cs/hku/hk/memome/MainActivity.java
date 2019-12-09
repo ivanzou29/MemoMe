@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import cs.hku.hk.memome.ui.ProcessingDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
 import cs.hku.hk.memome.model.User;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     TextView password;
     Button logIn;
     Button signUp;
+
+    ProcessingDialog processing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         }
         email = findViewById(R.id.get_email);
         password = findViewById(R.id.get_password);
+
+        View view = View.inflate(this,R.layout.log_in, null);
+        processing = new ProcessingDialog(view, R.string.login_waiting);
 
         if (isConnected()) {
             if (!loggingOut) {
@@ -88,41 +94,53 @@ public class MainActivity extends AppCompatActivity {
         logIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+
+                processing.show();
 
                 if (isConnected()) {
 
-                    String eStr = email.getText().toString();
-                    String pStr = password.getText().toString();
-                    Boolean exist = Boolean.TRUE;
-                    Boolean correct = Boolean.TRUE;
-                    UserJdbcDao userJdbcDao = new UserJdbcDao();
-                    User user = userJdbcDao.getUserByEmail(eStr);
-                    if (user == null) {
-                        exist = Boolean.FALSE;
-                    } else {
-                        if (!user.getPasscode().equals(pStr)) {
-                            correct = Boolean.FALSE;
-                        }
-                    }
+                    findViewById(R.id.login_root).post(new Runnable()
+                    {
+                        String eStr = email.getText().toString();
+                        String pStr = password.getText().toString();
+                        Boolean exist = Boolean.TRUE;
+                        Boolean correct = Boolean.TRUE;
 
-                    if (!exist) {
-                        Toast.makeText(MainActivity.this, "Unidentified email, please sign up first.", Toast.LENGTH_LONG).show();
-                    } else {
-                        if (!correct) {
-                            Toast.makeText(MainActivity.this, "Wrong password!", Toast.LENGTH_LONG).show();
-                        } else {
-                            SharedPreferences sharedPreferences = getSharedPreferences("config", 0);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("email", eStr);
-                            editor.putString("passcode", pStr);
-                            editor.apply();
-                            Toast.makeText(MainActivity.this, "Login status saved!", Toast.LENGTH_LONG).show();
-                            Intent myIntent = new Intent(v.getContext(), MainPage.class);
-                            myIntent.putExtra("email", eStr);
-                            startActivity(myIntent);
+                        @Override
+                        public void run()
+                        {
+                            UserJdbcDao userJdbcDao = new UserJdbcDao();
+                            User user = userJdbcDao.getUserByEmail(eStr);
+                            processing.dismiss();
+                            if (user == null) {
+                                exist = Boolean.FALSE;
+                            } else {
+                                if (!user.getPasscode().equals(pStr)) {
+                                    correct = Boolean.FALSE;
+                                }
+                            }
+
+                            if (!exist) {
+                                Toast.makeText(MainActivity.this, "Unidentified email, please sign up first.", Toast.LENGTH_LONG).show();
+                            } else {
+                                if (!correct) {
+                                    Toast.makeText(MainActivity.this, "Wrong password!", Toast.LENGTH_LONG).show();
+                                } else {
+                                    SharedPreferences sharedPreferences = getSharedPreferences("config", 0);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("email", eStr);
+                                    editor.putString("passcode", pStr);
+                                    editor.apply();
+                                    Toast.makeText(MainActivity.this, "Login status saved!", Toast.LENGTH_LONG).show();
+                                    Intent myIntent = new Intent(v.getContext(), MainPage.class);
+                                    myIntent.putExtra("email", eStr);
+                                    startActivity(myIntent);
+                                }
+                            }
                         }
-                    }
+                    });
+
                 } else {
                     Toast.makeText(MainActivity.this, "Please ensure your phone is connected to the Internet!", Toast.LENGTH_LONG).show();
                 }
