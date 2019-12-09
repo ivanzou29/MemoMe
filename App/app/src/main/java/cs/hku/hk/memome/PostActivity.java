@@ -71,7 +71,10 @@ public class PostActivity extends AppCompatActivity
 
         TextView tag = findViewById(R.id.tag);
         HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
-        String tagName = "#" + haveTagJdbcDao.getTagNameByPostId(title);
+        String tagName = haveTagJdbcDao.getTagNameByPostId(title);
+        if (!tagName.equals("")) {
+            tagName = "#" + tagName;
+        }
         tag.setText(tagName);
 
         Button gift = findViewById(R.id.favo_post);
