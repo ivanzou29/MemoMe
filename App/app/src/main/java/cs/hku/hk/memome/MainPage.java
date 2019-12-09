@@ -25,7 +25,6 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Bundle extras = getIntent().getExtras();
         String email = extras.getString("email");
-        Toast.makeText(MainPage.this,"user with email " + email + " successfully log in", Toast.LENGTH_LONG).show();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         Bundle bundle = new Bundle();
         bundle.putString("email", email);

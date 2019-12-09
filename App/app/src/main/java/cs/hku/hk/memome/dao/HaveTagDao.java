@@ -6,7 +6,7 @@ import cs.hku.hk.memome.model.HaveTag;
 
 public interface HaveTagDao {
 
-    Collection<String> getTagNamesByPostId(String postId);
+    String getTagNameByPostId(String postId);
 
     void insertHaveTag(HaveTag haveTag);
 

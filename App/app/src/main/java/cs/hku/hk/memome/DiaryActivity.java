@@ -1,5 +1,6 @@
 package cs.hku.hk.memome;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
 import cs.hku.hk.memome.jdbc.PostJdbcDao;
+import cs.hku.hk.memome.jdbc.TaskJdbcDao;
 import cs.hku.hk.memome.model.Compose;
 import cs.hku.hk.memome.model.Post;
 import cs.hku.hk.memome.ui.history.HistoryViewModel;
@@ -65,25 +68,37 @@ public class DiaryActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(),"Delete this post?", Toast.LENGTH_SHORT).show();
-                PostJdbcDao postJdbcDao = new PostJdbcDao();
-                Post post = postJdbcDao.getPostByPostId(title);
-                if(post != null){
-                    postJdbcDao.deletePost(post.getPostId());
-                }
+                new AlertDialog.Builder(DiaryActivity.this )
+                        .setTitle( "Confirmation" )
+                        .setMessage( "Are you sure you want to delete this post?" )
+                        .setNegativeButton( "Cancel",null )
+                        .setPositiveButton( "Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    PostJdbcDao postJdbcDao = new PostJdbcDao();
+                                    Post post = postJdbcDao.getPostByPostId(title);
+                                    if(post != null){
+                                        postJdbcDao.deletePost(post.getPostId());
+                                    }
 
-                ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
-                try {
-                    composeJdbcDao.deleteCompose(title);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                                    ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();
+                                    try {
+                                        composeJdbcDao.deleteCompose(title);
+                                        Toast.makeText(DiaryActivity.this, "This post is deleted.", Toast.LENGTH_SHORT).show();
+                                        Log.d("ActivityDebug","delete posts");
+                                        Intent returnHome = new Intent();
+                                        setResult(RESULT_OK, returnHome);
+                                        finish();
+                                    } catch (Exception e) {
+                                        Toast.makeText(DiaryActivity.this, "Deletion failed due to server problem.", Toast.LENGTH_SHORT).show();
+                                    } } catch (Exception e) {
+                                    Toast.makeText(DiaryActivity.this, "Deletion failed due to server problem.", Toast.LENGTH_SHORT).show();
+                                }
 
-
-                Log.d("ActivityDebug","delete posts");
-                Intent returnHome = new Intent();
-                setResult(RESULT_OK, returnHome);
-                finish();
+                            }
+                        } )
+                        .show();
 
             }
         });

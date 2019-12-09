@@ -83,9 +83,11 @@ public class PlusFragment extends Fragment {
                         PostJdbcDao postJdbcDao = new PostJdbcDao();
                         postJdbcDao.insertPost(post);
 
-                        HaveTag haveTag = new HaveTag(id, h);
-                        HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
-                        haveTagJdbcDao.insertHaveTag(haveTag);
+                        if (!h.equals("")) {
+                            HaveTag haveTag = new HaveTag(id, h);
+                            HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
+                            haveTagJdbcDao.insertHaveTag(haveTag);
+                        }
 
                         Compose compose = new Compose(email, id);
                         ComposeJdbcDao composeJdbcDao = new ComposeJdbcDao();

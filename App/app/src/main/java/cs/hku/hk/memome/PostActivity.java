@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import cs.hku.hk.memome.jdbc.ComposeJdbcDao;
+import cs.hku.hk.memome.jdbc.HaveTagJdbcDao;
 import cs.hku.hk.memome.jdbc.OwnJdbcDao;
 import cs.hku.hk.memome.jdbc.PostJdbcDao;
 import cs.hku.hk.memome.jdbc.UserJdbcDao;
@@ -67,6 +68,14 @@ public class PostActivity extends AppCompatActivity
 
         TextView diary =findViewById(R.id.diary);
         diary.setText(content);
+
+        TextView tag = findViewById(R.id.tag);
+        HaveTagJdbcDao haveTagJdbcDao = new HaveTagJdbcDao();
+        String tagName = haveTagJdbcDao.getTagNameByPostId(title);
+        if (!tagName.equals("")) {
+            tagName = "#" + tagName;
+        }
+        tag.setText(tagName);
 
         Button gift = findViewById(R.id.favo_post);
         gift.setOnClickListener(new View.OnClickListener(){

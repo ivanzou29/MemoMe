@@ -12,7 +12,6 @@ import java.util.List;
  */
 public class ToDoViewModel extends ViewModel
 {
-    final public static int MAX_TODO_ITEM_PER_LOAD = 9;
     private List<String> myLists; //the list of titles
     private List<String> myTaskNames; //the list of contents
     private List<Task> myTasks;
@@ -40,7 +39,7 @@ public class ToDoViewModel extends ViewModel
         TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
         ArrayList<String> allLists = new ArrayList<String>(taskJdbcDao.getListNamesByEmail(email));
 
-        for (int i = 0; i < MAX_TODO_ITEM_PER_LOAD && i < allLists.size(); i++) {
+        for (int i = 0; i < allLists.size(); i++) {
             myLists.add(allLists.get(i));
         }
         return myLists;
@@ -63,24 +62,6 @@ public class ToDoViewModel extends ViewModel
         }
 
         return myTaskNames.toArray(new String[0]);
-    }
-
-    /**
-     * Load more titles and content from the server
-     * @return The list of all title
-     */
-    public List<String> getNewData()
-    {
-        TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
-        ArrayList<String> allLists = new ArrayList<String>(taskJdbcDao.getListNamesByEmail(email));
-        ArrayList<String> newLists = new ArrayList<String>();
-        for (int i = 0;  i < allLists.size(); i++) {
-            if (myLists.indexOf(allLists.get(i)) == -1 ) {
-                newLists.add(allLists.get(i));
-            }
-        }
-
-        return newLists;
     }
 
 

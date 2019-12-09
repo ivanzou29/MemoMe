@@ -14,23 +14,24 @@ import cs.hku.hk.memome.model.HaveTag;
 public class HaveTagJdbcDao implements HaveTagDao {
     private static DatabaseUtilities databaseUtilities = new DatabaseUtilities();
     @Override
-    public Collection<String> getTagNamesByPostId(String postId) {
+    public String getTagNameByPostId(String postId) {
         String sql = "SELECT tag_name FROM HaveTag WHERE post_id = ?";
         try {
             Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
             ptmt.setString(1, postId);
             ResultSet rs = ptmt.executeQuery();
-            Collection<String> tagNames = new ArrayList<String>();
-            while (rs.next()) {
+            if (rs.next()) {
                 String tagName = rs.getString("tag_name");
-                tagNames.add(tagName);
+                ptmt.close();
+                conn.close();
+                return tagName;
             }
             ptmt.close();
             conn.close();
-            return tagNames;
+            return "";
         } catch (SQLException e) {
-            return new ArrayList<String>();
+            return "";
         }
     }
 

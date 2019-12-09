@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
-
                 } else {
                     Toast.makeText(MainActivity.this, "Please ensure your phone is connected to the Internet!", Toast.LENGTH_LONG).show();
                 }
