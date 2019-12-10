@@ -50,10 +50,10 @@ public class CommunityViewModel extends ViewModel {
         switch(i)
         {
             case 0:
-                diaryList[0].addAll(postJdbcDao.getAllNewPost());
+                diaryList[0].addAll(postJdbcDao.getAllHotPost());
                 break;
             case 1:
-                diaryList[1].addAll(postJdbcDao.getAllHotPost());
+                diaryList[1].addAll(postJdbcDao.getAllNewPost());
                 break;
             case 2:
                 diaryList[2].addAll(postJdbcDao.getRandomPost());
