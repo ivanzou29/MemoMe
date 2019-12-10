@@ -7,5 +7,7 @@
     <color name="colorSelfDefinedHint">#BABABA</color>
     <color name="colorBackground">#f5eede</color>
     <color name="colorText">#6e6852</color>
+    <color name="colorTitle">#4d4a40</color>
+    <color name="colorTag">#888370</color>
     <color name="transparent_background">#60000000</color>
 </resources>
