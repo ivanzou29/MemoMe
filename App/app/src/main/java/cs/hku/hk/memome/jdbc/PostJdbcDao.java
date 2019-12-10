@@ -63,7 +63,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public void deletePost(String postId) {
-        String sql = "DELETE FROM Posts WHERE postId = ?";
+        String sql = "DELETE FROM Posts WHERE post_id = ?";
         try {
             Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
