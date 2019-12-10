@@ -101,19 +101,23 @@ public class ToDoActivity extends AppCompatActivity implements TodoListViewAdapt
             {
                 EditText newtodo = findViewById(R.id.newTodo);
                 String taskContent = newtodo.getText().toString();
-                Task task = new Task();
-                task.setTaskName(taskContent);
-                task.setListName(title);
-                task.setEmail(email);
-                task.setFinished(false);
-                task.setDeadline(new Date(System.currentTimeMillis()));
+                if(!taskContent.equals("")){
+                    Task task = new Task();
+                    task.setTaskName(taskContent);
+                    task.setListName(title);
+                    task.setEmail(email);
+                    task.setFinished(false);
+                    task.setDeadline(new Date(System.currentTimeMillis()));
 
-                TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
-                taskJdbcDao.insertTask(task);
-                Toast.makeText(ToDoActivity.this,"Added a new task", Toast.LENGTH_LONG).show();
+                    TaskJdbcDao taskJdbcDao = new TaskJdbcDao();
+                    taskJdbcDao.insertTask(task);
+                    Toast.makeText(ToDoActivity.this,"Added a new task", Toast.LENGTH_LONG).show();
 
-                newtodo.getText().clear();
-                reloadTasks();
+                    newtodo.getText().clear();
+                    reloadTasks();
+                }else {
+                    Toast.makeText(ToDoActivity.this,"Enter a valid task", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -68,12 +68,17 @@ public class ToDoFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View view) {
                 String title = newList.getText().toString();
-                newList.getText().clear();
-                Snackbar.make(view, "To add a new list " + title, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Intent intent =  new Intent(view.getContext(), ToDoActivity.class);
-                intent.putExtra("title", title);
-                startActivity(intent);
+                if(title.equals("")){
+                    Snackbar.make(view, "Please enter a list name before click", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }else{
+                    newList.getText().clear();
+                    Snackbar.make(view, "To add a new list " + title, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    Intent intent =  new Intent(view.getContext(), ToDoActivity.class);
+                    intent.putExtra("title", title);
+                    startActivity(intent);
+                }
             }
         });
         toDoViewModel.setEmail(email);
