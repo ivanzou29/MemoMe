@@ -118,6 +118,7 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void run()
             {
+                allTitles.clear();
                 allTitles.addAll(communityViewModel.getTitles(CommunityViewModel.RIGHT_TAB));
                 communityAdapter.notifyDataSetChanged();
                 processing.dismiss();
@@ -192,14 +193,24 @@ public class fragment_left extends Fragment implements SwipeRefreshLayout.OnRefr
             {
                 long [] pattern = {100,100};
                 vibrator.vibrate(VibrationEffect.createWaveform(pattern,-1));
-                try {
-                    UserJdbcDao userJdbcDao = new UserJdbcDao();
-                    userJdbcDao.updateCoinByEmailAndQuantity(email, -1);
-                    Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
-                    reloadEntireContent();
-                } catch (Exception e) {
-                    Toast.makeText(recyclerView.getContext(), "Internet failure or you do not have enough coins.",Toast.LENGTH_SHORT).show();
-                }
+                processing.show();
+                getView().post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try {
+                            UserJdbcDao userJdbcDao = new UserJdbcDao();
+                            userJdbcDao.updateCoinByEmailAndQuantity(email, -1);
+                            Toast.makeText(recyclerView.getContext(),R.string.loading_new_items,Toast.LENGTH_SHORT).show();
+                            reloadEntireContent();
+                        } catch (Exception e) {
+                            Toast.makeText(recyclerView.getContext(), "Internet failure or you do not have enough coins.",Toast.LENGTH_SHORT).show();
+                        } finally {
+                            processing.dismiss();
+                        }
+                    }
+                });
 
             }
         }

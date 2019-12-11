@@ -41,12 +41,26 @@ public class CommunityViewModel extends ViewModel {
      */
     public List<String> getTitles(int i) //get all the titles
     {
-        titleList[i].clear();
-        diaryList[i].clear();
+        if(i<3 && i>=0)
+        {
+            titleList[i].clear();
+            diaryList[i].clear();
+        }
         PostJdbcDao postJdbcDao = new PostJdbcDao();
-        diaryList[0].addAll(postJdbcDao.getAllNewPost());
-        diaryList[1].addAll(postJdbcDao.getAllHotPost());
-        diaryList[2].addAll(postJdbcDao.getRandomPost());
+        switch(i)
+        {
+            case 0:
+                diaryList[0].addAll(postJdbcDao.getAllHotPost());
+                break;
+            case 1:
+                diaryList[1].addAll(postJdbcDao.getAllNewPost());
+                break;
+            case 2:
+                diaryList[2].addAll(postJdbcDao.getRandomPost());
+                break;
+            default:
+                break;
+        }
         for(int k = 0; k < 3; k++){
             if(diaryList[k].size() > MAX_DIARIES_PER_QUERY){
                 List<Post> subList = diaryList[k].subList(0, MAX_DIARIES_PER_QUERY);

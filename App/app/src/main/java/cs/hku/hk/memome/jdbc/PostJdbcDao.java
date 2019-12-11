@@ -63,7 +63,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public void deletePost(String postId) {
-        String sql = "DELETE FROM Posts WHERE postId = ?";
+        String sql = "DELETE FROM Posts WHERE post_id = ?";
         try {
             Connection conn = databaseUtilities.openConnection();
             PreparedStatement ptmt = conn.prepareStatement(sql);
@@ -138,7 +138,7 @@ public class PostJdbcDao implements PostDao {
 
     @Override
     public ArrayList<Post> getAllHotPost(){
-        String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY likes ASC";
+        String sql = "SELECT * FROM Posts WHERE is_public = 1 ORDER BY likes DESC";
         ArrayList<Post> posts = new ArrayList<>();
         try {
             Connection conn = databaseUtilities.openConnection();
